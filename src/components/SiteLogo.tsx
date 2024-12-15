@@ -10,8 +10,8 @@ export default function SiteLogo({className}: SiteLogoProps) {
     return (
         <>
             <Link to="/" className={className}>
-                <div className={"flex items-center"}>
-                    <Origami className="h-8 w-8"/>
+                <div className="flex items-center justify-center">
+                    <Origami className="h-8 w-8 shrink-0" />
                     <span className="ml-2 text-2xl font-bold">luka-lta.dev</span>
                 </div>
             </Link>
