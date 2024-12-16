@@ -16,7 +16,7 @@ export default function LinksPage() {
 
     useEffect(() => {
         const fetchLinks = async () => {
-            const communicator = new LinkCommunicator("http://localhost/api/v1/linkCollection");
+            const communicator = new LinkCommunicator();
             try {
                 const data = await communicator.getLinks();
 

@@ -3,7 +3,7 @@ import {LinkItemType} from "@/components/Links/LinkItemType.ts";
 export class LinkCommunicator {
     private readonly server: string;
 
-    constructor(server: string = 'http://localhost/api/v1/linkCollection') {
+    constructor(server: string = 'https://api.luka-lta.dev/api/v1/linkCollection') {
         this.server = server;
     }
 

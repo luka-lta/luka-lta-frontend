@@ -3,13 +3,11 @@ const skills = [
     'TypeScript',
     'React',
     'Node.js',
-    'Express',
-    'MongoDB',
+    'PHP',
     'SQL',
     'HTML',
     'CSS',
     'Git',
-    'AWS',
     'Docker',
 ]
 

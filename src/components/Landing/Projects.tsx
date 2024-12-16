@@ -2,23 +2,17 @@ import { Github, ExternalLink } from 'lucide-react'
 
 const projects = [
     {
-        title: 'Project 1',
-        description: 'A web application built with React and Node.js',
+        title: 'ByteBuddy',
+        description: 'A Discord moderation Bot coded in NodeJS with DiscordJs',
         github: 'https://github.com/yourusername/project1',
         live: 'https://project1.com',
     },
     {
-        title: 'Project 2',
-        description: 'An e-commerce platform using Next.js and Stripe',
+        title: 'TaskWave',
+        description: 'Open Source Web Task Management tool made in react & php',
         github: 'https://github.com/yourusername/project2',
         live: 'https://project2.com',
-    },
-    {
-        title: 'Project 3',
-        description: 'A mobile app developed with React Native',
-        github: 'https://github.com/yourusername/project3',
-        live: 'https://project3.com',
-    },
+    }
 ]
 
 const Projects = () => {
