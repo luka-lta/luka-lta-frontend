@@ -3,16 +3,17 @@ import {LinkItemType} from "@/components/Links/LinkItemType.ts";
 export class LinkCommunicator {
     private readonly server: string;
 
-    constructor(server: string = 'https://api.luka-lta.dev/api/v1/linkCollection') {
+    constructor(server: string = `${import.meta.env.VITE_API_URL}/linkCollection`) {
         this.server = server;
     }
 
     async getLinks(): Promise<LinkItemType[]> {
         try {
-            const response = await fetch(`${this.server}/links?mustRef=true`, {
+            const response = await fetch(`${this.server}/?mustRef=true`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json', // Setzt den Header
+                    'Content-Type': 'application/json',
+                    'x-api-Key': `${import.meta.env.VITE_API_KEY}`
                 },
             });
 
@@ -21,6 +22,11 @@ export class LinkCommunicator {
             }
 
             const data = await response.json();
+
+            if (data.message === 'No links found') {
+                return [];
+            }
+
             return data.links;
         } catch (error) {
             console.error('Fehler beim Abrufen der Links:', error);

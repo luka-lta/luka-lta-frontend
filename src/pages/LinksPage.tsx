@@ -25,8 +25,10 @@ export default function LinksPage() {
                 } else {
                     throw new Error("Antwort ist kein Array");
                 }
-            } catch (err: any) {
-                setError("Fehler beim Laden der Links. Bitte versuche es später erneut.");
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    setError("Fehler beim Laden der Links. Bitte versuche es später erneut.");
+                }
                 console.error(err);
             } finally {
                 setLoading(false);
@@ -41,7 +43,7 @@ export default function LinksPage() {
             <StarBackground/>
             <Navbar/>
             <div
-                className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800 flex flex-col items-center justify-center p-4">
+                className="min-h-screen bg-gradient-to-b text-gray-800 dark:text-gray-200 flex flex-col items-center justify-center p-4">
                 <Card className="w-full max-w-md">
                     <CardContent className="flex flex-col items-center p-6 space-y-4">
                         <Avatar className="w-24 h-24">
@@ -85,7 +87,6 @@ export default function LinksPage() {
                                     .map((link) => (
                                         <LinkItem
                                             id={link.id}
-                                            // @ts-ignore
                                             key={link.id}
                                             // @ts-ignore
                                             linkId={link.id}
@@ -99,7 +100,7 @@ export default function LinksPage() {
                                         />
                                     ))
                             ) : (
-                                <p className="text-center text-muted-foreground">Keine Links gefunden</p>
+                                <p className="text-center text-red-500">Keine Links gefunden</p>
                             )}
                         </div>
                     </CardContent>

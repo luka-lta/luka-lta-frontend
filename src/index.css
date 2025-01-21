@@ -84,3 +84,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .backdrop-blur-lg {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
