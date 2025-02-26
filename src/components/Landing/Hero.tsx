@@ -1,42 +1,66 @@
-import {useState, useEffect} from 'react'
-import {Button} from "@/components/ui/button.tsx";
-import {Link} from "react-router-dom";
+"use client"
 
-const useTypingEffect = (text: string, delay: number) => {
-    const [currentText, setCurrentText] = useState('')
-    const [currentIndex, setCurrentIndex] = useState(0)
+import { motion } from "framer-motion"
+import {Origami} from "lucide-react";
 
-    useEffect(() => {
-        if (currentIndex < text.length) {
-            const timeout = setTimeout(() => {
-                setCurrentText(prevText => prevText + text[currentIndex])
-                setCurrentIndex(prevIndex => prevIndex + 1)
-            }, delay)
-
-            return () => clearTimeout(timeout)
-        }
-    }, [currentIndex, delay, text])
-
-    return currentText
-}
-
-const Hero = () => {
-    const typedText = useTypingEffect("I'm a Full Stack Developer", 100)
-
+export default function Hero() {
     return (
-        <section className="text-center py-20">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">Hello, I'm Luka</h1>
-            <h2 className="text-2xl md:text-3xl mb-8">{typedText}</h2>
-            <Button
-                className="bg-purple-800 font-bold py-2 px-4 rounded"
-            >
-                <Link to={'/links'}>
-                    See my Links
-                </Link>
-            </Button>
-        </section>
+        <div className="relative isolate overflow-hidden bg-background">
+            <div className="mx-auto max-w-7xl px-6 py-20 lg:flex lg:items-center lg:gap-x-10 lg:px-8">
+                <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg lg:flex-shrink-0">
+                    <motion.h1
+                        className="mt-10 text-4xl font-bold tracking-tight text-foreground sm:text-6xl"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <span className="text-gradient">luka-lta.dev</span>
+                    </motion.h1>
+                    <motion.p
+                        className="mt-6 text-lg leading-8 text-muted-foreground"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                    >
+                        Where minimal design meets floral artistry. We craft elegant experiences that inspire and elevate your
+                        space.
+                    </motion.p>
+                    <motion.div
+                        className="mt-10 flex items-center gap-x-6"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                    >
+                        <a
+                            href="/#skills"
+                            className="apple-button"
+                        >
+                            Explore Our Work
+                        </a>
+                        <a
+                            href="/#journey"
+                            className="text-sm font-semibold leading-6 text-foreground"
+                        >
+                            Learn more <span aria-hidden="true">→</span>
+                        </a>
+                    </motion.div>
+                </div>
+                <motion.div
+                    className="mx-auto mt-16 lg:mt-0"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
+                >
+                    <div className="relative">
+                        <Origami
+                            width={600}
+                            height={600}
+                            className="w-[500px] rounded-2xl shadow-xl ring-1 ring-gray-900/10"
+                        />
+                    </div>
+                </motion.div>
+            </div>
+        </div>
     )
 }
-
-export default Hero
 

@@ -1,13 +1,12 @@
 import {useEffect, useState} from "react";
 import {Card, CardContent} from "@/components/ui/card";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Navbar} from "@/components/Navbar.tsx";
-import {Footer} from "@/components/Footer.tsx";
 import LinkItem from "@/components/Links/LinkItem.tsx";
-import StarBackground from "@/components/StarBackground.tsx";
 import {LinkItemType} from "@/components/Links/LinkItemType.ts";
 import {LinkCommunicator} from "@/communicator/LinkCommunicator.ts";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
+import Header from "@/components/Landing/Header.tsx";
+import Footer from "@/components/Landing/Footer.tsx";
 
 export default function LinksPage() {
     const [links, setLinks] = useState<LinkItemType[]>([]); // Initialisierung als leeres Array
@@ -40,8 +39,7 @@ export default function LinksPage() {
 
     return (
         <>
-            <StarBackground/>
-            <Navbar/>
+            <Header />
             <div
                 className="min-h-screen bg-gradient-to-b text-gray-800 dark:text-gray-200 flex flex-col items-center justify-center p-4">
                 <Card className="w-full max-w-md">
@@ -106,7 +104,7 @@ export default function LinksPage() {
                     </CardContent>
                 </Card>
             </div>
-            <Footer/>
+            <Footer />
         </>
     );
 }
