@@ -32,17 +32,13 @@ export default function Hero() {
                         transition={{ duration: 0.8, delay: 0.4 }}
                     >
                         <a
-                            href="https://www.flowersandsaints.com.au"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            href="/#skills"
                             className="apple-button"
                         >
                             Explore Our Work
                         </a>
                         <a
-                            href="https://www.flowersandsaints.com.au"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            href="/#journey"
                             className="text-sm font-semibold leading-6 text-foreground"
                         >
                             Learn more <span aria-hidden="true">→</span>

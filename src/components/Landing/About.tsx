@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 
-export default function WearYourStory() {
+export default function About() {
     return (
         <section id='about' className="bg-background py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,10 +12,9 @@ export default function WearYourStory() {
                     transition={{ duration: 0.8 }}
                     className="text-center"
                 >
-                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6">Wear Your Story</h2>
+                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6">About myself</h2>
                     <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-                        Every piece from Flowers & Saints is a canvas for your unique narrative. Our designs blend minimal
-                        aesthetics with nature's beauty, allowing you to express your individuality.
+                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
                     </p>
                     <motion.div
                         className="mt-10"
@@ -24,9 +23,6 @@ export default function WearYourStory() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                     >
                         <a
-                            href="https://www.flowersandsaints.com.au"
-                            target="_blank"
-                            rel="noopener noreferrer"
                             className="apple-button inline-flex items-center"
                         >
                             Explore Collection

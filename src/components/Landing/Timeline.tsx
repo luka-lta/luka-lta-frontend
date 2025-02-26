@@ -5,46 +5,32 @@ import { motion, useScroll, useTransform, useSpring, useInView } from "framer-mo
 
 const timelineEvents = [
     {
-        year: 2018,
-        title: "Flowers & Saints Founded",
-        description: "Our journey began with a passion for minimal design and floral artistry.",
-        details:
-            "Founded by Jane Doe and John Smith, Flowers & Saints started as a small studio in Sydney's Surry Hills, combining their love for minimalist design and botanical beauty.",
-    },
-    {
-        year: 2019,
-        title: "First Major Exhibition",
-        description: "Showcased our unique blend of digital art and floral arrangements at the Sydney Design Festival.",
-        details:
-            "Our exhibition 'Digital Bloom' attracted over 10,000 visitors and received critical acclaim for its innovative approach to merging technology with natural elements.",
-    },
-    {
-        year: 2020,
-        title: "Launch of Online Store",
-        description: "Expanded our reach by bringing our creations to the digital world.",
-        details:
-            "In response to global changes, we pivoted to e-commerce, offering our unique designs and virtual floral workshops to a worldwide audience.",
-    },
-    {
         year: 2021,
-        title: "Collaboration with Top Brands",
-        description: "Partnered with leading lifestyle brands to create exclusive collections.",
+        title: "Placeholder",
+        description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",
         details:
-            "Our collaborations included limited edition prints with Australian fashion label Zimmermann and a bespoke fragrance line with Aesop.",
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,",
     },
     {
         year: 2022,
-        title: "International Recognition",
-        description: "Received the prestigious International Floral Design Award.",
+        title: "Lorem ipsum dolor sit amet,",
+        description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",
         details:
-            "Our 'Ethereal Echoes' installation, which combined holographic projections with live flowers, won the gold medal at the Chelsea Flower Show.",
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,",
     },
     {
         year: 2023,
-        title: "Expansion to Physical Stores",
-        description: "Opened our first flagship store in the heart of Sydney.",
+        title: "Lorem ipsum dolor sit amet,",
+        description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",
         details:
-            "Our Bondi Beach location features an immersive retail experience, blending digital installations with a curated selection of floral arrangements and lifestyle products.",
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,",
+    },
+    {
+        year: 2024,
+        title: "Lorem ipsum dolor sit amet,",
+        description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",
+        details:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,",
     },
 ]
 
@@ -93,7 +79,7 @@ export default function Timeline() {
                     transition={{ duration: 0.8 }}
                 >
                     <h2 className="text-3xl font-bold text-foreground sm:text-4xl">My Journey</h2>
-                    <p className="mt-4 text-lg text-muted-foreground">The evolution of Flowers & Saints through the years</p>
+                    <p className="mt-4 text-lg text-muted-foreground">The evolution of myself through the years</p>
                 </motion.div>
 
                 <div className="relative">
