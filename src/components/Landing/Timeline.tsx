@@ -138,7 +138,9 @@ function TimelineEvent({
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                     >
+{/*
                         <p className="mt-2 text-sm text-muted-foreground">{event.details}</p>
+*/}
                     </motion.div>
                 </div>
             </motion.div>
