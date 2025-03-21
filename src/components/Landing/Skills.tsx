@@ -15,7 +15,7 @@ const skills = [
         name: "Frontend Development",
         tech: "React.js, Vite",
         description:
-            "Building responsive and interactive user interfaces with modern React features and Next.js for optimal performance.",
+            "Building responsive and interactive user interfaces with modern React features and Vite for optimal performance.",
         color: "text-blue-500",
     },
     {
