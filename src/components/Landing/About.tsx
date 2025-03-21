@@ -14,7 +14,7 @@ export default function About() {
                 >
                     <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6">About myself</h2>
                     <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+                        I'm a passionate developer with a strong focus on web applications, backend architectures, and automation. With expertise in PHP, JavaScript, Docker, MySQL, and Elasticsearch, I design and develop scalable, efficient, and high-performance solutions that power modern applications.
                     </p>
                     <motion.div
                         className="mt-10"
