@@ -47,6 +47,13 @@ export default function Header() {
                     >
                         Links
                     </Link>
+                    <Link
+                        to="https://status.luka-lta.dev"
+                        className="text-sm font-semibold leading-6 text-foreground hover:text-primary transition-colors"
+                        target="_blank"
+                    >
+                        Status
+                    </Link>
                 </div>
                 <div className="flex flex-1 justify-end">
                     {mounted && (

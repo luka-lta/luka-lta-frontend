@@ -22,8 +22,9 @@ export default function Hero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                     >
-                        Where minimal design meets floral artistry. We craft elegant experiences that inspire and elevate your
-                        space.
+                        I specialize in web development, APIs, and scalable architectures, crafting high-performance applications with PHP, JavaScript, Docker, and MySQL. From backend logic to frontend experiences, I love turning ideas into functional, efficient, and user-friendly solutions.
+
+                        Let's build something amazing together! 🚀
                     </motion.p>
                     <motion.div
                         className="mt-10 flex items-center gap-x-6"

@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Code, Database, Server, Layout, GitBranch, Terminal, Layers, Cpu, Globe, Workflow } from "lucide-react"
+import { Code, Database, Server, Layout, GitBranch, Terminal, Cpu, Globe, Workflow } from "lucide-react"
 
 const SkillIcon = ({ icon: Icon, color }: { icon: any; color: string }) => (
     <div className={`p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg`}>
@@ -13,15 +13,15 @@ const skills = [
     {
         icon: Code,
         name: "Frontend Development",
-        tech: "React.js, Next.js",
+        tech: "React.js, Vite",
         description:
-            "Building responsive and interactive user interfaces with modern React features and Next.js for optimal performance.",
+            "Building responsive and interactive user interfaces with modern React features and Vite for optimal performance.",
         color: "text-blue-500",
     },
     {
         icon: Server,
         name: "Backend Development",
-        tech: "Node.js, Express, Fastify",
+        tech: "PHP, Slim",
         description: "Creating robust server-side applications with focus on scalability and clean architecture.",
         color: "text-green-500",
     },
@@ -54,16 +54,9 @@ const skills = [
         color: "text-yellow-500",
     },
     {
-        icon: Layers,
-        name: "State Management",
-        tech: "Redux, Context API",
-        description: "Managing complex application state with modern state management solutions.",
-        color: "text-indigo-500",
-    },
-    {
         icon: Cpu,
         name: "API Development",
-        tech: "REST, GraphQL",
+        tech: "REST",
         description: "Designing and implementing efficient APIs for seamless data communication.",
         color: "text-red-500",
     },
@@ -77,7 +70,7 @@ const skills = [
     {
         icon: Workflow,
         name: "Agile Methodologies",
-        tech: "Scrum, Kanban",
+        tech: "Scrum",
         description: "Working efficiently in agile environments with focus on continuous delivery.",
         color: "text-cyan-500",
     },

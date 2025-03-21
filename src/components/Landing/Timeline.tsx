@@ -6,32 +6,14 @@ import { motion, useScroll, useTransform, useSpring, useInView } from "framer-mo
 const timelineEvents = [
     {
         year: 2021,
-        title: "Placeholder",
-        description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",
-        details:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,",
-    },
-    {
-        year: 2022,
-        title: "Lorem ipsum dolor sit amet,",
-        description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",
-        details:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,",
+        title: "Graduated",
+        description: "Graduated from Middle School",
     },
     {
         year: 2023,
-        title: "Lorem ipsum dolor sit amet,",
-        description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",
-        details:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,",
-    },
-    {
-        year: 2024,
-        title: "Lorem ipsum dolor sit amet,",
-        description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",
-        details:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,",
-    },
+        title: "Apprenticeship at Synatix GmbH",
+        description: "Started my apprenticeship as an IT Specialist for Application Development at Synatix GmbH",
+    }
 ]
 
 const FlowerIcon = ({ progress }: { progress: number }) => (
@@ -156,7 +138,9 @@ function TimelineEvent({
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                     >
+{/*
                         <p className="mt-2 text-sm text-muted-foreground">{event.details}</p>
+*/}
                     </motion.div>
                 </div>
             </motion.div>
