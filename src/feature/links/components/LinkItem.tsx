@@ -13,7 +13,7 @@ function LinkItem({link}: LinkItemProps) {
     // @ts-ignore
     const CustomFaIcon = ({ name }) => {
         // @ts-ignore
-        const FaIcon = Icons[name];
+        const FaIcon = Icons[name as keyof Icons];
         if (!FaIcon) return <p>Icon not found!</p>;
 
         return <FaIcon />;
