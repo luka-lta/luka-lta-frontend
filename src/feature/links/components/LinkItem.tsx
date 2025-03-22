@@ -1,11 +1,13 @@
-import {LinkItemType} from "@/components/Links/LinkItemType.ts";
 import {Button} from "@/components/ui/button.tsx";
 import * as Icons from "react-icons/fa";
+import {LinkItemTypeSchema} from "@/feature/links/schema/linktreeSchema.ts";
 
-function LinkItem(props: LinkItemType) {
-    const {id, displayname, description, url, isActive, iconName} = props;
+interface LinkItemProps {
+    link: LinkItemTypeSchema;
+}
 
-    if (!isActive) {
+function LinkItem({link}: LinkItemProps) {
+    if (!link.isActive) {
         return null;
     }
     // @ts-ignore
@@ -19,20 +21,20 @@ function LinkItem(props: LinkItemType) {
 
     return (
         <Button
-            key={id}
+            key={link.id}
             variant="outline"
             className="w-full justify-start h-auto py-3 px-4"
             asChild
         >
-            <a href={url} target="_blank" rel="noopener noreferrer">
+            <a href={link.url} target="_blank" rel="noopener noreferrer">
                 <div className="flex items-center space-x-3">
                     <div className="flex flex-col items-start">
-                        <span className="font-medium">{displayname}</span>
-                        {description && (
+                        <span className="font-medium">{link.displayname}</span>
+                        {link.description && (
                             <span
-                                className="text-sm text-muted-foreground">{description}</span>
+                                className="text-sm text-muted-foreground">{link.description}</span>
                         )}
-                        <CustomFaIcon name={iconName} />
+                        <CustomFaIcon name={link.iconName} />
                     </div>
                 </div>
             </a>
