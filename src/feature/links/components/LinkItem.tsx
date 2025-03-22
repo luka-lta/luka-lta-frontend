@@ -6,18 +6,19 @@ interface LinkItemProps {
     link: LinkItemTypeSchema;
 }
 
+// @ts-ignore
+const CustomFaIcon = ({ name }) => {
+    // @ts-ignore
+    const FaIcon = Icons[name as keyof Icons];
+    if (!FaIcon) return <p>Icon not found!</p>;
+
+    return <FaIcon />;
+};
+
 function LinkItem({link}: LinkItemProps) {
     if (!link.isActive) {
         return null;
     }
-    // @ts-ignore
-    const CustomFaIcon = ({ name }) => {
-        // @ts-ignore
-        const FaIcon = Icons[name as keyof Icons];
-        if (!FaIcon) return <p>Icon not found!</p>;
-
-        return <FaIcon />;
-    };
 
     return (
         <Button
