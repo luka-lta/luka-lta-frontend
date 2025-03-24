@@ -21,15 +21,13 @@ function RedirectLink() {
                 const userIp = ipData.ip;
 
                 const fetchWrapper = new FetchWrapper(FetchWrapper.baseUrl);
-                const response = fetchWrapper.post(`/click/track/${clickTag}`, {
+                const response = await fetchWrapper.post(`/click/track/${clickTag}`, {
                     referrer: document.referrer,
                     userAgent: navigator.userAgent,
                     ipAddress: userIp,
                 });
 
-                const data = await response;
-                setTargetUrl(data.data.redirectUrl);
-
+                setTargetUrl(response.data?.redirectUrl ?? '');
             } catch (error) {
                 console.error('API-Fehler:', error);
             }
