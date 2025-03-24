@@ -35,7 +35,8 @@ export class FetchWrapper {
 
         try {
             const response = await fetch(`${this.baseUrl}${endpoint}`, config);
-            if (!response.ok) {
+
+            if (response.status > 400) {
                 throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
             }
             const data = await response.json();
