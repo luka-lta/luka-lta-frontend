@@ -6,9 +6,18 @@ export function useTrackClick(clickTag: string) {
     const queryData = useQuery({
         queryKey: ['redirectUrl', clickTag],
         queryFn: async () => {
-            const ipResponse = await fetch("https://api.ipify.org/?format=json");
-            const ipData = await ipResponse.json();
-            const userIp = ipData.ip;
+            let userIp = "";
+            try {
+                const ipResponse = await fetch("https://api.ipify.org/?format=json");
+                if (!ipResponse.ok) {
+                    throw new Error(`Failed to fetch IP: ${ipResponse.status}`);
+                }
+                const ipData = await ipResponse.json();
+                userIp = ipData.ip;
+            } catch (error) {
+                console.error("Failed to fetch IP address:", error);
+                // Fallback to empty IP or alternative source
+            }
 
             const fetchWrapper = new FetchWrapper(FetchWrapper.baseUrl);
             const response = await fetchWrapper.post(`/click/track/${clickTag}`, {
