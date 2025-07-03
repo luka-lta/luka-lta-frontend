@@ -10,9 +10,14 @@ const timelineEvents = [
         description: "Graduated from Middle School",
     },
     {
-        year: 2023,
+        year: 2022,
         title: "Apprenticeship at Synatix GmbH",
         description: "Started my apprenticeship as an IT Specialist for Application Development at Synatix GmbH",
+    },
+    {
+        year: 2025,
+        title: "Graduated from Apprenticeship",
+        description: "Graduated from my apprenticeship as an IT Specialist for Application Development",
     }
 ]
 
