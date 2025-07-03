@@ -82,7 +82,7 @@ function Privacy() {
                                         <Eye className="h-5 w-5 text-primary"/>
                                         <CardTitle>Privacy Policy Overview</CardTitle>
                                     </div>
-                                    <CardDescription>Last updated: {new Date().toLocaleDateString()}</CardDescription>
+                                    <CardDescription>Last updated: January 15, 2025</CardDescription>
                                 </CardHeader>
                                 <CardContent className="prose prose-sm max-w-none">
                                     <p>
