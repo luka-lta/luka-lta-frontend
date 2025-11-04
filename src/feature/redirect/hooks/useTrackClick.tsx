@@ -7,13 +7,15 @@ export function useTrackClick(clickTag: string) {
         queryKey: ['redirectUrl', clickTag],
         queryFn: async () => {
             let userIp = "";
+            let market = null;
             try {
-                const ipResponse = await fetch("https://api.ipify.org/?format=json");
+                const ipResponse = await fetch("http://ip-api.com/json/");
                 if (!ipResponse.ok) {
                     throw new Error(`Failed to fetch IP: ${ipResponse.status}`);
                 }
                 const ipData = await ipResponse.json();
-                userIp = ipData.ip;
+                userIp = ipData.query;
+                market = ipData.countryCode;
             } catch (error) {
                 console.error("Failed to fetch IP address:", error);
                 // Fallback to empty IP or alternative source
@@ -24,6 +26,7 @@ export function useTrackClick(clickTag: string) {
                 referrer: document.referrer,
                 userAgent: navigator.userAgent,
                 ipAddress: userIp,
+                market: market
             });
 
             return trackResponse.parse(response.data);
