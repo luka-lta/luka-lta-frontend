@@ -6,16 +6,16 @@ export function useTrackClick(clickTag: string) {
     const queryData = useQuery({
         queryKey: ['redirectUrl', clickTag],
         queryFn: async () => {
-            let userIp = "";
+            let userIp = null;
             let market = null;
             try {
-                const ipResponse = await fetch("http://ip-api.com/json/");
+                const ipResponse = await fetch("https://ipwho.is/");
                 if (!ipResponse.ok) {
                     throw new Error(`Failed to fetch IP: ${ipResponse.status}`);
                 }
                 const ipData = await ipResponse.json();
-                userIp = ipData.query;
-                market = ipData.countryCode;
+                userIp = ipData.ip;
+                market = ipData.country_code;
             } catch (error) {
                 console.error("Failed to fetch IP address:", error);
                 // Fallback to empty IP or alternative source
