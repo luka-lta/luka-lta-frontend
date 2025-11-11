@@ -6,7 +6,8 @@ import {SpeedInsights} from "@vercel/speed-insights/react";
 import {Analytics} from "@vercel/analytics/react";
 import CustomCursor from "@/components/CustomCursor.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import { Suspense } from "react";
+import {Suspense, useState} from "react";
+import CookieConsent from "@/components/blocks/cookie-consent.tsx";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -17,7 +18,20 @@ const queryClient = new QueryClient({
     },
 });
 
+// Helper function to check cookie
+const getCookieConsent = (): boolean => {
+  if (typeof document === 'undefined') return false;
+  const cookieValue = document.cookie
+        .split('; ')
+    .find(row => row.startsWith('cookieConsent='))
+    ?.split('=')[1];
+  return cookieValue === 'true';
+};
+
+
 function App() {
+    const [accepted, setAccepted] = useState(getCookieConsent);
+
     return (
         <ThemeProvider defaultTheme='system' storageKey='ui-theme'>
             <QueryClientProvider client={queryClient}>
@@ -26,8 +40,20 @@ function App() {
                     <RouterProvider router={appRouter} fallbackElement={<ErrorPage/>}/>
                 </Suspense>
             </QueryClientProvider>
-            <SpeedInsights/>
-            <Analytics/>
+
+            <CookieConsent
+                variant="default"
+                learnMoreHref='/privacy'
+                onAcceptCallback={() => setAccepted(true)}
+                onDeclineCallback={() => setAccepted(false)}
+            />
+
+            {accepted && (
+              <>
+                  <SpeedInsights/>
+                  <Analytics/>
+              </>
+            )}
         </ThemeProvider>
     )
 }
