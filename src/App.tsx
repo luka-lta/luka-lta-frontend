@@ -18,8 +18,19 @@ const queryClient = new QueryClient({
     },
 });
 
+// Helper function to check cookie
+const getCookieConsent = (): boolean => {
+  if (typeof document === 'undefined') return false;
+  const cookieValue = document.cookie
+        .split('; ')
+    .find(row => row.startsWith('cookieConsent='))
+    ?.split('=')[1];
+  return cookieValue === 'true';
+};
+
+
 function App() {
-    const [accepted, setAccepted] = useState(false);
+    const [accepted, setAccepted] = useState(getCookieConsent);
 
     return (
         <ThemeProvider defaultTheme='system' storageKey='ui-theme'>
