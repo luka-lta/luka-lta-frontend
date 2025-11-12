@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, Cookie, X } from "lucide-react";
+import { Cookie } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
