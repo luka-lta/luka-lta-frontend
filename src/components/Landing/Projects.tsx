@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import {Github} from "lucide-react";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel.tsx";
+import {Badge} from "@/components/ui/badge.tsx";
 
 const projects = [
     {
@@ -8,14 +9,16 @@ const projects = [
         description: "API for User Management, LinkTracking and ApiKey Management",
         image:
             "/static/images/projects/luka-lta-api.webp",
-        github: "https://github.com/luka-lta/luka-lta-api"
+        github: "https://github.com/luka-lta/luka-lta-api",
+        tags: ["PHP", "MySQL", "Slim", "JWT"],
     },
     {
         name: "luka-lta-backend",
         description: "Backend for Manage the API stuff",
         image:
             "/static/images/projects/backend.png",
-        github: "https://github.com/luka-lta/luka-lta-backend"
+        github: "https://github.com/luka-lta/luka-lta-backend",
+        tags: ["React", "Node.js", "Shadcn/ui"],
     },
     {
         name: "luka-lta-frontend",
@@ -23,6 +26,7 @@ const projects = [
         image:
             "/static/images/projects/frontend.png",
         github: "https://github.com/luka-lta/luka-lta-frontend",
+        tags: ["React", "Node.js", "Shadcn/ui"],
     },
 ];
 
@@ -120,6 +124,14 @@ function Projects() {
                                         </div>
                                         <div className="mt-4">
                                             <h3 className="text-lg font-semibold">{project.name}</h3>
+                                        </div>
+
+                                        <div className="flex flex-wrap gap-2">
+                                            {project.tags.map((tag, tagIndex) => (
+                                                <Badge key={tagIndex} variant="secondary" className="text-xs">
+                                                    {tag}
+                                                </Badge>
+                                            ))}
                                         </div>
                                     </motion.div>
                                 </CarouselItem>

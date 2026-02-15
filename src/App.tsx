@@ -8,6 +8,7 @@ import CustomCursor from "@/components/CustomCursor.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {Suspense, useState} from "react";
 import CookieConsent from "@/components/blocks/cookie-consent.tsx";
+import AnalyticsScript from "@/components/analytics-script.tsx";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -52,6 +53,7 @@ function App() {
               <>
                   <SpeedInsights/>
                   <Analytics/>
+                  <AnalyticsScript />
               </>
             )}
         </ThemeProvider>
