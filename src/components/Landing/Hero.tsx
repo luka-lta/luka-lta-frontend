@@ -1,67 +1,115 @@
 "use client"
 
 import { motion } from "framer-motion"
-import {Origami} from "lucide-react";
+import {ArrowDown, Github, Linkedin, Mail} from "lucide-react";
+import {Button} from "@/components/ui/button.tsx";
+import {NativeTypewriter} from "@/components/typewriter.tsx";
 
 export default function Hero() {
     return (
-        <div className="relative isolate overflow-hidden bg-background">
-            <div className="mx-auto max-w-7xl px-6 py-20 lg:flex lg:items-center lg:gap-x-10 lg:px-8">
-                <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-lg lg:flex-shrink-0">
-                    <motion.h1
-                        className="mt-10 text-4xl font-bold tracking-tight text-foreground sm:text-6xl"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <span className="text-gradient">luka-lta.dev</span>
-                    </motion.h1>
-                    <motion.p
-                        className="mt-6 text-lg leading-8 text-muted-foreground"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                    >
-                        I specialize in web development, APIs, and scalable architectures, crafting high-performance applications with PHP, JavaScript, Docker, and MySQL. From backend logic to frontend experiences, I love turning ideas into functional, efficient, and user-friendly solutions.
+        <section className="relative flex items-center justify-center overflow-hidden bg-background min-h-screen w-full">
+            {/* Animated background grid */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
 
-                        Let's build something amazing together! 🚀
-                    </motion.p>
+            <div className="relative z-10 mx-auto max-w-5xl text-center">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
                     <motion.div
-                        className="mt-10 flex items-center gap-x-6"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                        className="mb-6 inline-block"
+                    >
+                        <img
+                            src='https://avatars.githubusercontent.com/u/67432564?s=400&u=c05342b968a89f33ee89f012ace47aa7de083a97&v=4'
+                            className='mx-auto h-24 w-24 rounded-full border-4 border-background bg-gradient-to-br from-primary to-muted shadow-lg'
+                            alt='Profilepicuter Github'
+                        />
+                    </motion.div>
+
+                    <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
+                        transition={{ delay: 0.3, duration: 0.6 }}
+                        className="mb-6 text-5xl font-bold text-foreground md:text-7xl"
                     >
-                        <a
-                            href="/#skills"
-                            className="apple-button"
-                        >
-                            Explore Our Work
-                        </a>
-                        <a
-                            href="/#journey"
-                            className="text-sm font-semibold leading-6 text-foreground"
-                        >
-                            Learn more <span aria-hidden="true">→</span>
-                        </a>
-                    </motion.div>
-                </div>
-                <motion.div
-                    className="mx-auto mt-16 lg:mt-0"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 0.6 }}
-                >
-                    <div className="relative">
-                        <Origami
-                            width={600}
-                            height={600}
-                            className="w-[500px] rounded-2xl shadow-xl ring-1 ring-gray-900/10"
+                        <NativeTypewriter
+                            content={[
+                                "Luka Liebenthal",
+                                "Full Stack Developer",
+                            ]}
+                            loop
+                            speed="slow"
+                            className=""
                         />
-                    </div>
+                    </motion.h1>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4, duration: 0.6 }}
+                        className="mx-auto mb-8 max-w-3xl text-xl text-muted-foreground md:text-2xl"
+                    >
+                        I build modern web applications — engineered from backend to frontend, with scalability and performance at the core.
+                    </motion.p>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5, duration: 0.6 }}
+                        className="mb-12 flex flex-wrap justify-center gap-4"
+                    >
+                        <Button size="lg" className="gap-2">
+                            <Mail className="h-4 w-4" />
+                            Get in Touch
+                        </Button>
+                        <Button size="lg" variant="outline" className="gap-2">
+                            View Projects
+                            <ArrowDown className="h-4 w-4" />
+                        </Button>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.6, duration: 0.6 }}
+                        className="flex justify-center gap-4"
+                    >
+                        {[
+                            { icon: Github, href: "https://github.com/luka-lta" },
+                            { icon: Linkedin, href: "https://www.linkedin.com/in/luka-liebenthal-aa047931b/" },
+                            { icon: Mail, href: "mailto:info@luka-lta.dev" },
+                        ].map((social, index) => (
+                            <motion.a
+                                key={index}
+                                href={social.href}
+                                whileHover={{ scale: 1.1, y: -2 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                            >
+                                <social.icon className="h-5 w-5" />
+                            </motion.a>
+                        ))}
+                    </motion.div>
                 </motion.div>
             </div>
-        </div>
+
+            {/* Scroll indicator */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, y: [0, 10, 0] }}
+                transition={{
+                    opacity: { delay: 1, duration: 0.6 },
+                    y: { delay: 1.5, duration: 1.5, repeat: Infinity },
+                }}
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 transform"
+            >
+                <ArrowDown className="h-6 w-6 text-muted-foreground" />
+            </motion.div>
+        </section>
     )
 }
 

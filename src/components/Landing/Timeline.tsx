@@ -1,155 +1,177 @@
 "use client"
 
-import { useState, useRef } from "react"
-import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion"
+import { useRef } from "react"
+import { motion, useInView } from "framer-motion"
+import {Calendar, CheckCircle2, LucideIcon} from "lucide-react";
+import {Card} from "@/components/ui/card.tsx";
+import {Badge} from "@/components/ui/badge.tsx";
 
-const timelineEvents = [
+interface TimelineEventProp {
+    year: number,
+    title: string,
+    description: string,
+    icon: LucideIcon,
+}
+
+const timelineEvents: TimelineEventProp[] = [
     {
         year: 2021,
         title: "Graduated",
         description: "Graduated from Middle School",
+        icon: CheckCircle2
     },
     {
         year: 2022,
         title: "Apprenticeship at Synatix GmbH",
         description: "Started my apprenticeship as an IT Specialist for Application Development at Synatix GmbH",
+        icon: CheckCircle2
     },
     {
         year: 2025,
         title: "Graduated from Apprenticeship",
         description: "Graduated from my apprenticeship as an IT Specialist for Application Development",
+        icon: CheckCircle2
     }
 ]
 
-const FlowerIcon = ({ progress }: { progress: number }) => (
-    <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-6 h-6"
-        style={{ transform: `scale(${progress})` }}
-    >
-        <path
-            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-            stroke="currentColor"
-            strokeWidth="2"
-        />
-        <path
-            d="M12 8C12 8 14 10 14 12C14 14 12 16 12 16C12 16 10 14 10 12C10 10 12 8 12 8Z"
-            stroke="currentColor"
-            strokeWidth="2"
-        />
-    </svg>
-)
-
 export default function Timeline() {
-    const [expandedEvent, setExpandedEvent] = useState<number | null>(null)
-    const containerRef = useRef<HTMLDivElement>(null)
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start end", "end start"],
-    })
-
-    const scaleX = useSpring(scrollYProgress, {
-        stiffness: 100,
-        damping: 30,
-        restDelta: 0.001,
-    })
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
 
     return (
-        <section ref={containerRef} className="py-20 bg-background overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section ref={ref} className="w-full bg-background px-4 py-16 md:py-24">
+            <div className="mx-auto max-w-5xl">
+                {/* Header */}
                 <motion.div
-                    className="text-center mb-12"
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-12 text-center md:mb-16"
                 >
-                    <h2 className="text-3xl font-bold text-foreground sm:text-4xl">My Journey</h2>
-                    <p className="mt-4 text-lg text-muted-foreground">The evolution of myself through the years</p>
+                    <Badge className="mb-4" variant="secondary">
+                        <Calendar className="mr-1 h-3 w-3" />
+                        My Journey
+                    </Badge>
+                    <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
+                        The Story of my Growth
+                    </h2>
+{/*                    <p className="mx-auto max-w-2xl text-base text-muted-foreground md:text-lg">
+                        From a small startup to a global platform trusted by thousands
+                    </p>*/}
                 </motion.div>
 
+                {/* Timeline */}
                 <div className="relative">
                     {/* Vertical line */}
                     <motion.div
-                        className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-primary/20"
-                        style={{ scaleY: scaleX }}
+                        className="absolute left-4 top-0 h-full w-0.5 bg-gradient-to-b from-primary via-primary/50 to-primary/20 md:left-1/2 md:-translate-x-1/2"
+                        initial={{ scaleY: 0 }}
+                        animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        style={{ transformOrigin: "top" }}
                     />
 
-                    {/* Flower icon */}
-                    <motion.div
-                        className="sticky top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-primary"
-                        style={{ y: useTransform(scrollYProgress, [0, 1], [0, 100]) }}
-                    >
-                        <FlowerIcon progress={useTransform(scrollYProgress, [0, 1], [0.5, 1]) as any} />
-                    </motion.div>
+                    <div className="space-y-12 md:space-y-16">
+                        {timelineEvents.map((event, index) => {
+                            const Icon = event.icon;
+                            const isEven = index % 2 === 0;
 
-                    {timelineEvents.map((event, index) => (
-                        <TimelineEvent
-                            key={event.year}
-                            event={event}
-                            index={index}
-                            isExpanded={expandedEvent === index}
-                            onToggle={() => setExpandedEvent(expandedEvent === index ? null : index)}
-                        />
-                    ))}
+                            return (
+                                <motion.div
+                                    key={event.year}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={
+                                        isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }
+                                    }
+                                    transition={{
+                                        delay: index * 0.2,
+                                        duration: 0.5,
+                                        ease: "easeOut",
+                                    }}
+                                    className={`relative flex items-center ${
+                                        isEven ? "md:flex-row" : "md:flex-row-reverse"
+                                    }`}
+                                >
+                                    {/* Timeline node */}
+                                    <div className="absolute left-4 flex h-8 w-8 items-center justify-center md:left-1/2 md:-translate-x-1/2">
+                                        <motion.div
+                                            className="flex h-8 w-8 items-center justify-center rounded-full border-4 border-background bg-primary"
+                                            initial={{ scale: 0 }}
+                                            animate={isInView ? { scale: 1 } : { scale: 0 }}
+                                            transition={{ delay: index * 0.2 + 0.3, type: "spring" }}
+                                        >
+                                            <Icon className="h-4 w-4 text-primary-foreground" />
+                                        </motion.div>
+                                        <motion.div
+                                            className="absolute h-8 w-8 rounded-full bg-primary/20"
+                                            animate={{ scale: [1, 1.5, 1] }}
+                                            transition={{
+                                                duration: 2,
+                                                repeat: Infinity,
+                                                delay: index * 0.2,
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Content card */}
+                                    <div
+                                        className={`ml-16 w-full md:ml-0 md:w-5/12 ${
+                                            isEven ? "md:pr-12" : "md:pl-12"
+                                        }`}
+                                    >
+                                        <motion.div
+                                            whileHover={{ scale: 1.02, y: -5 }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            <Card className="relative overflow-hidden border-border/50 bg-card p-4 shadow-lg md:p-6">
+                                                <motion.div
+                                                    className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                                                    whileHover={{ opacity: 1 }}
+                                                />
+
+                                                <div className="relative z-10">
+                                                    <Badge className="mb-3" variant="outline">
+                                                        {event.year}
+                                                    </Badge>
+                                                    <h3 className="mb-2 text-lg font-bold md:text-xl">
+                                                        {event.title}
+                                                    </h3>
+                                                    <p className="text-sm text-muted-foreground md:text-base">
+                                                        {event.description}
+                                                    </p>
+                                                </div>
+                                            </Card>
+                                        </motion.div>
+                                    </div>
+
+                                    {/* Spacer for alternating layout */}
+                                    <div className="hidden w-5/12 md:block" />
+                                </motion.div>
+                            );
+                        })}
+                    </div>
                 </div>
+
+                {/* Future indicator */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ delay: timelineEvents.length * 0.2 + 0.5 }}
+                    className="mt-12 text-center md:mt-16"
+                >
+                    <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3">
+                        <motion.div
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                            className="h-2 w-2 rounded-full bg-primary"
+                        />
+                        <span className="text-sm font-medium">
+              And the journey continues...
+            </span>
+                    </div>
+                </motion.div>
             </div>
         </section>
-    )
-}
-
-function TimelineEvent({
-                           event,
-                           index,
-                           isExpanded,
-                           onToggle,
-                       }: {
-    event: (typeof timelineEvents)[0]
-    index: number
-    isExpanded: boolean
-    onToggle: () => void
-}) {
-    const ref = useRef(null)
-    const isInView = useInView(ref, { once: true, amount: 0.5 })
-
-    return (
-        <motion.div
-            ref={ref}
-            className={`mb-8 flex justify-between items-center w-full ${index % 2 === 0 ? "flex-row-reverse" : ""}`}
-            initial={{ opacity: 0, y: 50 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-            transition={{ duration: 0.8, delay: index * 0.1 }}
-        >
-            <div className="w-5/12" />
-            <div className="z-20">
-                <div className="flex items-center justify-center w-8 h-8 bg-primary rounded-full">
-                    <div className="w-3 h-3 bg-background rounded-full" />
-                </div>
-            </div>
-            <motion.div
-                className="w-5/12 cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={onToggle}
-            >
-                <div className="p-4 bg-background rounded-lg shadow-md border border-primary/10">
-                    <span className="font-bold text-primary">{event.year}</span>
-                    <h3 className="text-lg font-semibold mb-1">{event.title}</h3>
-                    <p className="text-muted-foreground">{event.description}</p>
-                    <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: isExpanded ? "auto" : 0, opacity: isExpanded ? 1 : 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="overflow-hidden"
-                    >
-{/*
-                        <p className="mt-2 text-sm text-muted-foreground">{event.details}</p>
-*/}
-                    </motion.div>
-                </div>
-            </motion.div>
-        </motion.div>
-    )
+    );
 }
 
