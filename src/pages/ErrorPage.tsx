@@ -1,6 +1,8 @@
 import {Link} from "react-router-dom";
+import {useSetPageTitle} from "@/hooks/use-set-page-title.ts";
 
 function ErrorPage() {
+    useSetPageTitle('Page Not Found - luka-lta.dev');
     return (
         <div
             className="flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8 z-20">
