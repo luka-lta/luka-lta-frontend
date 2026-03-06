@@ -1,50 +1,95 @@
-# React + TypeScript + Vite
+# 👋 Hey, I'm Luka Liebenthal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Full-Stack Developer** passionate about modern web technologies and clean, maintainable codebases.
 
-Currently, two official plugins are available:
+🌐 **Portfolio:** [luka-lta.dev](https://luka-lta.dev/)
+💼 **LinkedIn:** [Luka Liebenthal](https://www.linkedin.com/in/luka-liebenthal-aa047931b/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 About This Project
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+My personal portfolio website — a place to showcase my projects, skills, and journey as a developer. Built with a modern tech stack to prioritize both performance and developer experience.
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🛠️ Tech Stack
+
+| Technology | Description |
+|------------|-------------|
+| ⚡ **Vite** | Lightning-fast build tool & dev server |
+| 🔷 **TypeScript** | Type safety for maintainable, error-resistant code |
+| 🎨 **shadcn/ui** | Modern, accessible UI components |
+
+---
+
+## 📁 Project Structure
+
+```text
+├── src/
+│   ├── components/     # Reusable UI components
+│   ├── pages/          # Page components
+│   └── main.tsx        # Entry point
+├── public/             # Static files
+│   ├── static/         # Images, icons, fonts
+├── index.html
+├── vite.config.ts
+└── tsconfig.json
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+---
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## ⚙️ Setup & Installation
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+### Prerequisites
+
+- **Node.js** `>= 20.19` or `>= 22.12`
+- **npm** or **pnpm**
+
+### Run Locally
+
+```bash
+# Clone the repository
+git clone https://github.com/luka-lta/luka-lta-frontend.git
+cd portfolio
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
 ```
+
+### Create a Build
+
+```bash
+# Production build
+npm run build
+
+# Preview the build locally
+npm run preview
+```
+
+---
+
+## ✨ Features
+
+- 📱 **Responsive Design** – optimized for all screen sizes
+- 🌙 **Dark Mode** – easy on the eyes
+- ⚡ **Fast Load Times** – thanks to Vite & optimized builds
+- ♿ **Accessible** – barrier-free UI components via shadcn/ui
+
+---
+
+## 📬 Contact
+
+Want to collaborate or have any questions? Feel free to reach out!
+
+- 🌐 [luka-lta.dev](https://luka-lta.dev/)
+- 💼 [LinkedIn](https://www.linkedin.com/in/luka-liebenthal-aa047931b/)
+
+---
+
+<p align="center">
+  Built with ❤️ by <a href="https://luka-lta.dev">Luka Liebenthal</a>
+</p>

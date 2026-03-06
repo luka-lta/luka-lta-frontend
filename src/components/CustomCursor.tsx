@@ -1,22 +1,37 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 
 export default function CustomCursor() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+    const rafRef = useRef<number | null>(null)
+    const prefersReducedMotion =
+        typeof window !== "undefined" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
     useEffect(() => {
+        if (prefersReducedMotion) return
+
         const updateMousePosition = (e: MouseEvent) => {
-            setMousePosition({ x: e.clientX, y: e.clientY })
+            if (rafRef.current !== null) return
+            rafRef.current = requestAnimationFrame(() => {
+                setMousePosition({ x: e.clientX, y: e.clientY })
+                rafRef.current = null
+            })
         }
 
         window.addEventListener("mousemove", updateMousePosition)
 
         return () => {
             window.removeEventListener("mousemove", updateMousePosition)
+            if (rafRef.current !== null) {
+                cancelAnimationFrame(rafRef.current)
+            }
         }
-    }, [])
+    }, [prefersReducedMotion])
+
+    if (prefersReducedMotion) return null
 
     return (
         <motion.div
@@ -28,4 +43,3 @@ export default function CustomCursor() {
         </motion.div>
     )
 }
-

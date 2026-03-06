@@ -58,7 +58,7 @@ export default function ContactForm() {
     };
 
     return (
-        <section className="relative overflow-hidden bg-background px-6 py-24 sm:px-8 md:py-28">
+        <section id='contact' className="relative overflow-hidden bg-background px-6 py-24 sm:px-8 md:py-28">
             <div className="pointer-events-none absolute inset-0 -z-10">
                 <div className="absolute left-1/2 top-6 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-foreground/[0.035] blur-[140px]" />
                 <div className="absolute bottom-0 right-0 h-[360px] w-[360px] rounded-full bg-primary/[0.03] blur-[130px]" />

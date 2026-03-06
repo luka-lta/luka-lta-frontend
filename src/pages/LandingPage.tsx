@@ -7,8 +7,11 @@ import ContactForm from "@/components/Landing/ContactForm.tsx";
 import Skills from "@/components/Landing/Skills.tsx";
 import Projects from "@/components/Landing/Projects.tsx";
 import Footer from "@/components/Landing/Footer.tsx";
+import {useSetPageTitle} from "@/hooks/use-set-page-title.ts";
 
 export default function LandingPage() {
+    useSetPageTitle('Homepage - luka-lta.dev');
+
     return (
         <>
             <Header/>
