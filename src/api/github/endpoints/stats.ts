@@ -2,7 +2,7 @@ export type RepoStatsResponse = {
     stargazers_count: number;
     forks_count: number;
     open_issues_count: number;
-    language: string;
+    language: string|null;
 }
 
 export async function fetchStats(

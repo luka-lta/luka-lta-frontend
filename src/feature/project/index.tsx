@@ -12,6 +12,21 @@ import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious}
 import ScrollToTop from "@/components/scroll-to-top.tsx";
 import {useGithubStats} from "@/api/github/hooks/useGithubStats.ts";
 
+function RepoStat({ icon: Icon, label, value }: { icon: LucideIcon, label: string, value: string }) {
+    return (
+        <div className="flex items-center justify-between text-sm">
+            <span className="flex items-center gap-2 text-muted-foreground">
+                <Icon className="size-4" />
+                {label}
+            </span>
+            <span className="font-medium text-foreground tabular-nums">
+                {value}
+            </span>
+        </div>
+    );
+}
+
+
 function Project() {
     const { projectId } = useParams<{ projectId: string }>();
     const navigate = useNavigate();
@@ -26,21 +41,6 @@ function Project() {
             </div>
         );
     }
-
-    function RepoStat({ icon: Icon, label, value }: { icon: LucideIcon, label: string, value: string }) {
-        return (
-            <div className="flex items-center justify-between text-sm">
-            <span className="flex items-center gap-2 text-muted-foreground">
-                <Icon className="size-4" />
-                {label}
-            </span>
-                <span className="font-medium text-foreground tabular-nums">
-                {value}
-            </span>
-            </div>
-        );
-    }
-
 
     return (
         <>

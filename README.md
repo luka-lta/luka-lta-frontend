@@ -25,7 +25,7 @@ My personal portfolio website — a place to showcase my projects, skills, and j
 
 ## 📁 Project Structure
 
-```
+```text
 ├── src/
 │   ├── components/     # Reusable UI components
 │   ├── pages/          # Page components
@@ -43,14 +43,14 @@ My personal portfolio website — a place to showcase my projects, skills, and j
 
 ### Prerequisites
 
-- **Node.js** `>= 18.x`
+- **Node.js** `>= 20.19` or `>= 22.12`
 - **npm** or **pnpm**
 
 ### Run Locally
 
 ```bash
 # Clone the repository
-git clone https://github.com/luka-lta/portfolio.git
+git clone https://github.com/luka-lta/luka-lta-frontend.git
 cd portfolio
 
 # Install dependencies
