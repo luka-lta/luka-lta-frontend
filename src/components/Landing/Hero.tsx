@@ -26,7 +26,7 @@ export default function Hero() {
                         <img
                             src='https://avatars.githubusercontent.com/u/67432564?s=400&u=c05342b968a89f33ee89f012ace47aa7de083a97&v=4'
                             className='mx-auto h-24 w-24 rounded-full border-4 border-background bg-gradient-to-br from-primary to-muted shadow-lg'
-                            alt='Profilepicuter Github'
+                            alt='Luka Liebenthal profile picture'
                         />
                     </motion.div>
 
@@ -82,9 +82,9 @@ export default function Hero() {
                             { icon: Github, href: "https://github.com/luka-lta" },
                             { icon: Linkedin, href: "https://www.linkedin.com/in/luka-liebenthal-aa047931b/" },
                             { icon: Mail, href: "mailto:info@luka-lta.dev" },
-                        ].map((social, index) => (
+                        ].map((social) => (
                             <motion.a
-                                key={index}
+                                key={social.href}
                                 href={social.href}
                                 whileHover={{ scale: 1.1, y: -2 }}
                                 whileTap={{ scale: 0.95 }}

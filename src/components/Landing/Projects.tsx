@@ -1,36 +1,11 @@
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {Github} from "lucide-react";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel.tsx";
 import {Badge} from "@/components/ui/badge.tsx";
+import {useNavigate} from "react-router-dom";
+import {projects} from "@/lib/projects-data.ts";
 
-const projects = [
-    {
-        name: "luka-lta-api",
-        description: "API for User Management, LinkTracking and ApiKey Management",
-        image:
-            "/static/images/projects/luka-lta-api.webp",
-        github: "https://github.com/luka-lta/luka-lta-api",
-        tags: ["PHP", "MySQL", "Slim", "JWT"],
-    },
-    {
-        name: "luka-lta-backend",
-        description: "Backend for Manage the API stuff",
-        image:
-            "/static/images/projects/backend.png",
-        github: "https://github.com/luka-lta/luka-lta-backend",
-        tags: ["React", "Node.js", "Shadcn/ui"],
-    },
-    {
-        name: "luka-lta-frontend",
-        description: "Portfolio Page about myself and Linkcollection",
-        image:
-            "/static/images/projects/frontend.png",
-        github: "https://github.com/luka-lta/luka-lta-frontend",
-        tags: ["React", "Node.js", "Shadcn/ui"],
-    },
-];
-
-const container = {
+const container: Variants = {
     hidden: { opacity: 0 },
     show: {
         opacity: 1,
@@ -41,7 +16,7 @@ const container = {
     },
 };
 
-const item = {
+const item: Variants = {
     hidden: { opacity: 0, scale: 0.9 },
     show: {
         opacity: 1,
@@ -55,6 +30,8 @@ const item = {
 };
 
 function Projects() {
+    const navigate = useNavigate();
+
     return (
         <div className="relative overflow-hidden py-24 sm:py-32">
             <motion.div
@@ -86,21 +63,26 @@ function Projects() {
                         }}
                     >
                         <CarouselContent>
-                            {projects.map((project, index) => (
-                                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                            {projects.map((project) => (
+                                <CarouselItem key={project.id} className="md:basis-1/2 lg:basis-1/3">
                                     <motion.div
-                                        key={index}
-                                        // @ts-expect-error
                                         variants={item}
                                         whileHover={{ y: -10 }}
                                         className="relative group"
                                     >
-                                        <div className="relative aspect-square overflow-hidden rounded-2xl bg-card">
+                                        <div
+                                            className="relative aspect-square overflow-hidden rounded-2xl bg-card cursor-pointer"
+                                            onClick={() => navigate(`/project/${project.id}`)}
+                                            role="button"
+                                            aria-label={`View ${project.title} project details`}
+                                            tabIndex={0}
+                                            onKeyDown={(e) => e.key === 'Enter' && navigate(`/project/${project.id}`)}
+                                        >
                                             <motion.img
                                                 whileHover={{ scale: 1.1 }}
                                                 transition={{ duration: 0.4 }}
-                                                src={project.image}
-                                                alt={project.name}
+                                                src={project.screenshots[0]}
+                                                alt={project.title}
                                                 className="h-full w-full object-cover transition-transform duration-300"
                                             />
                                             <motion.div
@@ -113,8 +95,12 @@ function Projects() {
                                                     <p className="text-sm text-white/80">{project.description}</p>
                                                     <div className="mt-4 flex gap-3">
                                                         <a
-                                                            href={project.github}
+                                                            href={project.repoUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            onClick={(e) => e.stopPropagation()}
                                                             className="text-white/80 hover:text-white"
+                                                            aria-label={`${project.title} GitHub repository`}
                                                         >
                                                             <Github className="h-5 w-5" />
                                                         </a>
@@ -123,12 +109,12 @@ function Projects() {
                                             </motion.div>
                                         </div>
                                         <div className="mt-4">
-                                            <h3 className="text-lg font-semibold">{project.name}</h3>
+                                            <h3 className="text-lg font-semibold">{project.title}</h3>
                                         </div>
 
                                         <div className="flex flex-wrap gap-2">
-                                            {project.tags.map((tag, tagIndex) => (
-                                                <Badge key={tagIndex} variant="secondary" className="text-xs">
+                                            {project.techStack.map((tag) => (
+                                                <Badge key={tag} variant="secondary" className="text-xs">
                                                     {tag}
                                                 </Badge>
                                             ))}

@@ -26,7 +26,7 @@ export const appRouter = createBrowserRouter([
         element: <PrivacyPage />,
     },
     {
-        path: '/project/:projectName',
+        path: '/project/:projectId',
         element: <Project />
     }
 ])
