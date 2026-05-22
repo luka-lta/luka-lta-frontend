@@ -9,6 +9,8 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {Suspense, useState} from "react";
 import CookieConsent from "@/components/blocks/cookie-consent.tsx";
 import AnalyticsScript from "@/components/analytics-script.tsx";
+import {HelmetProvider} from "react-helmet-async";
+import {useTranslation} from "react-i18next";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -30,8 +32,9 @@ const getCookieConsent = (): boolean => {
 };
 
 
-function App() {
+function AppInner() {
     const [accepted, setAccepted] = useState(getCookieConsent);
+    const { t } = useTranslation();
 
     return (
         <ThemeProvider defaultTheme='dark' storageKey='ui-theme'>
@@ -47,6 +50,9 @@ function App() {
                 learnMoreHref='/privacy'
                 onAcceptCallback={() => setAccepted(true)}
                 onDeclineCallback={() => setAccepted(false)}
+                description={t('cookie.description')}
+                acceptLabel={t('cookie.accept')}
+                declineLabel={t('cookie.decline')}
             />
 
             {accepted && (
@@ -57,6 +63,14 @@ function App() {
               </>
             )}
         </ThemeProvider>
+    )
+}
+
+function App() {
+    return (
+        <HelmetProvider>
+            <AppInner />
+        </HelmetProvider>
     )
 }
 

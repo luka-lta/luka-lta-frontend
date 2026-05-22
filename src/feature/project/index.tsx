@@ -9,14 +9,15 @@ import { projects } from "@/lib/projects-data"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import ScrollToTop from "@/components/scroll-to-top"
 import { useGithubStats } from "@/api/github/hooks/useGithubStats"
-import { useSetPageTitle } from "@/hooks/use-set-page-title"
+import { useTranslation } from "react-i18next"
+import SEO from "@/components/SEO"
 
 function Project() {
     const { projectId } = useParams<{ projectId: string }>()
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const project = projects.find((p) => p.id === projectId)
-    useSetPageTitle(project ? `${project.title} — luka-lta.dev` : "Project — luka-lta.dev")
 
     const { data: stats, isLoading: statsLoading } = useGithubStats(
         project?.repoOwner ?? "",
@@ -26,11 +27,12 @@ function Project() {
     if (!project) {
         return (
             <>
+                <SEO title={t('project_page.not_found')} canonicalPath={`/project/${projectId}`} />
                 <Header />
                 <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 bg-background">
-                    <p className="text-xl font-bold text-foreground">Project not found</p>
+                    <p className="text-xl font-bold text-foreground">{t('project_page.not_found')}</p>
                     <Button variant="outline" onClick={() => navigate("/")}>
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Back home
+                        <ArrowLeft className="mr-2 h-4 w-4" /> {t('project_page.back')}
                     </Button>
                 </div>
                 <Footer />
@@ -40,6 +42,11 @@ function Project() {
 
     return (
         <>
+            <SEO
+                title={project.title}
+                description={project.longDescription}
+                canonicalPath={`/project/${project.id}`}
+            />
             <ScrollToTop />
             <Header />
 
@@ -68,7 +75,7 @@ function Project() {
                             className="gap-1.5 text-muted-foreground hover:text-foreground"
                         >
                             <ArrowLeft className="h-4 w-4" />
-                            Back to home
+                            {t('project_page.back')}
                         </Button>
                     </motion.div>
 
@@ -123,13 +130,13 @@ function Project() {
                             <Button variant="outline" className="gap-2 rounded-full" asChild>
                                 <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
                                     <Github className="h-4 w-4" />
-                                    Repository
+                                    {t('project_page.repository')}
                                 </a>
                             </Button>
                             <Button className="gap-2 rounded-full" asChild>
                                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                                     <Globe className="h-4 w-4" />
-                                    {project.liveLabel ?? "Live Demo"}
+                                    {project.liveLabel ?? t('project_page.live_demo')}
                                 </a>
                             </Button>
                         </div>
@@ -149,9 +156,9 @@ function Project() {
                                 ))
                             ) : stats ? (
                                 <>
-                                    <StatChip icon={Star} label={stats.stargazers_count.toLocaleString()} suffix="Stars" />
-                                    <StatChip icon={GitFork} label={stats.forks_count.toLocaleString()} suffix="Forks" />
-                                    <StatChip icon={CircleDot} label={stats.open_issues_count.toLocaleString()} suffix="Issues" />
+                                    <StatChip icon={Star} label={stats.stargazers_count.toLocaleString()} suffix={t('project_page.stats_stars')} />
+                                    <StatChip icon={GitFork} label={stats.forks_count.toLocaleString()} suffix={t('project_page.stats_forks')} />
+                                    <StatChip icon={CircleDot} label={stats.open_issues_count.toLocaleString()} suffix={t('project_page.stats_issues')} />
                                     {stats.language && (
                                         <span className="section-badge">{stats.language}</span>
                                     )}
@@ -170,7 +177,7 @@ function Project() {
                             className="lg:col-span-2"
                         >
                             <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                                About this project
+                                {t('project_page.about')}
                             </h2>
                             <p className="text-lg leading-relaxed text-foreground/90">
                                 {project.longDescription}
@@ -187,7 +194,7 @@ function Project() {
                             {/* Tech Stack */}
                             <div className="rounded-2xl border border-border/60 bg-card p-5">
                                 <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                                    Tech Stack
+                                    {t('project_page.tech_stack')}
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
                                     {project.techStack.map((tech) => (
@@ -205,7 +212,7 @@ function Project() {
                             {/* Links */}
                             <div className="rounded-2xl border border-border/60 bg-card p-5">
                                 <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                                    Links
+                                    {t('project_page.links')}
                                 </h3>
                                 <div className="flex flex-col gap-3">
                                     <a
@@ -225,7 +232,7 @@ function Project() {
                                         className="group flex items-center gap-3 rounded-xl border border-border/60 bg-background px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
                                     >
                                         <Globe className="h-4 w-4 shrink-0" />
-                                        <span>Live Demo</span>
+                                        <span>{t('project_page.live_demo')}</span>
                                         <ExternalLink className="ml-auto h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
                                     </a>
                                 </div>

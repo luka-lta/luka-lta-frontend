@@ -1,25 +1,59 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Fragment } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTheme } from "@/assets/providers/ThemeProvider"
 import { Link } from "react-router-dom"
 import { MoonIcon, Origami, SunIcon, Menu, X } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
-const navLinks = [
-    { name: "About", to: "/#about" },
-    { name: "Projects", to: "/#projects" },
-    { name: "Contact", to: "/#contact" },
-    { name: "Links", to: "/links" },
-    { name: "Status", to: "https://status.luka-lta.dev", external: true },
-]
+function LanguageSwitcher() {
+    const { i18n } = useTranslation()
+    const currentLang = i18n.language.slice(0, 2)
+
+    const change = (lang: string) => {
+        i18n.changeLanguage(lang)
+        localStorage.setItem('i18n-lang', lang)
+    }
+
+    return (
+        <div className="flex items-center rounded-full border border-border/60 bg-card px-1">
+            {(['de', 'en'] as const).map((lang, idx) => (
+                <Fragment key={lang}>
+                    {idx > 0 && <span className="h-3 w-px bg-border/60" />}
+                    <button
+                        onClick={() => change(lang)}
+                        aria-label={`Switch to ${lang.toUpperCase()}`}
+                        className={`rounded-full px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide transition-colors ${
+                            currentLang === lang
+                                ? 'text-primary'
+                                : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                    >
+                        {lang.toUpperCase()}
+                    </button>
+                </Fragment>
+            ))}
+        </div>
+    )
+}
 
 export default function Header() {
     const [mounted, setMounted] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
     const { theme, setTheme } = useTheme()
+    const { t } = useTranslation()
 
     useEffect(() => setMounted(true), [])
+
+    const navLinks = [
+        { name: t('nav.about'),    to: "/#about" },
+        { name: t('nav.services'), to: "/#services" },
+        { name: t('nav.projects'), to: "/#projects" },
+        { name: t('nav.contact'),  to: "/#contact" },
+        { name: t('nav.links'),    to: "/links" },
+        { name: t('nav.status'),   to: "https://status.luka-lta.dev", external: true },
+    ]
 
     return (
         <motion.header
@@ -53,6 +87,8 @@ export default function Header() {
 
                 {/* Right */}
                 <div className="flex items-center gap-2">
+                    {mounted && <LanguageSwitcher />}
+
                     {mounted && (
                         <button
                             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

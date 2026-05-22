@@ -3,11 +3,13 @@ import {Eye, Lock, Users, Mail, FileText} from "lucide-react"
 import {Separator} from "@/components/ui/separator"
 import Header from "@/components/Landing/Header.tsx";
 import Footer from "@/components/Landing/Footer.tsx";
+import SEO from "@/components/SEO";
 
 
 function Privacy() {
     return (
         <div className="min-h-screen bg-background">
+            <SEO title="Privacy Policy" canonicalPath="/privacy" />
             <Header/>
             <div className="container mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">

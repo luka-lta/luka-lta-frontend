@@ -3,6 +3,7 @@ import { Clock } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useTrackClick } from "@/feature/redirect/hooks/useTrackClick.tsx";
+import SEO from "@/components/SEO";
 
 function RedirectLink() {
     const params = useParams();
@@ -44,6 +45,7 @@ function RedirectLink() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-background to-muted/50 p-4">
+            <SEO title="Redirecting" noIndex={true} />
             <Card className="w-full max-w-md shadow-lg border-muted">
                 <CardHeader className="pb-4">
                     <CardTitle className="text-2xl font-bold text-center">Redirecting...</CardTitle>

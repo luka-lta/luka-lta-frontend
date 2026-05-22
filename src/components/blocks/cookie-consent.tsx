@@ -21,6 +21,8 @@ interface CookieConsentProps extends React.HTMLAttributes<HTMLDivElement> {
   onDeclineCallback?: () => void;
   description?: string;
   learnMoreHref?: string;
+  acceptLabel?: string;
+  declineLabel?: string;
 }
 
 const CookieConsent = React.forwardRef<HTMLDivElement, CookieConsentProps>(
@@ -33,6 +35,8 @@ const CookieConsent = React.forwardRef<HTMLDivElement, CookieConsentProps>(
       className,
       description = "We use cookies to ensure you get the best experience on our website. For more information on how we use cookies, please see our cookie policy.",
       learnMoreHref = "#",
+      acceptLabel = "Accept",
+      declineLabel = "Decline",
       ...props
     },
     ref,
@@ -120,10 +124,10 @@ const CookieConsent = React.forwardRef<HTMLDivElement, CookieConsentProps>(
                 variant="secondary"
                 className="flex-1"
               >
-                Decline
+                {declineLabel}
               </Button>
               <Button onClick={handleAccept} className="flex-1">
-                Accept
+                {acceptLabel}
               </Button>
             </CardFooter>
           </Card>
@@ -151,14 +155,14 @@ const CookieConsent = React.forwardRef<HTMLDivElement, CookieConsentProps>(
                 size="sm"
                 className="flex-1 rounded-full"
               >
-                Decline
+                {declineLabel}
               </Button>
               <Button
                 onClick={handleAccept}
                 size="sm"
                 className="flex-1 rounded-full"
               >
-                Accept
+                {acceptLabel}
               </Button>
             </CardFooter>
           </Card>
@@ -181,16 +185,14 @@ const CookieConsent = React.forwardRef<HTMLDivElement, CookieConsentProps>(
                   variant="secondary"
                   className="text-xs h-7"
                 >
-                  Decline
-                  <span className="sr-only sm:hidden">Decline</span>
+                  {declineLabel}
                 </Button>
                 <Button
                   onClick={handleAccept}
                   size="sm"
                   className="text-xs h-7"
                 >
-                  Accept
-                  <span className="sr-only sm:hidden">Accept</span>
+                  {acceptLabel}
                 </Button>
               </div>
             </CardContent>

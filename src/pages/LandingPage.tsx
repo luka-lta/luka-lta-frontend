@@ -7,19 +7,27 @@ import ContactForm from "@/components/Landing/ContactForm.tsx";
 import Skills from "@/components/Landing/Skills.tsx";
 import Projects from "@/components/Landing/Projects.tsx";
 import Footer from "@/components/Landing/Footer.tsx";
-import {useSetPageTitle} from "@/hooks/use-set-page-title.ts";
+import Services from "@/components/Landing/Services.tsx";
+import SEO from "@/components/SEO.tsx";
+import { useTranslation } from "react-i18next";
 
 export default function LandingPage() {
-    useSetPageTitle('Homepage - luka-lta.dev');
+    const { t } = useTranslation();
 
     return (
         <>
+            <SEO
+                title="Luka Liebenthal — Freelance Web Developer"
+                description={t('hero.description')}
+                canonicalPath="/"
+            />
             <Header/>
             <main>
                 <Hero/>
                 <About/>
                 <Projects />
                 <Skills />
+                <Services />
                 <Timeline/>
                 <Marquee/>
                 <ContactForm/>

@@ -2,41 +2,36 @@
 
 import { useRef } from "react"
 import { motion, useInView } from "framer-motion"
-import { CheckCircle2, LucideIcon } from "lucide-react"
+import { CheckCircle2 } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-
-interface TimelineEventProp {
-    year: number
-    title: string
-    description: string
-    icon: LucideIcon
-}
-
-const timelineEvents: TimelineEventProp[] = [
-    {
-        year: 2021,
-        title: "Graduated",
-        description: "Graduated from Middle School",
-        icon: CheckCircle2,
-    },
-    {
-        year: 2022,
-        title: "Apprenticeship at Synatix GmbH",
-        description: "Started my apprenticeship as an IT Specialist for Application Development at Synatix GmbH",
-        icon: CheckCircle2,
-    },
-    {
-        year: 2025,
-        title: "Graduated from Apprenticeship",
-        description: "Graduated from my apprenticeship as an IT Specialist for Application Development",
-        icon: CheckCircle2,
-    },
-]
+import { useTranslation } from "react-i18next"
 
 export default function Timeline() {
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true, amount: 0.2 })
+    const { t } = useTranslation()
+
+    const timelineEvents = [
+        {
+            year: 2021,
+            title: t('timeline.events.graduated_school.title'),
+            description: t('timeline.events.graduated_school.description'),
+            icon: CheckCircle2,
+        },
+        {
+            year: 2022,
+            title: t('timeline.events.apprenticeship_start.title'),
+            description: t('timeline.events.apprenticeship_start.description'),
+            icon: CheckCircle2,
+        },
+        {
+            year: 2025,
+            title: t('timeline.events.apprenticeship_end.title'),
+            description: t('timeline.events.apprenticeship_end.description'),
+            icon: CheckCircle2,
+        },
+    ]
 
     return (
         <section ref={ref} className="bg-card px-6 py-24 md:py-32">
@@ -47,9 +42,9 @@ export default function Timeline() {
                     transition={{ duration: 0.6 }}
                     className="mb-16 text-center"
                 >
-                    <span className="section-badge mb-8 inline-flex">Journey</span>
+                    <span className="section-badge mb-8 inline-flex">{t('timeline.badge')}</span>
                     <h2 className="text-5xl font-black tracking-tight md:text-6xl">
-                        The story of my growth
+                        {t('timeline.headline')}
                     </h2>
                 </motion.div>
 
@@ -120,7 +115,7 @@ export default function Timeline() {
                             transition={{ duration: 2, repeat: Infinity }}
                             className="h-2 w-2 rounded-full bg-primary"
                         />
-                        <span className="text-sm font-medium text-muted-foreground">And the journey continues…</span>
+                        <span className="text-sm font-medium text-muted-foreground">{t('timeline.continuing')}</span>
                     </div>
                 </motion.div>
             </div>
