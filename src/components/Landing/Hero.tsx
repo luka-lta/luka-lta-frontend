@@ -1,115 +1,117 @@
 "use client"
 
 import { motion } from "framer-motion"
-import {ArrowDown, Github, Linkedin, Mail} from "lucide-react";
-import {Button} from "@/components/ui/button.tsx";
-import {NativeTypewriter} from "@/components/typewriter.tsx";
+import { ArrowRight, Github, Linkedin, Mail } from "lucide-react"
+import { Button } from "@/components/ui/button"
+
+const socials = [
+    { icon: Github, href: "https://github.com/luka-lta", label: "GitHub" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/luka-liebenthal-aa047931b/", label: "LinkedIn" },
+    { icon: Mail, href: "mailto:info@luka-lta.dev", label: "Email" },
+]
 
 export default function Hero() {
     return (
-        <section className="relative flex items-center justify-center overflow-hidden bg-background min-h-screen w-full">
-            {/* Animated background grid */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+        <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-background">
+            {/* Grid background */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:80px_80px] opacity-30" />
+            {/* Noise texture */}
+            <div
+                className="absolute inset-0 opacity-[0.025]"
+                style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")`,
+                    backgroundSize: "200px",
+                }}
+            />
+            {/* Gradient orbs */}
+            <div className="pointer-events-none absolute left-1/4 top-1/4 h-[500px] w-[500px] rounded-full bg-primary/15 blur-[130px]" />
+            <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-violet-500/10 blur-[130px]" />
 
-            <div className="relative z-10 mx-auto max-w-5xl text-center">
+            <div className="relative z-10 mx-auto max-w-6xl px-6 text-center">
+                {/* Availability badge */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-10 inline-flex items-center gap-2.5 rounded-full border border-border/60 bg-card/70 px-5 py-2 text-sm text-muted-foreground backdrop-blur-sm"
                 >
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                        className="mb-6 inline-block"
-                    >
-                        <img
-                            src='https://avatars.githubusercontent.com/u/67432564?s=400&u=c05342b968a89f33ee89f012ace47aa7de083a97&v=4'
-                            className='mx-auto h-24 w-24 rounded-full border-4 border-background bg-gradient-to-br from-primary to-muted shadow-lg'
-                            alt='Luka Liebenthal profile picture'
-                        />
-                    </motion.div>
+                    <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
+                    Available for opportunities
+                </motion.div>
 
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.6 }}
-                        className="mb-6 text-5xl font-bold text-foreground md:text-7xl"
-                    >
-                        <NativeTypewriter
-                            content={[
-                                "Luka Liebenthal",
-                                "Full Stack Developer",
-                            ]}
-                            loop
-                            speed="slow"
-                            className=""
-                        />
-                    </motion.h1>
+                {/* Main headline */}
+                <motion.h1
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay: 0.1 }}
+                    className="mb-8 text-8xl font-black leading-none tracking-tight md:text-[10rem]"
+                >
+                    <span className="block text-foreground">Luka</span>
+                    <span className="block gradient-text">Liebenthal</span>
+                </motion.h1>
 
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4, duration: 0.6 }}
-                        className="mx-auto mb-8 max-w-3xl text-xl text-muted-foreground md:text-2xl"
-                    >
-                        I build modern web applications — engineered from backend to frontend, with scalability and performance at the core.
-                    </motion.p>
+                {/* Role line */}
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    className="mx-auto mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground"
+                >
+                    Full Stack Developer
+                </motion.p>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5, duration: 0.6 }}
-                        className="mb-12 flex flex-wrap justify-center gap-4"
-                    >
-                        <Button size="lg" className="gap-2">
-                            <Mail className="h-4 w-4" />
+                {/* Description */}
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground"
+                >
+                    Building modern web applications — engineered from backend to frontend,
+                    with scalability and performance at the core.
+                </motion.p>
+
+                {/* CTAs */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                    className="mb-14 flex flex-wrap items-center justify-center gap-4"
+                >
+                    <Button asChild size="lg" className="gap-2 rounded-full px-8 font-semibold">
+                        <a href="mailto:info@luka-lta.dev">
                             Get in Touch
-                        </Button>
-                        <Button size="lg" variant="outline" className="gap-2">
-                            View Projects
-                            <ArrowDown className="h-4 w-4" />
-                        </Button>
-                    </motion.div>
+                            <ArrowRight className="h-4 w-4" />
+                        </a>
+                    </Button>
+                    <Button asChild size="lg" variant="outline" className="rounded-full px-8 font-semibold">
+                        <a href="#projects">View Projects</a>
+                    </Button>
+                </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.6, duration: 0.6 }}
-                        className="flex justify-center gap-4"
-                    >
-                        {[
-                            { icon: Github, href: "https://github.com/luka-lta" },
-                            { icon: Linkedin, href: "https://www.linkedin.com/in/luka-liebenthal-aa047931b/" },
-                            { icon: Mail, href: "mailto:info@luka-lta.dev" },
-                        ].map((social) => (
-                            <motion.a
-                                key={social.href}
-                                href={social.href}
-                                whileHover={{ scale: 1.1, y: -2 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
-                            >
-                                <social.icon className="h-5 w-5" />
-                            </motion.a>
-                        ))}
-                    </motion.div>
+                {/* Socials */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 0.6 }}
+                    className="flex justify-center gap-3"
+                >
+                    {socials.map((social) => (
+                        <motion.a
+                            key={social.href}
+                            href={social.href}
+                            aria-label={social.label}
+                            target={social.href.startsWith("http") ? "_blank" : undefined}
+                            rel="noopener noreferrer"
+                            whileHover={{ scale: 1.1, y: -3 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="flex h-11 w-11 items-center justify-center rounded-full border border-border/60 bg-card text-muted-foreground transition-colors hover:border-primary/60 hover:bg-primary/10 hover:text-primary"
+                        >
+                            <social.icon className="h-5 w-5" />
+                        </motion.a>
+                    ))}
                 </motion.div>
             </div>
-
-            {/* Scroll indicator */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, y: [0, 10, 0] }}
-                transition={{
-                    opacity: { delay: 1, duration: 0.6 },
-                    y: { delay: 1.5, duration: 1.5, repeat: Infinity },
-                }}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 transform"
-            >
-                <ArrowDown className="h-6 w-6 text-muted-foreground" />
-            </motion.div>
         </section>
     )
 }
-

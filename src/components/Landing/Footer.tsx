@@ -3,12 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { motion, useReducedMotion } from "framer-motion";
-import {
-    ArrowUp,
-    Github,
-    Linkedin,
-    Mail,
-} from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 
 const footerLinks = [
     {
@@ -26,10 +21,6 @@ const socialLinks = [
 ];
 
 export default function Footer() {
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
     const shouldReduceMotion = useReducedMotion();
 
     return (
@@ -220,37 +211,12 @@ export default function Footer() {
                         transition={{ delay: 0.6 }}
                         className="flex items-center gap-2 text-sm text-muted-foreground"
                     >
-                        <span>© 2026 Brand. All rights reserved.</span>
+                        <span>© 2026 luka-lta.dev. All rights reserved.</span>
                         <Badge variant="outline" className="text-xs">
                             v1.0.0
                         </Badge>
                     </motion.div>
 
-                    {/* Scroll to Top */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.7 }}
-                    >
-                        <Button
-                            size="icon"
-                            variant="outline"
-                            className="h-9 w-9 rounded-full border-border/60"
-                            onClick={scrollToTop}
-                        >
-                            <motion.div
-                                animate={shouldReduceMotion ? undefined : { y: [0, -3, 0] }}
-                                transition={
-                                    shouldReduceMotion
-                                        ? undefined
-                                        : { repeat: Infinity, duration: 1.5 }
-                                }
-                            >
-                                <ArrowUp className="h-4 w-4" aria-hidden />
-                            </motion.div>
-                        </Button>
-                    </motion.div>
                 </div>
             </div>
         </footer>

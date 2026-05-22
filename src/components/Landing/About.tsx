@@ -2,44 +2,61 @@
 
 import { motion } from "framer-motion"
 
+const stats = [
+    { value: "3+", label: "Years of Experience" },
+    { value: "10+", label: "Projects Built" },
+    { value: "15+", label: "Technologies" },
+]
+
 export default function About() {
     return (
-        <section id='about' className="bg-background py-20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="text-center"
-                >
-                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6">About myself</h2>
-                    <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-                        I'm a passionate developer with a strong focus on web applications, backend architectures, and automation. With expertise in PHP, JavaScript, Docker, MySQL, and Elasticsearch, I design and develop scalable, efficient, and high-performance solutions that power modern applications.
-                    </p>
+        <section id="about" className="bg-background py-24 md:py-32">
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                <div className="grid items-center gap-16 lg:grid-cols-2 lg:gap-24">
+                    {/* Left: Text */}
                     <motion.div
-                        className="mt-10"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.7 }}
                     >
-                        <a
-                            className="apple-button inline-flex items-center"
-                        >
-                            Explore Collection
-                            <svg
-                                className="w-5 h-5 ml-2"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </a>
+                        <span className="section-badge mb-8 inline-flex">About</span>
+                        <h2 className="mb-6 text-5xl font-black leading-tight tracking-tight md:text-6xl">
+                            Turning ideas<br />into{" "}
+                            <span className="gradient-text">reality</span>
+                        </h2>
+                        <p className="text-lg leading-relaxed text-muted-foreground">
+                            I'm a passionate developer focused on web applications, backend
+                            architectures, and automation. With expertise in PHP, TypeScript,
+                            Docker, MySQL, and Elasticsearch, I design and develop scalable,
+                            high-performance solutions that power modern applications.
+                        </p>
                     </motion.div>
-                </motion.div>
+
+                    {/* Right: Stats */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.7, delay: 0.15 }}
+                        className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-1"
+                    >
+                        {stats.map((stat, i) => (
+                            <motion.div
+                                key={stat.label}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.2 + i * 0.1 }}
+                                className="rounded-2xl border border-border/60 bg-card p-6 transition-colors hover:border-primary/40"
+                            >
+                                <div className="mb-1 text-5xl font-black gradient-text">{stat.value}</div>
+                                <div className="text-sm text-muted-foreground">{stat.label}</div>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </div>
             </div>
         </section>
     )
 }
-
