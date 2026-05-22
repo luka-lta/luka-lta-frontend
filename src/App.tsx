@@ -4,7 +4,7 @@ import {appRouter} from "@/AppRouter.tsx";
 import ErrorPage from "@/pages/ErrorPage.tsx";
 import {SpeedInsights} from "@vercel/speed-insights/react";
 import {Analytics} from "@vercel/analytics/react";
-import CustomCursor from "@/components/CustomCursor.tsx";
+import FloatingScrollToTop from "@/components/FloatingScrollToTop.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {Suspense, useState} from "react";
 import CookieConsent from "@/components/blocks/cookie-consent.tsx";
@@ -34,10 +34,10 @@ function App() {
     const [accepted, setAccepted] = useState(getCookieConsent);
 
     return (
-        <ThemeProvider defaultTheme='system' storageKey='ui-theme'>
+        <ThemeProvider defaultTheme='dark' storageKey='ui-theme'>
             <QueryClientProvider client={queryClient}>
                 <Suspense fallback={<ErrorPage/>}>
-                    <CustomCursor/>
+                    <FloatingScrollToTop/>
                     <RouterProvider router={appRouter} fallbackElement={<ErrorPage/>}/>
                 </Suspense>
             </QueryClientProvider>

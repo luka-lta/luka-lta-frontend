@@ -11,6 +11,7 @@ export interface Project {
     repoName: string
     role: string
     year: string
+    liveLabel?: string
 }
 
 export const projects: Project[] = [
@@ -56,6 +57,27 @@ export const projects: Project[] = [
         repoName: "luka-lta-backend",
         role: "Creator",
         year: "2024",
+    },
+    {
+        id: "kindled",
+        title: "Kindled",
+        description: "iOS habit tracker app to build and maintain daily habits",
+        longDescription:
+            "Kindled is a native iOS habit tracking app built with Swift and SwiftUI. It helps users build and maintain daily habits through streak tracking, visual progress indicators, and smart reminders. Designed with a clean, minimal interface focused on reducing friction between intention and action.",
+        techStack: [
+            "Swift",
+            "SwiftUI",
+            "iOS",
+            "Core Data",
+        ],
+        screenshots: ["/static/images/projects/kindled.png"],
+        liveUrl: "https://apps.apple.com/us/app/kindled/id6765896395",
+        liveLabel: "App Store",
+        repoUrl: "https://github.com/luka-lta/kindled",
+        repoOwner: "luka-lta",
+        repoName: "kindled",
+        role: "Creator",
+        year: "2025",
     },
     {
         id: "luka-lta-frontend",

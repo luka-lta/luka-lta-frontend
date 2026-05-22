@@ -72,11 +72,9 @@ export default function ContactForm() {
                     transition={{ duration: 0.5 }}
                     className="space-y-4"
                 >
-          <span className="text-xs uppercase tracking-[0.25em] text-foreground/60">
-            Contact
-          </span>
-                    <h2 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
-                        Let’s build something exceptional together
+                    <span className="section-badge inline-flex">Contact</span>
+                    <h2 className="text-5xl font-black tracking-tight text-foreground md:text-6xl">
+                        Let’s build something<br />exceptional together
                     </h2>
                     <p className="max-w-2xl text-foreground/70">
                         Share your project details and our team will reach out within one

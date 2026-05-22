@@ -51,7 +51,7 @@ export function NativeTypewriter({
                                  }: NativeTypewriterProps) {
     const shouldReduceMotion = useReducedMotion();
     const [displayedText, setDisplayedText] = useState("");
-    const [isStarted, setIsStarted] = useState(false);
+    const [, setIsStarted] = useState(false);
 
     // Calculate delay calculation
     const speedMap = {
