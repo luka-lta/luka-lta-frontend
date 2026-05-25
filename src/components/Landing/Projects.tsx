@@ -4,9 +4,11 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Badge } from "@/components/ui/badge"
 import { useNavigate } from "react-router-dom"
 import { projects } from "@/lib/projects-data"
+import { useTranslation } from "react-i18next"
 
 function Projects() {
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     return (
         <section id="projects" className="bg-card py-24 md:py-32">
@@ -17,9 +19,9 @@ function Projects() {
                     viewport={{ once: true }}
                     className="mb-16"
                 >
-                    <span className="section-badge mb-8 inline-flex">Projects</span>
+                    <span className="section-badge mb-8 inline-flex">{t('projects.badge')}</span>
                     <h2 className="text-5xl font-black tracking-tight md:text-6xl">
-                        Things I've built
+                        {t('projects.headline')}
                     </h2>
                 </motion.div>
 
@@ -46,7 +48,7 @@ function Projects() {
                                             onClick={() => navigate(`/project/${project.id}`)}
                                             role="button"
                                             tabIndex={0}
-                                            aria-label={`View ${project.title} project details`}
+                                            aria-label={`${t('projects.view_details')} — ${project.title}`}
                                             onKeyDown={(e) => e.key === "Enter" && navigate(`/project/${project.id}`)}
                                         >
                                             <motion.img

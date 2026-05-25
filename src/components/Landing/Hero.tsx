@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { ArrowRight, Github, Linkedin, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useTranslation } from "react-i18next"
 
 const socials = [
     { icon: Github, href: "https://github.com/luka-lta", label: "GitHub" },
@@ -11,6 +12,8 @@ const socials = [
 ]
 
 export default function Hero() {
+    const { t } = useTranslation()
+
     return (
         <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-background">
             {/* Grid background */}
@@ -25,7 +28,7 @@ export default function Hero() {
             />
             {/* Gradient orbs */}
             <div className="pointer-events-none absolute left-1/4 top-1/4 h-[500px] w-[500px] rounded-full bg-primary/15 blur-[130px]" />
-            <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-violet-500/10 blur-[130px]" />
+            <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-teal/10 blur-[130px]" />
 
             <div className="relative z-10 mx-auto max-w-6xl px-6 text-center">
                 {/* Availability badge */}
@@ -36,7 +39,7 @@ export default function Hero() {
                     className="mb-10 inline-flex items-center gap-2.5 rounded-full border border-border/60 bg-card/70 px-5 py-2 text-sm text-muted-foreground backdrop-blur-sm"
                 >
                     <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
-                    Available for opportunities
+                    {t('hero.available')}
                 </motion.div>
 
                 {/* Main headline */}
@@ -44,11 +47,21 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, delay: 0.1 }}
-                    className="mb-8 text-8xl font-black leading-none tracking-tight md:text-[10rem]"
+                    className="mb-6 text-8xl font-black leading-none tracking-tight md:text-[10rem]"
                 >
                     <span className="block text-foreground">Luka</span>
-                    <span className="block gradient-text">Liebenthal</span>
+                    <span className="block gradient-text">Dev Studio</span>
                 </motion.h1>
+
+                {/* Claim */}
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.25 }}
+                    className="mx-auto mb-4 font-mono text-lg font-medium tracking-wide text-[hsl(var(--teal))]"
+                >
+                    Code that ships.
+                </motion.p>
 
                 {/* Role line */}
                 <motion.p
@@ -57,7 +70,7 @@ export default function Hero() {
                     transition={{ duration: 0.6, delay: 0.3 }}
                     className="mx-auto mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground"
                 >
-                    Full Stack Developer
+                    {t('hero.role')}
                 </motion.p>
 
                 {/* Description */}
@@ -67,8 +80,7 @@ export default function Hero() {
                     transition={{ duration: 0.6, delay: 0.4 }}
                     className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground"
                 >
-                    Building modern web applications — engineered from backend to frontend,
-                    with scalability and performance at the core.
+                    {t('hero.description')}
                 </motion.p>
 
                 {/* CTAs */}
@@ -79,13 +91,13 @@ export default function Hero() {
                     className="mb-14 flex flex-wrap items-center justify-center gap-4"
                 >
                     <Button asChild size="lg" className="gap-2 rounded-full px-8 font-semibold">
-                        <a href="mailto:info@luka-lta.dev">
-                            Get in Touch
+                        <a href="#contact">
+                            {t('hero.cta_contact')}
                             <ArrowRight className="h-4 w-4" />
                         </a>
                     </Button>
                     <Button asChild size="lg" variant="outline" className="rounded-full px-8 font-semibold">
-                        <a href="#projects">View Projects</a>
+                        <a href="#projects">{t('hero.cta_projects')}</a>
                     </Button>
                 </motion.div>
 

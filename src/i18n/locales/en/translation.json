@@ -1,0 +1,143 @@
+{
+  "nav": {
+    "about": "About",
+    "services": "Services",
+    "projects": "Projects",
+    "contact": "Contact",
+    "links": "Links",
+    "status": "Status"
+  },
+  "hero": {
+    "available": "Available for projects",
+    "role": "Freelance Web Developer for Businesses",
+    "description": "I build modern, scalable web applications — from backend architecture to polished frontends. Let's bring your project to life.",
+    "cta_contact": "Get in Touch",
+    "cta_projects": "View Projects"
+  },
+  "about": {
+    "badge": "About",
+    "headline_1": "Turning ideas",
+    "headline_2": "into reality",
+    "body": "I'm a full stack developer focused on web applications, backend architectures, and automation. With expertise in PHP, TypeScript, Docker, MySQL, and Elasticsearch, I design and develop scalable, high-performance solutions that power modern businesses.",
+    "stat_experience": "Years of Experience",
+    "stat_projects": "Projects Built",
+    "stat_technologies": "Technologies"
+  },
+  "projects": {
+    "badge": "Projects",
+    "headline": "Things I've built",
+    "view_details": "View project details"
+  },
+  "skills": {
+    "badge": "Skills",
+    "headline": "What I work with",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "database": "Database",
+    "devops": "DevOps",
+    "design": "Design",
+    "methodology": "Methodology"
+  },
+  "services": {
+    "badge": "Services",
+    "headline": "What I offer",
+    "subheadline": "Professional web development solutions tailored to your business needs.",
+    "cta": "Discuss Your Project",
+    "websites": {
+      "title": "Websites & Landing Pages",
+      "description": "Modern, performant websites that convert visitors into clients.",
+      "bullets": [
+        "Custom design aligned with your brand",
+        "Mobile-first responsive layouts",
+        "Fast load times & SEO-optimized",
+        "CMS integration on request"
+      ]
+    },
+    "maintenance": {
+      "title": "Maintenance & Support",
+      "description": "Reliable ongoing support so your web presence stays healthy.",
+      "bullets": [
+        "Bug fixes & performance monitoring",
+        "Dependency and security updates",
+        "Feature additions & iterations",
+        "Priority response for critical issues"
+      ]
+    }
+  },
+  "timeline": {
+    "badge": "Journey",
+    "headline": "The story of my growth",
+    "continuing": "And the journey continues…",
+    "events": {
+      "graduated_school": {
+        "title": "Graduated from Middle School",
+        "description": "Completed secondary education."
+      },
+      "apprenticeship_start": {
+        "title": "Apprenticeship at Synatix GmbH",
+        "description": "Started my apprenticeship as an IT Specialist for Application Development at Synatix GmbH."
+      },
+      "apprenticeship_end": {
+        "title": "Completed Apprenticeship",
+        "description": "Graduated as an IT Specialist for Application Development."
+      }
+    }
+  },
+  "contact": {
+    "badge": "Contact",
+    "headline_1": "Let's build something",
+    "headline_2": "exceptional together",
+    "subtext": "Tell me about your project and I'll get back to you within one business day.",
+    "response_badge": "Response within 24 hours",
+    "questions_headline": "Ready to start your project?",
+    "questions_body": "I'll schedule a brief discovery call to understand your goals and timeline. Prefer email? Reach me at",
+    "label_name": "Full Name",
+    "label_email": "Email",
+    "label_phone": "Phone Number",
+    "label_message": "Message",
+    "placeholder_name": "Your Company / Your Name",
+    "placeholder_email": "you@company.com",
+    "placeholder_phone": "+49 123 456789",
+    "placeholder_message": "Tell me about your project — scope, timeline, and goals.",
+    "submit": "Send Message",
+    "sending": "Sending…",
+    "success": "Message sent! I'll be in touch soon.",
+    "error": "Something went wrong. Please try again or email me directly.",
+    "privacy_text": "By submitting this form you agree to our",
+    "privacy_link": "privacy policy",
+    "validation": {
+      "name_required": "Your name is required.",
+      "email_required": "A valid email address is required.",
+      "message_required": "Please describe your project.",
+      "message_min": "Message must be at least 10 characters."
+    }
+  },
+  "footer": {
+    "tagline": "Luka Dev Studio — Freelance web development for startups and modern businesses.",
+    "newsletter_label": "Stay updated",
+    "newsletter_placeholder": "Enter your email",
+    "newsletter_aria": "Subscribe",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "copyright": "© 2026 Luka Dev Studio. All rights reserved."
+  },
+  "project_page": {
+    "back": "Back to home",
+    "not_found": "Project not found",
+    "about": "About this project",
+    "tech_stack": "Tech Stack",
+    "links": "Links",
+    "repository": "Repository",
+    "live_demo": "Live Demo",
+    "stats_stars": "Stars",
+    "stats_forks": "Forks",
+    "stats_issues": "Issues"
+  },
+  "cookie": {
+    "title": "We use cookies",
+    "description": "We use cookies to ensure the best experience on our website. See our privacy policy for details.",
+    "learn_more": "Learn more",
+    "accept": "Accept",
+    "decline": "Decline"
+  }
+}

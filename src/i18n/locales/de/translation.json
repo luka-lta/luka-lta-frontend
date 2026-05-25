@@ -1,0 +1,143 @@
+{
+  "nav": {
+    "about": "Über mich",
+    "services": "Leistungen",
+    "projects": "Projekte",
+    "contact": "Kontakt",
+    "links": "Links",
+    "status": "Status"
+  },
+  "hero": {
+    "available": "Verfügbar für Projekte",
+    "role": "Freelance Webentwickler für Unternehmen",
+    "description": "Ich entwickle moderne, skalierbare Webanwendungen – vom Backend bis zum polierten Frontend. Lassen Sie uns Ihr Projekt gemeinsam umsetzen.",
+    "cta_contact": "Kontakt aufnehmen",
+    "cta_projects": "Projekte ansehen"
+  },
+  "about": {
+    "badge": "Über mich",
+    "headline_1": "Ideen",
+    "headline_2": "in Realität umsetzen",
+    "body": "Ich bin ein Full-Stack-Entwickler mit Fokus auf Webanwendungen, Backend-Architekturen und Automatisierung. Mit Expertise in PHP, TypeScript, Docker, MySQL und Elasticsearch entwickle ich skalierbare, performante Lösungen für moderne Unternehmen.",
+    "stat_experience": "Jahre Erfahrung",
+    "stat_projects": "Projekte umgesetzt",
+    "stat_technologies": "Technologien"
+  },
+  "projects": {
+    "badge": "Projekte",
+    "headline": "Was ich gebaut habe",
+    "view_details": "Projektdetails ansehen"
+  },
+  "skills": {
+    "badge": "Skills",
+    "headline": "Womit ich arbeite",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "database": "Datenbank",
+    "devops": "DevOps",
+    "design": "Design",
+    "methodology": "Methodik"
+  },
+  "services": {
+    "badge": "Leistungen",
+    "headline": "Was ich anbiete",
+    "subheadline": "Professionelle Webentwicklung, maßgeschneidert für Ihr Unternehmen.",
+    "cta": "Projekt besprechen",
+    "websites": {
+      "title": "Webseiten & Landingpages",
+      "description": "Moderne, performante Webseiten, die Besucher zu Kunden machen.",
+      "bullets": [
+        "Individuelles Design, das zu Ihrer Marke passt",
+        "Mobile-first responsive Layouts",
+        "Schnelle Ladezeiten & SEO-optimiert",
+        "CMS-Integration auf Anfrage"
+      ]
+    },
+    "maintenance": {
+      "title": "Wartung & Support",
+      "description": "Zuverlässige Betreuung, damit Ihr Webauftritt dauerhaft funktioniert.",
+      "bullets": [
+        "Fehlerbehebung & Performance-Monitoring",
+        "Abhängigkeits- und Sicherheitsupdates",
+        "Neue Features & Iterationen",
+        "Prioritätsreaktion bei kritischen Problemen"
+      ]
+    }
+  },
+  "timeline": {
+    "badge": "Werdegang",
+    "headline": "Die Geschichte meiner Entwicklung",
+    "continuing": "Und die Reise geht weiter…",
+    "events": {
+      "graduated_school": {
+        "title": "Mittlere Reife erworben",
+        "description": "Abschluss der Realschule."
+      },
+      "apprenticeship_start": {
+        "title": "Ausbildung bei Synatix GmbH",
+        "description": "Beginn der Ausbildung zum Fachinformatiker Anwendungsentwicklung bei Synatix GmbH."
+      },
+      "apprenticeship_end": {
+        "title": "Ausbildung abgeschlossen",
+        "description": "Abschluss der Ausbildung zum Fachinformatiker Anwendungsentwicklung."
+      }
+    }
+  },
+  "contact": {
+    "badge": "Kontakt",
+    "headline_1": "Lassen Sie uns gemeinsam",
+    "headline_2": "etwas Besonderes bauen",
+    "subtext": "Erzählen Sie mir von Ihrem Projekt – ich melde mich innerhalb eines Werktags.",
+    "response_badge": "Antwort innerhalb von 24 Stunden",
+    "questions_headline": "Bereit für Ihr Projekt?",
+    "questions_body": "Ich plane einen kurzen Discovery-Call, um Ihre Ziele und den Zeitplan zu verstehen. Lieber per E-Mail?",
+    "label_name": "Vollständiger Name",
+    "label_email": "E-Mail",
+    "label_phone": "Telefonnummer",
+    "label_message": "Nachricht",
+    "placeholder_name": "Ihr Unternehmen / Ihr Name",
+    "placeholder_email": "sie@unternehmen.de",
+    "placeholder_phone": "+49 123 456789",
+    "placeholder_message": "Erzählen Sie mir von Ihrem Projekt – Umfang, Zeitplan und Ziele.",
+    "submit": "Nachricht senden",
+    "sending": "Wird gesendet…",
+    "success": "Nachricht gesendet! Ich melde mich in Kürze.",
+    "error": "Etwas ist schiefgelaufen. Bitte erneut versuchen oder direkt per E-Mail schreiben.",
+    "privacy_text": "Mit dem Absenden stimmen Sie unserer",
+    "privacy_link": "Datenschutzerklärung",
+    "validation": {
+      "name_required": "Bitte geben Sie Ihren Namen ein.",
+      "email_required": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "message_required": "Bitte beschreiben Sie Ihr Projekt.",
+      "message_min": "Die Nachricht muss mindestens 10 Zeichen lang sein."
+    }
+  },
+  "footer": {
+    "tagline": "Luka Dev Studio — Freelance Webentwicklung für Startups und moderne Unternehmen.",
+    "newsletter_label": "Auf dem Laufenden bleiben",
+    "newsletter_placeholder": "E-Mail eingeben",
+    "newsletter_aria": "Abonnieren",
+    "legal": "Rechtliches",
+    "privacy": "Datenschutz",
+    "copyright": "© 2026 Luka Dev Studio. Alle Rechte vorbehalten."
+  },
+  "project_page": {
+    "back": "Zurück zur Startseite",
+    "not_found": "Projekt nicht gefunden",
+    "about": "Über dieses Projekt",
+    "tech_stack": "Tech Stack",
+    "links": "Links",
+    "repository": "Repository",
+    "live_demo": "Live Demo",
+    "stats_stars": "Stars",
+    "stats_forks": "Forks",
+    "stats_issues": "Issues"
+  },
+  "cookie": {
+    "title": "Wir nutzen Cookies",
+    "description": "Wir verwenden Cookies, um die beste Erfahrung auf unserer Website zu gewährleisten. Details finden Sie in unserer Datenschutzerklärung.",
+    "learn_more": "Mehr erfahren",
+    "accept": "Akzeptieren",
+    "decline": "Ablehnen"
+  }
+}

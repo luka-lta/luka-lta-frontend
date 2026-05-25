@@ -1,14 +1,17 @@
 "use client"
 
 import { motion } from "framer-motion"
-
-const stats = [
-    { value: "3+", label: "Years of Experience" },
-    { value: "10+", label: "Projects Built" },
-    { value: "15+", label: "Technologies" },
-]
+import { useTranslation } from "react-i18next"
 
 export default function About() {
+    const { t } = useTranslation()
+
+    const stats = [
+        { value: "3+", label: t('about.stat_experience') },
+        { value: "10+", label: t('about.stat_projects') },
+        { value: "15+", label: t('about.stat_technologies') },
+    ]
+
     return (
         <section id="about" className="bg-background py-24 md:py-32">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -20,16 +23,13 @@ export default function About() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.7 }}
                     >
-                        <span className="section-badge mb-8 inline-flex">About</span>
+                        <span className="section-badge mb-8 inline-flex">{t('about.badge')}</span>
                         <h2 className="mb-6 text-5xl font-black leading-tight tracking-tight md:text-6xl">
-                            Turning ideas<br />into{" "}
-                            <span className="gradient-text">reality</span>
+                            {t('about.headline_1')}<br />{" "}
+                            <span className="gradient-text">{t('about.headline_2')}</span>
                         </h2>
                         <p className="text-lg leading-relaxed text-muted-foreground">
-                            I'm a passionate developer focused on web applications, backend
-                            architectures, and automation. With expertise in PHP, TypeScript,
-                            Docker, MySQL, and Elasticsearch, I design and develop scalable,
-                            high-performance solutions that power modern applications.
+                            {t('about.body')}
                         </p>
                     </motion.div>
 

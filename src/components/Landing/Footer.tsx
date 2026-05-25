@@ -4,16 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { motion, useReducedMotion } from "framer-motion";
 import { Github, Linkedin, Mail } from "lucide-react";
-
-const footerLinks = [
-    {
-        title: "Legal",
-        links: [{
-            name: 'Privacy',
-            url: '/privacy'
-        }],
-    },
-];
+import { useTranslation } from "react-i18next";
 
 const socialLinks = [
     { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/luka-liebenthal-aa047931b/" },
@@ -22,6 +13,14 @@ const socialLinks = [
 
 export default function Footer() {
     const shouldReduceMotion = useReducedMotion();
+    const { t } = useTranslation()
+
+    const footerLinks = [
+        {
+            title: t('footer.legal'),
+            links: [{ name: t('footer.privacy'), url: '/privacy' }],
+        },
+    ]
 
     return (
         <footer
@@ -76,28 +75,28 @@ export default function Footer() {
                             className="mb-4 inline-flex items-center gap-3"
                         >
                             <Card className="rounded-2xl border border-border/60 bg-card/80 px-3 py-1 text-xs uppercase tracking-[0.32em] text-muted-foreground shadow-[0_10px_30px_-20px_rgba(15,23,42,0.8)]">
-                                luka-lta.dev
+                                Luka Dev Studio
                             </Card>
                         </motion.div>
                         <p className="mb-4 max-w-md text-sm text-muted-foreground">
-                            Building amazing products with modern technologies.
+                            {t('footer.tagline')}
                         </p>
 
                         {/* Newsletter */}
                         <div className="mb-4">
                             <p className="mb-2 text-sm font-medium text-foreground">
-                                Subscribe to my newsletter
+                                {t('footer.newsletter_label')}
                             </p>
                             <div className="flex gap-2">
                                 <Input
                                     type="email"
-                                    placeholder="Enter your email"
+                                    placeholder={t('footer.newsletter_placeholder')}
                                     className="h-10 rounded-xl border-border/60 bg-background/60 backdrop-blur placeholder:text-muted-foreground"
                                 />
                                 <Button
                                     size="sm"
                                     className="h-10 rounded-xl border border-border/60 bg-primary/90 px-4 text-primary-foreground shadow-[0_12px_35px_-20px_rgba(15,23,42,0.7)] hover:bg-primary"
-                                    aria-label="Subscribe"
+                                    aria-label={t('footer.newsletter_aria')}
                                 >
                                     <Mail className="h-4 w-4" aria-hidden />
                                 </Button>
@@ -192,12 +191,15 @@ export default function Footer() {
                                     variant="ghost"
                                     className="h-9 w-9 rounded-full border border-border/60 bg-white/5 text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
                                     aria-label={social.label}
+                                    asChild
                                 >
-                                    <motion.div
-                                        transition={{ duration: shouldReduceMotion ? 0.25 : 0.3 }}
-                                    >
-                                        <social.icon className="h-4 w-4" aria-hidden />
-                                    </motion.div>
+                                    <a href={social.href} target="_blank" rel="noopener noreferrer">
+                                        <motion.div
+                                            transition={{ duration: shouldReduceMotion ? 0.25 : 0.3 }}
+                                        >
+                                            <social.icon className="h-4 w-4" aria-hidden />
+                                        </motion.div>
+                                    </a>
                                 </Button>
                             </motion.div>
                         ))}
@@ -211,7 +213,7 @@ export default function Footer() {
                         transition={{ delay: 0.6 }}
                         className="flex items-center gap-2 text-sm text-muted-foreground"
                     >
-                        <span>© 2026 luka-lta.dev. All rights reserved.</span>
+                        <span>{t('footer.copyright')}</span>
                         <Badge variant="outline" className="text-xs">
                             v1.0.0
                         </Badge>

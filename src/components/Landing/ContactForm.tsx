@@ -1,13 +1,17 @@
 "use client"
 
-import { useState } from "react"
-import {motion, Variants} from "framer-motion"
+import { motion, Variants } from "framer-motion"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import {Card} from "@/components/ui/card.tsx";
-import {Mail, MessageSquare, Phone, Send} from "lucide-react";
-import {Label} from "@/components/ui/label.tsx";
+import { Card } from "@/components/ui/card"
+import { Mail, MessageSquare, Phone, Send } from "lucide-react"
+import { Label } from "@/components/ui/label"
+import { useTranslation } from "react-i18next"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import { useContactForm } from "@/api/contact/useContactForm"
 
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -15,7 +19,7 @@ const containerVariants: Variants = {
         opacity: 1,
         transition: { staggerChildren: 0.14, delayChildren: 0.2 },
     },
-};
+}
 
 const itemVariants: Variants = {
     hidden: { opacity: 0, y: 16 },
@@ -24,7 +28,7 @@ const itemVariants: Variants = {
         y: 0,
         transition: { duration: 0.4, ease: "easeOut" },
     },
-};
+}
 
 const iconVariants: Variants = {
     hidden: { opacity: 0, scale: 0.8 },
@@ -33,29 +37,30 @@ const iconVariants: Variants = {
         scale: 1,
         transition: { duration: 0.35, ease: "easeOut" },
     },
-};
+}
 
 export default function ContactForm() {
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-    });
+    const { t } = useTranslation()
+    const mutation = useContactForm()
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        console.log("Form submitted:", formData);
-    };
+    const schema = z.object({
+        name: z.string().min(1, t('contact.validation.name_required')),
+        email: z.string().email(t('contact.validation.email_required')),
+        phone: z.string().optional(),
+        message: z.string().min(10, t('contact.validation.message_min')),
+    })
 
-    const handleChange = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        setFormData((prev) => ({
-            ...prev,
-            [event.target.name]: event.target.value,
-        }));
-    };
+    type FormData = z.infer<typeof schema>
+
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
+        resolver: zodResolver(schema),
+    })
+
+    const onSubmit = (data: FormData) => {
+        mutation.mutate(data, {
+            onSuccess: () => reset(),
+        })
+    }
 
     return (
         <section id='contact' className="relative overflow-hidden bg-background px-6 py-24 sm:px-8 md:py-28">
@@ -72,14 +77,12 @@ export default function ContactForm() {
                     transition={{ duration: 0.5 }}
                     className="space-y-4"
                 >
-                    <span className="section-badge inline-flex">Contact</span>
+                    <span className="section-badge inline-flex">{t('contact.badge')}</span>
                     <h2 className="text-5xl font-black tracking-tight text-foreground md:text-6xl">
-                        Let’s build something<br />exceptional together
+                        {t('contact.headline_1')}<br />{t('contact.headline_2')}
                     </h2>
                     <p className="max-w-2xl text-foreground/70">
-                        Share your project details and our team will reach out within one
-                        business day. We’re here to collaborate and craft meaningful
-                        experiences.
+                        {t('contact.subtext')}
                     </p>
                 </motion.div>
 
@@ -87,7 +90,7 @@ export default function ContactForm() {
                     <div className="absolute inset-0 bg-gradient-to-br from-foreground/[0.04] via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
                     <motion.form
-                        onSubmit={handleSubmit}
+                        onSubmit={handleSubmit(onSubmit)}
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
@@ -105,16 +108,15 @@ export default function ContactForm() {
                                 aria-hidden="true"
                             >
                                 <span className="h-2 w-2 rounded-full bg-primary/80" />
-                                Response within 24 hours
+                                {t('contact.response_badge')}
                             </motion.div>
 
                             <div className="space-y-3">
                                 <h3 className="text-lg font-semibold tracking-tight text-foreground">
-                                    You have questions?
+                                    {t('contact.questions_headline')}
                                 </h3>
                                 <p className="text-sm text-foreground/70">
-                                    We’ll schedule a discovery call to understand your goals,
-                                    timeline, and success metrics. Prefer email? Reach us at{" "}
+                                    {t('contact.questions_body')}{" "}
                                     <a
                                         href="mailto:info@luka-lta.dev"
                                         className="text-foreground underline decoration-border/70 underline-offset-4 transition-colors hover:text-primary"
@@ -140,25 +142,36 @@ export default function ContactForm() {
                         </motion.div>
 
                         <motion.div variants={itemVariants} className="space-y-6">
+                            {mutation.isSuccess && (
+                                <div className="rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-600 dark:text-green-400">
+                                    {t('contact.success')}
+                                </div>
+                            )}
+                            {mutation.isError && (
+                                <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                                    {t('contact.error')}
+                                </div>
+                            )}
+
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label
                                         htmlFor="name"
                                         className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60"
                                     >
-                                        Full Name
+                                        {t('contact.label_name')}
                                     </Label>
                                     <Input
                                         id="name"
-                                        name="name"
                                         type="text"
-                                        placeholder="Alex Johnson"
-                                        value={formData.name}
-                                        onChange={handleChange}
+                                        placeholder={t('contact.placeholder_name')}
+                                        {...register('name')}
                                         className="rounded-xl border border-border/40 bg-background/40 text-sm text-foreground transition-all focus-visible:border-border/60 focus-visible:ring-2 focus-visible:ring-primary/30"
                                         aria-required="true"
-                                        required
                                     />
+                                    {errors.name && (
+                                        <p className="text-xs text-destructive">{errors.name.message}</p>
+                                    )}
                                 </div>
 
                                 <div className="space-y-2">
@@ -166,7 +179,7 @@ export default function ContactForm() {
                                         htmlFor="email"
                                         className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60"
                                     >
-                                        Email
+                                        {t('contact.label_email')}
                                     </Label>
                                     <div className="relative">
                                         <Mail
@@ -175,17 +188,17 @@ export default function ContactForm() {
                                         />
                                         <Input
                                             id="email"
-                                            name="email"
                                             type="email"
-                                            placeholder="alex@studio.com"
-                                            value={formData.email}
-                                            onChange={handleChange}
+                                            placeholder={t('contact.placeholder_email')}
+                                            {...register('email')}
                                             className="rounded-xl border border-border/40 bg-background/40 pl-10 text-sm text-foreground transition-all focus-visible:border-border/60 focus-visible:ring-2 focus-visible:ring-primary/30"
                                             autoComplete="email"
                                             aria-required="true"
-                                            required
                                         />
                                     </div>
+                                    {errors.email && (
+                                        <p className="text-xs text-destructive">{errors.email.message}</p>
+                                    )}
                                 </div>
                             </div>
 
@@ -194,7 +207,7 @@ export default function ContactForm() {
                                     htmlFor="phone"
                                     className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60"
                                 >
-                                    Phone Number
+                                    {t('contact.label_phone')}
                                 </Label>
                                 <div className="relative">
                                     <Phone
@@ -203,11 +216,9 @@ export default function ContactForm() {
                                     />
                                     <Input
                                         id="phone"
-                                        name="phone"
                                         type="tel"
-                                        placeholder="+1 (555) 123-4567"
-                                        value={formData.phone}
-                                        onChange={handleChange}
+                                        placeholder={t('contact.placeholder_phone')}
+                                        {...register('phone')}
                                         className="rounded-xl border border-border/40 bg-background/40 pl-10 text-sm text-foreground transition-all focus-visible:border-border/60 focus-visible:ring-2 focus-visible:ring-primary/30"
                                         autoComplete="tel"
                                     />
@@ -219,7 +230,7 @@ export default function ContactForm() {
                                     htmlFor="message"
                                     className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60"
                                 >
-                                    Message
+                                    {t('contact.label_message')}
                                 </Label>
                                 <div className="relative">
                                     <MessageSquare
@@ -228,38 +239,41 @@ export default function ContactForm() {
                                     />
                                     <Textarea
                                         id="message"
-                                        name="message"
-                                        placeholder="Tell us about your vision, timeline, and deliverables."
-                                        value={formData.message}
-                                        onChange={handleChange}
+                                        placeholder={t('contact.placeholder_message')}
+                                        {...register('message')}
                                         className="min-h-[140px] rounded-xl border border-border/40 bg-background/40 pl-10 text-sm text-foreground transition-all focus-visible:border-border/60 focus-visible:ring-2 focus-visible:ring-primary/30"
                                         aria-required="true"
-                                        required
                                     />
                                 </div>
+                                {errors.message && (
+                                    <p className="text-xs text-destructive">{errors.message.message}</p>
+                                )}
                             </div>
 
                             <motion.div variants={itemVariants}>
                                 <Button
                                     type="submit"
                                     size="lg"
-                                    className="group flex w-full items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg"
+                                    disabled={mutation.isPending}
+                                    className="group flex w-full items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg disabled:opacity-60"
                                 >
-                                    Send Message
-                                    <Send
-                                        className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                                        aria-hidden="true"
-                                    />
+                                    {mutation.isPending ? t('contact.sending') : t('contact.submit')}
+                                    {!mutation.isPending && (
+                                        <Send
+                                            className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                                            aria-hidden="true"
+                                        />
+                                    )}
                                 </Button>
                             </motion.div>
 
                             <p className="text-xs text-foreground/60">
-                                By submitting this form you agree to our{" "}
+                                {t('contact.privacy_text')}{" "}
                                 <a
                                     href="/privacy"
                                     className="text-foreground underline decoration-border/70 underline-offset-4 transition-colors hover:text-primary"
                                 >
-                                    privacy policy
+                                    {t('contact.privacy_link')}
                                 </a>
                                 .
                             </p>
@@ -268,6 +282,5 @@ export default function ContactForm() {
                 </Card>
             </div>
         </section>
-    );
+    )
 }
-

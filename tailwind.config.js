@@ -4,7 +4,8 @@ export default {
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}", "*.{js,ts,jsx,tsx,mdx}"],
 	theme: {
 		fontFamily: {
-			sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+			sans: ['Sora', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+			mono: ['DM Mono', 'ui-monospace', 'monospace'],
 		},
 		container: {
 			center: true,
@@ -47,6 +48,9 @@ export default {
 				card: {
 					DEFAULT: "hsl(var(--card))",
 					foreground: "hsl(var(--card-foreground))",
+				},
+				teal: {
+					DEFAULT: "hsl(var(--teal))",
 				},
 			},
 			borderRadius: {

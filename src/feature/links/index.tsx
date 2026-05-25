@@ -9,7 +9,7 @@ import { useSetPageTitle } from "@/hooks/use-set-page-title"
 
 function Links() {
     const [linkList] = useLinktreeList()
-    useSetPageTitle("Links — luka-lta.dev")
+    useSetPageTitle("Links — Luka Dev Studio")
 
     const sortedLinks = linkList.data?.links
         .filter((l) => l.isActive)
@@ -44,13 +44,13 @@ function Links() {
                             <Avatar className="h-20 w-20">
                                 <AvatarImage
                                     src="https://avatars.githubusercontent.com/u/67432564?s=400&u=725e1ed64ea2108364b514fa74405600f168242b&v=4"
-                                    alt="Luka Liebenthal"
+                                    alt="Luka Dev Studio"
                                 />
                                 <AvatarFallback className="text-xl font-bold">LL</AvatarFallback>
                             </Avatar>
                         </div>
-                        <h1 className="mb-1 text-2xl font-black text-foreground">Luka Liebenthal</h1>
-                        <p className="text-sm text-muted-foreground">Full Stack Developer</p>
+                        <h1 className="mb-1 text-2xl font-black text-foreground">Luka Dev Studio</h1>
+                        <p className="font-mono text-sm text-[hsl(var(--teal))]">Code that ships.</p>
                     </motion.div>
 
                     {/* Links */}
