@@ -40,7 +40,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             from: `"Luka Dev Studio" <${process.env.SMTP_USER}>`,
             to: process.env.CONTACT_TO ?? 'luka@luka-lta.dev',
             replyTo: `"${safeName}" <${email}>`,
-            subject: `Neue Kontaktanfrage von ${safeName}`,
+            subject: `Kontaktanfrage: ${safeName}`,
+            headers: {
+                'X-Mailer': 'Luka Dev Studio Mailer',
+                'X-Priority': '3',
+            },
             html: `
                 <h2>Neue Anfrage über luka-lta.dev</h2>
                 <p><b>Name:</b> ${safeName}</p>
