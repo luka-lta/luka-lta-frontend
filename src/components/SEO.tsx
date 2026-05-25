@@ -13,7 +13,7 @@ interface SEOProps {
 export default function SEO({ title, description, canonicalPath = '/', noIndex = false }: SEOProps) {
   const { i18n } = useTranslation()
   const lang = i18n.language.slice(0, 2)
-  const fullTitle = `${title} | luka-lta.dev`
+  const fullTitle = `${title} | Luka Dev Studio`
   const canonical = `${BASE_URL}${canonicalPath}`
 
   return (

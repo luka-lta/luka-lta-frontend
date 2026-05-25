@@ -75,7 +75,7 @@ export default function Footer() {
                             className="mb-4 inline-flex items-center gap-3"
                         >
                             <Card className="rounded-2xl border border-border/60 bg-card/80 px-3 py-1 text-xs uppercase tracking-[0.32em] text-muted-foreground shadow-[0_10px_30px_-20px_rgba(15,23,42,0.8)]">
-                                luka-lta.dev
+                                Luka Dev Studio
                             </Card>
                         </motion.div>
                         <p className="mb-4 max-w-md text-sm text-muted-foreground">

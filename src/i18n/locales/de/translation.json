@@ -113,13 +113,13 @@
     }
   },
   "footer": {
-    "tagline": "Freelance Webentwicklung für moderne Unternehmen.",
+    "tagline": "Luka Dev Studio — Freelance Webentwicklung für Startups und moderne Unternehmen.",
     "newsletter_label": "Auf dem Laufenden bleiben",
     "newsletter_placeholder": "E-Mail eingeben",
     "newsletter_aria": "Abonnieren",
     "legal": "Rechtliches",
     "privacy": "Datenschutz",
-    "copyright": "© 2026 luka-lta.dev. Alle Rechte vorbehalten."
+    "copyright": "© 2026 Luka Dev Studio. Alle Rechte vorbehalten."
   },
   "project_page": {
     "back": "Zurück zur Startseite",

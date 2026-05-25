@@ -28,7 +28,7 @@ export default function Hero() {
             />
             {/* Gradient orbs */}
             <div className="pointer-events-none absolute left-1/4 top-1/4 h-[500px] w-[500px] rounded-full bg-primary/15 blur-[130px]" />
-            <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-violet-500/10 blur-[130px]" />
+            <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-teal/10 blur-[130px]" />
 
             <div className="relative z-10 mx-auto max-w-6xl px-6 text-center">
                 {/* Availability badge */}
@@ -47,11 +47,21 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, delay: 0.1 }}
-                    className="mb-8 text-8xl font-black leading-none tracking-tight md:text-[10rem]"
+                    className="mb-6 text-8xl font-black leading-none tracking-tight md:text-[10rem]"
                 >
                     <span className="block text-foreground">Luka</span>
-                    <span className="block gradient-text">Liebenthal</span>
+                    <span className="block gradient-text">Dev Studio</span>
                 </motion.h1>
+
+                {/* Claim */}
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.25 }}
+                    className="mx-auto mb-4 font-mono text-lg font-medium tracking-wide text-[hsl(var(--teal))]"
+                >
+                    Code that ships.
+                </motion.p>
 
                 {/* Role line */}
                 <motion.p

@@ -4,7 +4,8 @@ import { useState, useEffect, Fragment } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTheme } from "@/assets/providers/ThemeProvider"
 import { Link } from "react-router-dom"
-import { MoonIcon, Origami, SunIcon, Menu, X } from "lucide-react"
+import { MoonIcon, SunIcon, Menu, X } from "lucide-react"
+import { LdsIcon } from "@/components/SiteLogo"
 import { useTranslation } from "react-i18next"
 
 function LanguageSwitcher() {
@@ -66,8 +67,8 @@ export default function Header() {
 
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-2 text-foreground">
-                    <Origami className="h-6 w-6 text-primary" />
-                    <span className="text-sm font-bold tracking-tight">luka-lta.dev</span>
+                    <LdsIcon className="h-6 w-6 rounded-md" />
+                    <span className="text-sm font-bold tracking-tight">Luka Dev Studio</span>
                 </Link>
 
                 {/* Desktop nav */}

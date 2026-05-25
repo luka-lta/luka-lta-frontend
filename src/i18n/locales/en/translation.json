@@ -113,13 +113,13 @@
     }
   },
   "footer": {
-    "tagline": "Freelance web development for modern businesses.",
+    "tagline": "Luka Dev Studio — Freelance web development for startups and modern businesses.",
     "newsletter_label": "Stay updated",
     "newsletter_placeholder": "Enter your email",
     "newsletter_aria": "Subscribe",
     "legal": "Legal",
     "privacy": "Privacy",
-    "copyright": "© 2026 luka-lta.dev. All rights reserved."
+    "copyright": "© 2026 Luka Dev Studio. All rights reserved."
   },
   "project_page": {
     "back": "Back to home",

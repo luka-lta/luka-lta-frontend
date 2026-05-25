@@ -17,7 +17,7 @@ export default function LandingPage() {
     return (
         <>
             <SEO
-                title="Luka Liebenthal — Freelance Web Developer"
+                title="Luka Dev Studio — Code that ships."
                 description={t('hero.description')}
                 canonicalPath="/"
             />
