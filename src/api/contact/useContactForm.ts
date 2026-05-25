@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query'
-import { FetchWrapper } from '@/lib/fetchWrapper'
 import { z } from 'zod'
 
 export const ContactFormSchema = z.object({
@@ -13,9 +12,18 @@ export type ContactFormData = z.infer<typeof ContactFormSchema>
 
 export function useContactForm() {
     return useMutation({
-        mutationFn: (data: ContactFormData) => {
-            const fw = new FetchWrapper(FetchWrapper.baseUrl)
-            return fw.post('/contact', data)
+        mutationFn: async (data: ContactFormData) => {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`)
+            }
+
+            return res.json()
         },
     })
 }
