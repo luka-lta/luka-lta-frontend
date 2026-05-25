@@ -16,6 +16,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(422).json({ error: 'Invalid input' })
     }
 
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+        console.error('Missing SMTP env vars')
+        return res.status(500).json({ error: 'Server misconfigured' })
+    }
+
     const transporter = nodemailer.createTransport({
         host: 'smtp.hostinger.com',
         port: 587,
@@ -30,22 +35,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const safeMessage = message.trim().replace(/</g, '&lt;').replace(/>/g, '&gt;')
     const safePhone   = (phone ?? '–').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
-    await transporter.sendMail({
-        from: `"Luka Dev Studio" <${process.env.SMTP_USER}>`,
-        to: process.env.CONTACT_TO ?? 'luka@luka-lta.dev',
-        replyTo: `"${safeName}" <${email}>`,
-        subject: `Neue Kontaktanfrage von ${safeName}`,
-        html: `
-            <h2>Neue Anfrage über luka-lta.dev</h2>
-            <p><b>Name:</b> ${safeName}</p>
-            <p><b>E-Mail:</b> ${email}</p>
-            <p><b>Telefon:</b> ${safePhone}</p>
-            <hr>
-            <p><b>Nachricht:</b></p>
-            <p>${safeMessage}</p>
-        `,
-        text: `Name: ${safeName}\nE-Mail: ${email}\nTelefon: ${safePhone}\n\n${safeMessage}`,
-    })
+    try {
+        await transporter.sendMail({
+            from: `"Luka Dev Studio" <${process.env.SMTP_USER}>`,
+            to: process.env.CONTACT_TO ?? 'luka@luka-lta.dev',
+            replyTo: `"${safeName}" <${email}>`,
+            subject: `Neue Kontaktanfrage von ${safeName}`,
+            html: `
+                <h2>Neue Anfrage über luka-lta.dev</h2>
+                <p><b>Name:</b> ${safeName}</p>
+                <p><b>E-Mail:</b> ${email}</p>
+                <p><b>Telefon:</b> ${safePhone}</p>
+                <hr>
+                <p><b>Nachricht:</b></p>
+                <p>${safeMessage}</p>
+            `,
+            text: `Name: ${safeName}\nE-Mail: ${email}\nTelefon: ${safePhone}\n\n${safeMessage}`,
+        })
+    } catch (err) {
+        console.error('SMTP error:', err)
+        return res.status(500).json({ error: 'Failed to send email' })
+    }
 
     return res.status(200).json({ success: true })
 }
