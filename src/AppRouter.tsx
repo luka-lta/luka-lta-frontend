@@ -4,6 +4,7 @@ import ErrorPage from "@/pages/ErrorPage.tsx";
 import LinksPage from "@/pages/LinksPage.tsx";
 import RedirectPage from "@/pages/RedirectPage.tsx";
 import PrivacyPage from "@/pages/PrivacyPage.tsx";
+import ImpressumPage from "@/pages/ImpressumPage.tsx";
 import Project from "@/feature/project";
 
 export const appRouter = createBrowserRouter([
@@ -24,6 +25,10 @@ export const appRouter = createBrowserRouter([
     {
         path: '/privacy',
         element: <PrivacyPage />,
+    },
+    {
+        path: '/impressum',
+        element: <ImpressumPage />,
     },
     {
         path: '/project/:projectId',

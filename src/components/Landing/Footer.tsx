@@ -18,7 +18,10 @@ export default function Footer() {
     const footerLinks = [
         {
             title: t('footer.legal'),
-            links: [{ name: t('footer.privacy'), url: '/privacy' }],
+            links: [
+                { name: t('footer.privacy'), url: '/privacy' },
+                { name: t('footer.impressum'), url: '/impressum' },
+            ],
         },
     ]
 
