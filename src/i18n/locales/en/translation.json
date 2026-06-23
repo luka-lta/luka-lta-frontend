@@ -3,6 +3,7 @@
     "about": "About",
     "services": "Services",
     "projects": "Projects",
+    "skills": "Skills",
     "contact": "Contact",
     "links": "Links",
     "status": "Status"
@@ -128,6 +129,7 @@
     "about": "About this project",
     "tech_stack": "Tech Stack",
     "links": "Links",
+    "client_project": "Client Project",
     "repository": "Repository",
     "live_demo": "Live Demo",
     "stats_stars": "Stars",

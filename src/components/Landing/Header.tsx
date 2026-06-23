@@ -3,7 +3,7 @@
 import { useState, useEffect, Fragment } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTheme } from "@/assets/providers/ThemeProvider"
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { MoonIcon, SunIcon, Menu, X } from "lucide-react"
 import { LdsIcon } from "@/components/SiteLogo"
 import { useTranslation } from "react-i18next"
@@ -44,14 +44,29 @@ export default function Header() {
     const [mobileOpen, setMobileOpen] = useState(false)
     const { theme, setTheme } = useTheme()
     const { t } = useTranslation()
+    const location = useLocation()
+    const navigate = useNavigate()
 
     useEffect(() => setMounted(true), [])
 
+    const scrollToSection = (id: string) => {
+        setMobileOpen(false)
+        if (location.pathname === '/') {
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+        } else {
+            navigate('/')
+            setTimeout(() => {
+                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+            }, 150)
+        }
+    }
+
     const navLinks = [
-        { name: t('nav.about'),    to: "/#about" },
-        { name: t('nav.services'), to: "/#services" },
-        { name: t('nav.projects'), to: "/#projects" },
-        { name: t('nav.contact'),  to: "/#contact" },
+        { name: t('nav.about'),    anchor: "about" },
+        { name: t('nav.services'), anchor: "services" },
+        { name: t('nav.projects'), anchor: "projects" },
+        { name: t('nav.skills'),   anchor: "skills" },
+        { name: t('nav.contact'),  anchor: "contact" },
         { name: t('nav.links'),    to: "/links" },
         { name: t('nav.status'),   to: "https://status.luka-lta.dev", external: true },
     ]
@@ -74,15 +89,25 @@ export default function Header() {
                 {/* Desktop nav */}
                 <div className="hidden items-center gap-1 md:flex">
                     {navLinks.map((link) => (
-                        <Link
-                            key={link.name}
-                            to={link.to}
-                            target={link.external ? "_blank" : undefined}
-                            rel={link.external ? "noopener noreferrer" : undefined}
-                            className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-                        >
-                            {link.name}
-                        </Link>
+                        'anchor' in link ? (
+                            <button
+                                key={link.name}
+                                onClick={() => scrollToSection(link.anchor!)}
+                                className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                            >
+                                {link.name}
+                            </button>
+                        ) : (
+                            <Link
+                                key={link.name}
+                                to={link.to!}
+                                target={link.external ? "_blank" : undefined}
+                                rel={link.external ? "noopener noreferrer" : undefined}
+                                className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                            >
+                                {link.name}
+                            </Link>
+                        )
                     ))}
                 </div>
 
@@ -123,16 +148,26 @@ export default function Header() {
                     >
                         <div className="flex flex-col gap-1 px-6 py-4">
                             {navLinks.map((link) => (
-                                <Link
-                                    key={link.name}
-                                    to={link.to}
-                                    target={link.external ? "_blank" : undefined}
-                                    rel={link.external ? "noopener noreferrer" : undefined}
-                                    onClick={() => setMobileOpen(false)}
-                                    className="rounded-xl px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-                                >
-                                    {link.name}
-                                </Link>
+                                'anchor' in link ? (
+                                    <button
+                                        key={link.name}
+                                        onClick={() => scrollToSection(link.anchor!)}
+                                        className="rounded-xl px-4 py-2.5 text-start text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                                    >
+                                        {link.name}
+                                    </button>
+                                ) : (
+                                    <Link
+                                        key={link.name}
+                                        to={link.to!}
+                                        target={link.external ? "_blank" : undefined}
+                                        rel={link.external ? "noopener noreferrer" : undefined}
+                                        onClick={() => setMobileOpen(false)}
+                                        className="rounded-xl px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                                    >
+                                        {link.name}
+                                    </Link>
+                                )
                             ))}
                         </div>
                     </motion.div>

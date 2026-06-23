@@ -6,12 +6,13 @@ export interface Project {
     techStack: string[]
     screenshots: string[]
     liveUrl: string
-    repoUrl: string
-    repoOwner: string
-    repoName: string
+    repoUrl?: string
+    repoOwner?: string
+    repoName?: string
     role: string
     year: string
     liveLabel?: string
+    clientProject?: boolean
 }
 
 export const projects: Project[] = [
@@ -37,6 +38,24 @@ export const projects: Project[] = [
         repoName: "luka-lta-api",
         role: "Creator",
         year: "2022",
+    },
+    {
+        id: "mexcal",
+        title: "Mexcal Hameln",
+        description: "Restaurant website for a local client in Hameln",
+        longDescription:
+            "Restaurant website built for Mexcal Hameln, a local Mexican restaurant. Showcases the full menu, opening hours, location, and a contact section. Built as a client project with emphasis on mobile-first design, fast load times, and a warm visual identity that matches the brand.",
+        techStack: [
+            "TypeScript",
+            "React",
+            "Vite",
+            "Tailwind CSS",
+        ],
+        screenshots: ["/static/images/projects/mexcal-hameln.png", "/static/images/projects/mexcal/mexcal-website.png"],
+        liveUrl: "https://mexcal-hameln.de",
+        role: "Creator",
+        year: "2026",
+        clientProject: true,
     },
     {
         id: "luka-lta-backend",
