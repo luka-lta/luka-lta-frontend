@@ -120,6 +120,9 @@ function Project() {
                             <div className="mb-3 flex flex-wrap items-center gap-2">
                                 <span className="section-badge">{project.role}</span>
                                 <span className="section-badge">{project.year}</span>
+                                {project.clientProject && (
+                                    <span className="section-badge">{t('project_page.client_project')}</span>
+                                )}
                             </div>
                             <h1 className="text-4xl font-black tracking-tight text-foreground md:text-5xl">
                                 {project.title}
@@ -127,12 +130,14 @@ function Project() {
                         </div>
 
                         <div className="flex shrink-0 items-center gap-3">
-                            <Button variant="outline" className="gap-2 rounded-full" asChild>
-                                <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
-                                    <Github className="h-4 w-4" />
-                                    {t('project_page.repository')}
-                                </a>
-                            </Button>
+                            {project.repoUrl && (
+                                <Button variant="outline" className="gap-2 rounded-full" asChild>
+                                    <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+                                        <Github className="h-4 w-4" />
+                                        {t('project_page.repository')}
+                                    </a>
+                                </Button>
+                            )}
                             <Button className="gap-2 rounded-full" asChild>
                                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                                     <Globe className="h-4 w-4" />
@@ -143,7 +148,7 @@ function Project() {
                     </motion.div>
 
                     {/* GitHub stat chips */}
-                    {(stats || statsLoading) && (
+                    {!project.clientProject && (stats || statsLoading) && (
                         <motion.div
                             initial={{ opacity: 0, y: 12 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -215,16 +220,18 @@ function Project() {
                                     {t('project_page.links')}
                                 </h3>
                                 <div className="flex flex-col gap-3">
-                                    <a
-                                        href={project.repoUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group flex items-center gap-3 rounded-xl border border-border/60 bg-background px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
-                                    >
-                                        <Github className="h-4 w-4 shrink-0" />
-                                        <span className="truncate">{project.repoOwner}/{project.repoName}</span>
-                                        <ExternalLink className="ml-auto h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
-                                    </a>
+                                    {project.repoUrl && (
+                                        <a
+                                            href={project.repoUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="group flex items-center gap-3 rounded-xl border border-border/60 bg-background px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                                        >
+                                            <Github className="h-4 w-4 shrink-0" />
+                                            <span className="truncate">{project.repoOwner}/{project.repoName}</span>
+                                            <ExternalLink className="ml-auto h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
+                                        </a>
+                                    )}
                                     <a
                                         href={project.liveUrl}
                                         target="_blank"
