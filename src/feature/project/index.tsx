@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import Header from "@/components/Landing/Header"
 import Footer from "@/components/Landing/Footer"
 import { useNavigate, useParams } from "react-router-dom"
-import { projects } from "@/lib/projects-data"
+import { useProject } from "@/api/projects/hooks/useProjects"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import ScrollToTop from "@/components/scroll-to-top"
 import { useGithubStats } from "@/api/github/hooks/useGithubStats"
@@ -17,12 +17,26 @@ function Project() {
     const navigate = useNavigate()
     const { t } = useTranslation()
 
-    const project = projects.find((p) => p.id === projectId)
+    const { data: project, isLoading } = useProject(projectId)
 
     const { data: stats, isLoading: statsLoading } = useGithubStats(
-        project?.repoOwner ?? "",
-        project?.repoName ?? ""
+        project?.repositoryOwner ?? "",
+        project?.repositoryName ?? ""
     )
+
+    // Waehrend der Query laeuft darf der Nicht-gefunden-Zweig noch nicht
+    // greifen — sonst flackert er kurz auf, bevor die Daten da sind.
+    if (isLoading) {
+        return (
+            <>
+                <Header />
+                <div className="flex min-h-[60vh] items-center justify-center bg-background">
+                    <div className="h-8 w-8 animate-pulse rounded-full bg-secondary" />
+                </div>
+                <Footer />
+            </>
+        )
+    }
 
     if (!project) {
         return (
@@ -43,9 +57,9 @@ function Project() {
     return (
         <>
             <SEO
-                title={project.title}
-                description={project.longDescription}
-                canonicalPath={`/project/${project.id}`}
+                title={project.name}
+                description={project.description ?? undefined}
+                canonicalPath={`/project/${project.slug}`}
             />
             <ScrollToTop />
             <Header />
@@ -56,7 +70,7 @@ function Project() {
                 <div className="pointer-events-none absolute left-1/4 top-0 h-[400px] w-[400px] rounded-full bg-primary/10 blur-[120px]" />
 
                 <motion.div
-                    key={project.id}
+                    key={project.slug}
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -89,11 +103,11 @@ function Project() {
                         <Carousel>
                             <CarouselContent>
                                 {project.screenshots.map((screenshot, index) => (
-                                    <CarouselItem key={index}>
+                                    <CarouselItem key={screenshot.id}>
                                         <div className="aspect-video w-full overflow-hidden bg-card">
                                             <img
-                                                src={screenshot}
-                                                alt={`${project.title} screenshot ${index + 1}`}
+                                                src={screenshot.url}
+                                                alt={screenshot.alt ?? `${project.name} screenshot ${index + 1}`}
                                                 className="h-full w-full object-cover"
                                             />
                                         </div>
@@ -120,35 +134,37 @@ function Project() {
                             <div className="mb-3 flex flex-wrap items-center gap-2">
                                 <span className="section-badge">{project.role}</span>
                                 <span className="section-badge">{project.year}</span>
-                                {project.clientProject && (
+                                {project.isClientProject && (
                                     <span className="section-badge">{t('project_page.client_project')}</span>
                                 )}
                             </div>
                             <h1 className="text-4xl font-black tracking-tight text-foreground md:text-5xl">
-                                {project.title}
+                                {project.name}
                             </h1>
                         </div>
 
                         <div className="flex shrink-0 items-center gap-3">
-                            {project.repoUrl && (
+                            {project.repositoryUrl && (
                                 <Button variant="outline" className="gap-2 rounded-full" asChild>
-                                    <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+                                    <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">
                                         <Github className="h-4 w-4" />
                                         {t('project_page.repository')}
                                     </a>
                                 </Button>
                             )}
-                            <Button className="gap-2 rounded-full" asChild>
-                                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                                    <Globe className="h-4 w-4" />
-                                    {project.liveLabel ?? t('project_page.live_demo')}
-                                </a>
-                            </Button>
+                            {project.websiteUrl && (
+                                <Button className="gap-2 rounded-full" asChild>
+                                    <a href={project.websiteUrl} target="_blank" rel="noopener noreferrer">
+                                        <Globe className="h-4 w-4" />
+                                        {project.liveLabel ?? t('project_page.live_demo')}
+                                    </a>
+                                </Button>
+                            )}
                         </div>
                     </motion.div>
 
                     {/* GitHub stat chips */}
-                    {!project.clientProject && (stats || statsLoading) && (
+                    {!project.isClientProject && (stats || statsLoading) && (
                         <motion.div
                             initial={{ opacity: 0, y: 12 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -185,7 +201,7 @@ function Project() {
                                 {t('project_page.about')}
                             </h2>
                             <p className="text-lg leading-relaxed text-foreground/90">
-                                {project.longDescription}
+                                {project.description}
                             </p>
                         </motion.div>
 
@@ -220,28 +236,30 @@ function Project() {
                                     {t('project_page.links')}
                                 </h3>
                                 <div className="flex flex-col gap-3">
-                                    {project.repoUrl && (
+                                    {project.repositoryUrl && (
                                         <a
-                                            href={project.repoUrl}
+                                            href={project.repositoryUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="group flex items-center gap-3 rounded-xl border border-border/60 bg-background px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
                                         >
                                             <Github className="h-4 w-4 shrink-0" />
-                                            <span className="truncate">{project.repoOwner}/{project.repoName}</span>
+                                            <span className="truncate">{project.repositoryOwner}/{project.repositoryName}</span>
                                             <ExternalLink className="ml-auto h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
                                         </a>
                                     )}
-                                    <a
-                                        href={project.liveUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group flex items-center gap-3 rounded-xl border border-border/60 bg-background px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
-                                    >
-                                        <Globe className="h-4 w-4 shrink-0" />
-                                        <span>{t('project_page.live_demo')}</span>
-                                        <ExternalLink className="ml-auto h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
-                                    </a>
+                                    {project.websiteUrl && (
+                                        <a
+                                            href={project.websiteUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="group flex items-center gap-3 rounded-xl border border-border/60 bg-background px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                                        >
+                                            <Globe className="h-4 w-4 shrink-0" />
+                                            <span>{t('project_page.live_demo')}</span>
+                                            <ExternalLink className="ml-auto h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
+                                        </a>
+                                    )}
                                 </div>
                             </div>
                         </motion.div>
