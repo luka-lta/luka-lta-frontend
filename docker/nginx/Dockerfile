@@ -1,26 +1,26 @@
-FROM node:18 as builder
+FROM oven/bun:1-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json /app/
+COPY package.json bun.lock /app/
 
-RUN npm install
+RUN bun install --frozen-lockfile
 
 COPY . /app
 
-RUN npm run build
+RUN bun run build
 
 
-FROM nginx:latest
+FROM nginx:stable-alpine
 
 WORKDIR /app
 
-RUN adduser --disabled-password --no-create-home --gecos '' app
-RUN mkdir -p /var/run && chown -R app:app /var/run
-RUN mkdir -p /var/cache/nginx && chown -R app:app /var/cache/nginx
+RUN adduser -D -H -g '' app \
+    && mkdir -p /var/run/nginx /var/cache/nginx \
+    && chown -R app:app /var/run/nginx /var/cache/nginx /var/log/nginx
 
 COPY --from=builder /app/dist /app/public
 
 COPY /docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-USER root
+USER app

@@ -2,15 +2,12 @@ import {ThemeProvider} from "@/assets/providers/ThemeProvider.tsx";
 import {RouterProvider} from "react-router-dom";
 import {appRouter} from "@/AppRouter.tsx";
 import ErrorPage from "@/pages/ErrorPage.tsx";
-import {SpeedInsights} from "@vercel/speed-insights/react";
-import {Analytics} from "@vercel/analytics/react";
 import FloatingScrollToTop from "@/components/FloatingScrollToTop.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {Suspense, useState} from "react";
-import CookieConsent from "@/components/blocks/cookie-consent.tsx";
-import AnalyticsScript from "@/components/analytics-script.tsx";
+import {Suspense} from "react";
 import {HelmetProvider} from "react-helmet-async";
-import {useTranslation} from "react-i18next";
+import trackspire from "@trackspire/sdk";
+import AnalyticsScript from "@/components/analytics-script.tsx";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -21,21 +18,14 @@ const queryClient = new QueryClient({
     },
 });
 
-// Helper function to check cookie
-const getCookieConsent = (): boolean => {
-  if (typeof document === 'undefined') return false;
-  const cookieValue = document.cookie
-        .split('; ')
-    .find(row => row.startsWith('cookieConsent='))
-    ?.split('=')[1];
-  return cookieValue === 'true';
-};
-
+trackspire.init({
+    analyticsHost: import.meta.env.VITE_TRACKSPIRE_HOST,
+    siteId: import.meta.env.VITE_SITE_ID,
+    debug: true,
+    
+});
 
 function AppInner() {
-    const [accepted, setAccepted] = useState(getCookieConsent);
-    const { t } = useTranslation();
-
     return (
         <ThemeProvider defaultTheme='dark' storageKey='ui-theme'>
             <QueryClientProvider client={queryClient}>
@@ -44,24 +34,6 @@ function AppInner() {
                     <RouterProvider router={appRouter} fallbackElement={<ErrorPage/>}/>
                 </Suspense>
             </QueryClientProvider>
-
-            <CookieConsent
-                variant="default"
-                learnMoreHref='/privacy'
-                onAcceptCallback={() => setAccepted(true)}
-                onDeclineCallback={() => setAccepted(false)}
-                description={t('cookie.description')}
-                acceptLabel={t('cookie.accept')}
-                declineLabel={t('cookie.decline')}
-            />
-
-            {accepted && (
-              <>
-                  <SpeedInsights/>
-                  <Analytics/>
-                  <AnalyticsScript />
-              </>
-            )}
         </ThemeProvider>
     )
 }
@@ -70,6 +42,7 @@ function App() {
     return (
         <HelmetProvider>
             <AppInner />
+            <AnalyticsScript />
         </HelmetProvider>
     )
 }

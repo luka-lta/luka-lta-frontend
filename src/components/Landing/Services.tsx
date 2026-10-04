@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { Globe, Wrench, CheckCircle2, ArrowRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { Button } from "@/components/ui/button"
+import { track } from "@/lib/analytics"
 
 const serviceIcons = {
     websites: Globe,
@@ -25,13 +26,15 @@ export default function Services() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
-                    className="mb-16 text-center"
+                    className="mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
                 >
-                    <span className="section-badge mb-8 inline-flex">{t('services.badge')}</span>
-                    <h2 className="text-5xl font-black tracking-tight md:text-6xl">
-                        {t('services.headline')}
-                    </h2>
-                    <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+                    <div>
+                        <p className="mb-5 font-mono text-xs text-muted-foreground/50">— 04</p>
+                        <h2 className="text-5xl font-black tracking-tight md:text-6xl">
+                            {t('services.headline')}
+                        </h2>
+                    </div>
+                    <p className="max-w-xs text-sm text-muted-foreground md:text-right">
                         {t('services.subheadline')}
                     </p>
                 </motion.div>
@@ -72,7 +75,10 @@ export default function Services() {
                                 </ul>
 
                                 <Button asChild className="mt-auto w-full gap-2 rounded-full">
-                                    <a href="#contact">
+                                    <a
+                                        href="#contact"
+                                        onClick={() => track('service_cta_click', { service: key })}
+                                    >
                                         {t('services.cta')}
                                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                                     </a>

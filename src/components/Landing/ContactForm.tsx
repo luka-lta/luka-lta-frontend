@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useContactForm } from "@/api/contact/useContactForm"
+import { track } from "@/lib/analytics"
 
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -57,8 +58,13 @@ export default function ContactForm() {
     })
 
     const onSubmit = (data: FormData) => {
+        track('contact_form_submit')
         mutation.mutate(data, {
-            onSuccess: () => reset(),
+            onSuccess: () => {
+                track('contact_form_success')
+                reset()
+            },
+            onError: () => track('contact_form_error'),
         })
     }
 
@@ -77,7 +83,7 @@ export default function ContactForm() {
                     transition={{ duration: 0.5 }}
                     className="space-y-4"
                 >
-                    <span className="section-badge inline-flex">{t('contact.badge')}</span>
+                    <p className="font-mono text-xs text-muted-foreground/50">— 06</p>
                     <h2 className="text-5xl font-black tracking-tight text-foreground md:text-6xl">
                         {t('contact.headline_1')}<br />{t('contact.headline_2')}
                     </h2>
