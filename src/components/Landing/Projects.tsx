@@ -19,7 +19,12 @@ interface CardProps {
 function ProjectCard({ project, index, featured = false }: CardProps) {
     const navigate = useNavigate()
     const { t } = useTranslation()
-    const imageUrl = project.cover?.url ?? project.screenshots[0]?.url ?? null
+    // Reihenfolge nach Eignung: Cover ist fuer genau diese Darstellung gedacht,
+    // der Screenshot ist das naechstbeste echte Bild, das Logo der Rueckfall --
+    // besser als eine leere Flaeche, und beim Anlegen im Dashboard ist das Logo
+    // das Bild, das man zuerst hochlaedt.
+    const imageUrl =
+        project.cover?.url ?? project.screenshots[0]?.url ?? project.logo?.url ?? null
 
     return (
         <motion.article
