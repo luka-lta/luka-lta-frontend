@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ArrowUpRight, Github, ChevronDown } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { useNavigate } from "react-router-dom"
-import { projects, type Project } from "@/lib/projects-data"
+import { useProjects } from "@/api/projects/hooks/useProjects"
+import type { Project } from "@/api/projects/schema"
 import { useTranslation } from "react-i18next"
 import { track } from "@/lib/analytics"
 
@@ -18,6 +19,7 @@ interface CardProps {
 function ProjectCard({ project, index, featured = false }: CardProps) {
     const navigate = useNavigate()
     const { t } = useTranslation()
+    const imageUrl = project.cover?.url ?? project.screenshots[0]?.url ?? null
 
     return (
         <motion.article
@@ -30,22 +32,24 @@ function ProjectCard({ project, index, featured = false }: CardProps) {
                 featured ? 'md:grid md:grid-cols-2' : ''
             }`}
             onClick={() => {
-                track('project_click', { id: project.id, title: project.title, featured })
-                navigate(`/project/${project.id}`)
+                track('project_click', { id: project.slug, title: project.name, featured })
+                navigate(`/project/${project.slug}`)
             }}
             role="button"
             tabIndex={0}
-            aria-label={`${t('projects.view_details')} — ${project.title}`}
-            onKeyDown={(e) => e.key === "Enter" && navigate(`/project/${project.id}`)}
+            aria-label={`${t('projects.view_details')} — ${project.name}`}
+            onKeyDown={(e) => e.key === "Enter" && navigate(`/project/${project.slug}`)}
         >
             {/* Screenshot */}
             <div className={`overflow-hidden bg-secondary ${featured ? 'aspect-[16/10] md:aspect-auto' : 'aspect-[16/10]'}`}>
-                <motion.img
-                    src={project.screenshots[0]}
-                    alt={project.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-103"
-                    style={{ '--tw-scale-x': 1.03, '--tw-scale-y': 1.03 } as React.CSSProperties}
-                />
+                {imageUrl && (
+                    <motion.img
+                        src={imageUrl}
+                        alt={project.name}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-103"
+                        style={{ '--tw-scale-x': 1.03, '--tw-scale-y': 1.03 } as React.CSSProperties}
+                    />
+                )}
             </div>
 
             {/* Content */}
@@ -56,24 +60,28 @@ function ProjectCard({ project, index, featured = false }: CardProps) {
                         {String(index + 1).padStart(2, '0')}
                     </span>
                     <div className="flex items-center gap-2">
-                        {project.clientProject && (
+                        {project.isClientProject && (
                             <span className="rounded-full border border-[hsl(var(--teal))]/30 bg-[hsl(var(--teal))]/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[hsl(var(--teal))]">
                                 Client
                             </span>
                         )}
-                        <span className="rounded-full bg-secondary px-2.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-                            {project.year}
-                        </span>
+                        {project.year && (
+                            <span className="rounded-full bg-secondary px-2.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                                {project.year}
+                            </span>
+                        )}
                     </div>
                 </div>
 
                 <div>
                     <h3 className={`mb-2 font-black tracking-tight text-foreground transition-colors group-hover:text-primary ${featured ? 'text-2xl md:text-3xl' : 'text-lg'}`}>
-                        {project.title}
+                        {project.name}
                     </h3>
-                    <p className={`mb-5 leading-relaxed text-muted-foreground ${featured ? 'text-base' : 'line-clamp-2 text-sm'}`}>
-                        {project.description}
-                    </p>
+                    {project.shortDescription && (
+                        <p className={`mb-5 leading-relaxed text-muted-foreground ${featured ? 'text-base' : 'line-clamp-2 text-sm'}`}>
+                            {project.shortDescription}
+                        </p>
+                    )}
                 </div>
 
                 {/* Tech stack */}
@@ -93,13 +101,13 @@ function ProjectCard({ project, index, featured = false }: CardProps) {
 
             {/* Hover actions */}
             <div className="absolute right-4 top-4 flex gap-2 opacity-0 transition-all duration-200 group-hover:opacity-100">
-                {project.repoUrl && (
+                {project.repositoryUrl && (
                     <a
-                        href={project.repoUrl}
+                        href={project.repositoryUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        aria-label={`${project.title} GitHub`}
+                        aria-label={`${project.name} GitHub`}
                         className="flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/90 text-muted-foreground backdrop-blur-sm transition-colors hover:text-primary"
                     >
                         <Github className="h-3.5 w-3.5" />
@@ -113,9 +121,75 @@ function ProjectCard({ project, index, featured = false }: CardProps) {
     )
 }
 
+function FeaturedCardSkeleton() {
+    return (
+        <div className="mb-4 animate-pulse overflow-hidden rounded-2xl border border-border/60 bg-background md:grid md:grid-cols-2">
+            <div className="aspect-[16/10] bg-secondary md:aspect-auto" />
+            <div className="p-6 md:flex md:flex-col md:justify-between md:p-10">
+                <div className="mb-4 h-4 w-8 rounded bg-secondary" />
+                <div>
+                    <div className="mb-3 h-8 w-2/3 rounded bg-secondary" />
+                    <div className="mb-5 h-16 w-full rounded bg-secondary" />
+                </div>
+                <div className="flex gap-1.5">
+                    <div className="h-5 w-16 rounded bg-secondary" />
+                    <div className="h-5 w-16 rounded bg-secondary" />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function CardSkeleton() {
+    return (
+        <div className="animate-pulse overflow-hidden rounded-2xl border border-border/60 bg-background">
+            <div className="aspect-[16/10] bg-secondary" />
+            <div className="p-6">
+                <div className="mb-4 h-4 w-8 rounded bg-secondary" />
+                <div className="mb-3 h-5 w-2/3 rounded bg-secondary" />
+                <div className="mb-5 h-10 w-full rounded bg-secondary" />
+                <div className="flex gap-1.5">
+                    <div className="h-5 w-16 rounded bg-secondary" />
+                    <div className="h-5 w-16 rounded bg-secondary" />
+                </div>
+            </div>
+        </div>
+    )
+}
+
 function Projects() {
     const { t } = useTranslation()
     const [showAll, setShowAll] = useState(false)
+    const { data: projects, isLoading, isError } = useProjects()
+
+    if (isLoading) {
+        return (
+            <section id="projects" className="bg-card py-24 md:py-32">
+                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                    <div className="mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                        <div>
+                            <p className="mb-5 font-mono text-xs text-muted-foreground/50">— 02</p>
+                            <h2 className="text-5xl font-black tracking-tight md:text-6xl">
+                                {t('projects.headline')}
+                            </h2>
+                        </div>
+                    </div>
+                    <FeaturedCardSkeleton />
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <CardSkeleton />
+                        <CardSkeleton />
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    // Kein Abschnitt statt einer leeren "0 Projekte"-Flaeche — gilt auch fuer
+    // den Fehlerfall, das ist eine Marketing-Seite und kein Dashboard.
+    if (isError || !projects || projects.length === 0) {
+        return null
+    }
+
     const [featured, ...rest] = projects
     const visibleRest = showAll ? rest : rest.slice(0, INITIAL_VISIBLE)
     const hiddenCount = rest.length - INITIAL_VISIBLE
@@ -153,7 +227,7 @@ function Projects() {
                     <AnimatePresence initial={false}>
                         {visibleRest.map((project, index) => (
                             <motion.div
-                                key={project.id}
+                                key={project.slug}
                                 initial={{ opacity: 0, y: 24 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 12 }}
