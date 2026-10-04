@@ -7,6 +7,7 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {Suspense} from "react";
 import {HelmetProvider} from "react-helmet-async";
 import trackspire from "@trackspire/sdk";
+import AnalyticsScript from "@/components/analytics-script.tsx";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -41,6 +42,7 @@ function App() {
     return (
         <HelmetProvider>
             <AppInner />
+            <AnalyticsScript />
         </HelmetProvider>
     )
 }
