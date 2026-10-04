@@ -40,9 +40,9 @@ export default function Timeline() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.6 }}
-                    className="mb-16 text-center"
+                    className="mb-16"
                 >
-                    <span className="section-badge mb-8 inline-flex">{t('timeline.badge')}</span>
+                    <p className="mb-5 font-mono text-xs text-muted-foreground/50">— 05</p>
                     <h2 className="text-5xl font-black tracking-tight md:text-6xl">
                         {t('timeline.headline')}
                     </h2>

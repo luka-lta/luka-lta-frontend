@@ -99,6 +99,27 @@ export const projects: Project[] = [
         year: "2025",
     },
     {
+        id: "dj-guide",
+        title: "DJ Guide",
+        description: "Reference app for Pioneer DJ equipment — controls, Camelot wheel, troubleshooting & fundamentals",
+        longDescription:
+            "DJ Guide is a mobile reference app for DJs using Pioneer equipment and Rekordbox. Covers controller controls & shortcuts, the Camelot key system for harmonic mixing, DJ fundamentals, and a troubleshooting guide. Built with Expo and React Native, available on the App Store.",
+        techStack: [
+            "React Native",
+            "Expo",
+            "TypeScript",
+            "React 19",
+        ],
+        screenshots: ["/static/images/projects/dj_guide.png"],
+        liveUrl: "https://apps.apple.com/us/app/dj-guide-pioneer-rekordbox/id6789975788",
+        liveLabel: "App Store",
+        repoUrl: "https://github.com/luka-lta/dj-guide",
+        repoOwner: "luka-lta",
+        repoName: "dj-guide",
+        role: "Creator",
+        year: "2025",
+    },
+    {
         id: "luka-lta-frontend",
         title: "luka-lta-frontend",
         description:

@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-Leitfaden für Claude Code in diesem Repo. Gesamtsystem-Überblick: @../luka-lta-api/CLAUDE.md
+Leitfaden für Codex in diesem Repo. Gesamtsystem-Überblick: ../luka-lta-api/CLAUDE.md
 
 ## Zweck
 

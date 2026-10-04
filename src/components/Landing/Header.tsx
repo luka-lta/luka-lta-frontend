@@ -18,7 +18,7 @@ function LanguageSwitcher() {
     }
 
     return (
-        <div className="flex items-center rounded-full border border-border/60 bg-card px-1">
+        <div className="flex items-center rounded-full border border-border/60 bg-card/80 px-1">
             {(['de', 'en'] as const).map((lang, idx) => (
                 <Fragment key={lang}>
                     {idx > 0 && <span className="h-3 w-px bg-border/60" />}
@@ -42,12 +42,19 @@ function LanguageSwitcher() {
 export default function Header() {
     const [mounted, setMounted] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
+    const [scrolled, setScrolled] = useState(false)
     const { theme, setTheme } = useTheme()
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
 
     useEffect(() => setMounted(true), [])
+
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 40)
+        window.addEventListener('scroll', onScroll, { passive: true })
+        return () => window.removeEventListener('scroll', onScroll)
+    }, [])
 
     const scrollToSection = (id: string) => {
         setMobileOpen(false)
@@ -73,10 +80,14 @@ export default function Header() {
 
     return (
         <motion.header
-            className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-md"
+            className={`sticky top-0 z-50 transition-all duration-300 ${
+                scrolled
+                    ? 'border-b border-border/40 bg-background/80 backdrop-blur-md'
+                    : 'bg-transparent'
+            }`}
             initial={{ y: -80, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
             <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
 
@@ -93,7 +104,7 @@ export default function Header() {
                             <button
                                 key={link.name}
                                 onClick={() => scrollToSection(link.anchor!)}
-                                className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                                className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                             >
                                 {link.name}
                             </button>
@@ -103,7 +114,7 @@ export default function Header() {
                                 to={link.to!}
                                 target={link.external ? "_blank" : undefined}
                                 rel={link.external ? "noopener noreferrer" : undefined}
-                                className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                                className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                             >
                                 {link.name}
                             </Link>
@@ -119,7 +130,7 @@ export default function Header() {
                         <button
                             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                             aria-label="Toggle theme"
-                            className="flex h-9 w-9 items-center justify-center rounded-full border border-border/60 bg-card text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                            className="flex h-9 w-9 items-center justify-center rounded-full border border-border/60 bg-card/80 text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
                         >
                             {theme === "dark"
                                 ? <SunIcon className="h-4 w-4" />
@@ -130,7 +141,7 @@ export default function Header() {
                     <button
                         onClick={() => setMobileOpen(!mobileOpen)}
                         aria-label="Toggle menu"
-                        className="flex h-9 w-9 items-center justify-center rounded-full border border-border/60 bg-card text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary md:hidden"
+                        className="flex h-9 w-9 items-center justify-center rounded-full border border-border/60 bg-card/80 text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary md:hidden"
                     >
                         {mobileOpen ? <X size={18} /> : <Menu size={18} />}
                     </button>
@@ -144,7 +155,7 @@ export default function Header() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="border-t border-border/40 bg-background md:hidden"
+                        className="border-t border-border/40 bg-background/95 backdrop-blur-md md:hidden"
                     >
                         <div className="flex flex-col gap-1 px-6 py-4">
                             {navLinks.map((link) => (

@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
-    image: ghcr.io/luka-lta/luka-lta-frontend/frontend-nginx:dev
+    image: ghcr.io/luka-lta/luka-lta-frontend/frontend-nginx:production
     container_name: luka-lta-frontend-nginx
     ports:
       - "80:80"
