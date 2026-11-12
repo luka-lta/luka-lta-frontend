@@ -86,3 +86,21 @@
 section[id] {
   scroll-margin-top: 80px;
 }
+
+/* Marquee: zwei identische Hälften, Verschiebung um 50 % ergibt eine nahtlose Schleife. */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 40s linear infinite;
+}
+
+html[data-motion="off"] .marquee-track {
+  animation-play-state: paused;
+}
