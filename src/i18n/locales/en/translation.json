@@ -16,7 +16,13 @@
     "description": "I build modern, scalable web applications — from backend architecture to polished frontends. Let's bring your project to life.",
     "cta_contact": "Get in Touch",
     "cta_projects": "View Projects",
-    "scroll_hint": "Scroll to explore"
+    "scroll_hint": "Scroll to explore",
+    "material": {
+      "title": "Logo Material",
+      "roughness": "roughness",
+      "ior": "ior",
+      "rotation": "Rotation"
+    }
   },
   "intro": {
     "loading": "Loading"

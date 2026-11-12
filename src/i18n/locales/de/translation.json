@@ -16,7 +16,13 @@
     "description": "Ich entwickle moderne, skalierbare Webanwendungen – vom Backend bis zum polierten Frontend. Lassen Sie uns Ihr Projekt gemeinsam umsetzen.",
     "cta_contact": "Kontakt aufnehmen",
     "cta_projects": "Projekte ansehen",
-    "scroll_hint": "Scrollen zum Entdecken"
+    "scroll_hint": "Scrollen zum Entdecken",
+    "material": {
+      "title": "Logo Material",
+      "roughness": "roughness",
+      "ior": "ior",
+      "rotation": "Rotation"
+    }
   },
   "intro": {
     "loading": "Wird geladen"
