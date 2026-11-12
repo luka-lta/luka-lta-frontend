@@ -28,6 +28,9 @@ export type SceneEnvironment = {
 /** Rotation als Quaternion `[x, y, z, w]`. */
 export type RotationQuaternion = [number, number, number, number];
 
+/** Feste Werte im Material-Panel, solange keine 3D-Szene läuft. */
+export const STATIC_ROTATION: RotationQuaternion = [0, 0.12, 0, 1];
+
 /** 3D nur mit feinem Zeiger, ab Tablet-Breite und mit WebGL2 – sonst bleibt das SVG. */
 export const canRender3D = ({ isPointerFine, viewportWidth, hasWebGL2 }: SceneEnvironment): boolean => {
   if (!isPointerFine) return false;
@@ -36,7 +39,7 @@ export const canRender3D = ({ isPointerFine, viewportWidth, hasWebGL2 }: SceneEn
 };
 
 /** Prüft WebGL2 über einen Wegwerf-Canvas und gibt den Kontext danach sofort wieder frei. */
-const detectWebGL2 = (): boolean => {
+export const detectWebGL2 = (): boolean => {
   try {
     const context = document.createElement('canvas').getContext('webgl2');
     if (context === null) return false;
@@ -47,10 +50,15 @@ const detectWebGL2 = (): boolean => {
   }
 };
 
-/** Liest die Geräteeigenschaften aus dem DOM (nicht getestet). */
-export const detectSceneEnvironment = (): SceneEnvironment => ({
+/** Günstige Prüfungen ohne WebGL-Kontext: Zeiger und Viewport-Breite (nicht getestet). */
+export const detectInputEnvironment = (): Omit<SceneEnvironment, 'hasWebGL2'> => ({
   isPointerFine: window.matchMedia(FINE_POINTER_QUERY).matches,
   viewportWidth: window.innerWidth,
+});
+
+/** Liest die Geräteeigenschaften aus dem DOM (nicht getestet). */
+export const detectSceneEnvironment = (): SceneEnvironment => ({
+  ...detectInputEnvironment(),
   hasWebGL2: detectWebGL2(),
 });
 

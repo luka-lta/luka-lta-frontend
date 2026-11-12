@@ -1,4 +1,4 @@
-import { Component, lazy, Suspense, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Component, lazy, memo, Suspense, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMotion } from '@/lib/motion/MotionProvider';
 import { cn } from '@/lib/utils';
@@ -6,12 +6,10 @@ import LogoMark from './LogoMark';
 import { formatProgress, markIntroSeen, shouldPlayIntro } from './intro';
 import {
   canRender3D,
-  detectSceneEnvironment,
+  detectInputEnvironment,
+  detectWebGL2,
   formatRotation,
-  GLASS_IOR,
-  GLASS_ROUGHNESS,
-  MAX_IOR,
-  MIN_IOR,
+  STATIC_ROTATION,
   type RotationQuaternion,
 } from './sceneSupport';
 
@@ -28,11 +26,6 @@ const TIMED_PROGRESS_MAX = 90;
 const INTRO_MAX_WAIT_MS = 6000;
 /** Verzögerung, falls `requestIdleCallback` fehlt (Safari). */
 const IDLE_FALLBACK_DELAY_MS = 200;
-/** Feste Panel-Werte ohne 3D-Szene. */
-const STATIC_ROTATION: RotationQuaternion = [0, 0.12, 0, 1];
-/** Balkenanteile im Material-Panel (0…1). */
-const ROUGHNESS_FILL = GLASS_ROUGHNESS;
-const IOR_FILL = (GLASS_IOR - MIN_IOR) / (MAX_IOR - MIN_IOR);
 
 /**
  * pending: Gerät wird geprüft bzw. Leerlauf abgewartet · unsupported: dauerhaft SVG ·
@@ -72,28 +65,10 @@ class SceneErrorBoundary extends Component<SceneErrorBoundaryProps, { hasError: 
   }
 }
 
-type MaterialBarProps = {
-  label: string;
-  value: string;
-  fill: number;
-};
-
-function MaterialBar({ label, value, fill }: MaterialBarProps) {
-  return (
-    <div className="mt-3">
-      <div className="flex justify-between">
-        <span>{label}</span>
-        <span className="text-foreground">{value}</span>
-      </div>
-      <div className="mt-1.5 h-px w-full bg-border">
-        <div className="h-px bg-primary" style={{ width: `${fill * PROGRESS_MAX}%` }} />
-      </div>
-    </div>
-  );
-}
-
 type HeroVisualProps = {
   className?: string;
+  /** Rotationszeile für das Material-Panel; ohne 3D die festen Werte. */
+  onRotationTextChange?: (text: string) => void;
 };
 
 /**
@@ -101,7 +76,7 @@ type HeroVisualProps = {
  * Darüber blendet die lazy geladene 3D-Szene, sobald sie bereit ist; bis dahin und auf
  * Mobilgeräten bleibt das SVG.
  */
-export default function HeroVisual({ className }: HeroVisualProps) {
+function HeroVisual({ className, onRotationTextChange }: HeroVisualProps) {
   const { t } = useTranslation();
   const { isMotionEnabled } = useMotion();
   // Einmal beim Mounten entscheiden; danach steuert nur noch der Ablauf.
@@ -110,7 +85,6 @@ export default function HeroVisual({ className }: HeroVisualProps) {
   const [isIntroTimerDone, setIsIntroTimerDone] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [sceneStatus, setSceneStatus] = useState<SceneStatus>('pending');
-  const [rotationText, setRotationText] = useState<string>(() => formatRotation(STATIC_ROTATION));
 
   const finishIntro = useCallback(() => {
     setProgress(PROGRESS_MAX);
@@ -118,13 +92,16 @@ export default function HeroVisual({ className }: HeroVisualProps) {
     markIntroSeen(getSessionStorage());
   }, []);
 
-  // Gerät prüfen und den Chunk erst im Leerlauf nach dem ersten Paint anfordern.
+  // Zeiger und Breite sofort prüfen; den teuren WebGL2-Test und den Chunk erst im Leerlauf.
   useEffect(() => {
-    if (!canRender3D(detectSceneEnvironment())) {
+    const inputEnvironment = detectInputEnvironment();
+    if (!canRender3D({ ...inputEnvironment, hasWebGL2: true })) {
       setSceneStatus('unsupported');
       return;
     }
-    const startLoading = () => setSceneStatus('loading');
+    const startLoading = () => {
+      setSceneStatus(canRender3D({ ...inputEnvironment, hasWebGL2: detectWebGL2() }) ? 'loading' : 'unsupported');
+    };
     if (typeof window.requestIdleCallback === 'function') {
       const idleId = window.requestIdleCallback(startLoading);
       return () => window.cancelIdleCallback(idleId);
@@ -178,13 +155,13 @@ export default function HeroVisual({ className }: HeroVisualProps) {
 
   const handleSceneError = useCallback(() => {
     setSceneStatus('failed');
-    setRotationText(formatRotation(STATIC_ROTATION));
-  }, []);
+    onRotationTextChange?.(formatRotation(STATIC_ROTATION));
+  }, [onRotationTextChange]);
 
-  const handleRotationChange = useCallback((rotation: RotationQuaternion) => {
-    // Gleicher Text → React überspringt das Rendering.
-    setRotationText(formatRotation(rotation));
-  }, []);
+  const handleRotationChange = useCallback(
+    (rotation: RotationQuaternion) => onRotationTextChange?.(formatRotation(rotation)),
+    [onRotationTextChange],
+  );
 
   // Element stabil halten, damit Panel-Updates die Szene nicht neu rendern.
   const scene = useMemo(
@@ -239,7 +216,7 @@ export default function HeroVisual({ className }: HeroVisualProps) {
         </>
       )}
       {isSceneMounted && (
-        // Größer als der Container, damit Drehung und Drift nicht abgeschnitten werden.
+        // 1,5× so groß wie der Container (CANVAS_SCALE in LogoScene), damit Drehung und Drift Platz haben.
         <div
           className={cn(
             'absolute -inset-1/4',
@@ -250,19 +227,9 @@ export default function HeroVisual({ className }: HeroVisualProps) {
           {scene}
         </div>
       )}
-
-      {/* Deko-Panel links unten neben dem Logo, nur ab lg */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 right-full mr-[clamp(3rem,8vw,8rem)] hidden w-52 font-mono
-          text-[0.625rem] uppercase tracking-[0.2em] text-muted-foreground lg:block"
-      >
-        <p className="text-foreground">{t('hero.material.title')}</p>
-        <MaterialBar label={t('hero.material.roughness')} value={GLASS_ROUGHNESS.toFixed(2)} fill={ROUGHNESS_FILL} />
-        <MaterialBar label={t('hero.material.ior')} value={GLASS_IOR.toFixed(2)} fill={IOR_FILL} />
-        <p className="mt-3">{t('hero.material.rotation')}</p>
-        <p className="mt-1 whitespace-pre tabular-nums text-foreground">{rotationText}</p>
-      </div>
     </div>
   );
 }
+
+// Memo: Hero rendert bei jeder Rotationsmeldung des Panels neu, das Logo braucht das nicht.
+export default memo(HeroVisual);

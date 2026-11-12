@@ -1,9 +1,11 @@
-import type { CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import HeroVisual from '@/components/Landing/Hero/HeroVisual';
+import MaterialPanel from '@/components/Landing/Hero/MaterialPanel';
+import { formatRotation, STATIC_ROTATION } from '@/components/Landing/Hero/sceneSupport';
 import { useMotion } from '@/lib/motion/MotionProvider';
 import { cn } from '@/lib/utils';
 
@@ -40,6 +42,7 @@ const gridStyle: CSSProperties = {
 export default function Hero() {
   const { t } = useTranslation();
   const { isMotionEnabled } = useMotion();
+  const [rotationText, setRotationText] = useState<string>(() => formatRotation(STATIC_ROTATION));
 
   // Nur Bewegung, keine Opacity: Hero-Text ist ab dem ersten Paint sichtbar (LCP).
   const fadeUp = (delay: number) => {
@@ -70,13 +73,17 @@ export default function Hero() {
         </h1>
 
         <HeroVisual
+          onRotationTextChange={setRotationText}
           className="mt-8 w-36 md:absolute md:left-1/2 md:top-1/2 md:mt-0 md:w-[clamp(11rem,20vw,19rem)]
             md:-translate-x-1/2 md:-translate-y-1/2"
         />
       </div>
 
-      {/* Inhaltsblock unten links */}
-      <motion.div {...fadeUp(0.2)} className="relative z-10 mx-auto mt-12 w-full max-w-7xl px-6 lg:px-8">
+      {/* Inhaltsblock unten links, Material-Panel (nur lg) rechts daneben unterhalb der Bühne */}
+      <motion.div
+        {...fadeUp(0.2)}
+        className="relative z-10 mx-auto mt-12 flex w-full max-w-7xl items-end justify-between gap-12 px-6 lg:px-8"
+      >
         <div className="max-w-md">
           <p
             className="inline-flex items-center gap-2.5 rounded-full border border-border/60 bg-card/80 px-4 py-1.5
@@ -146,6 +153,7 @@ export default function Hero() {
             </div>
           </div>
         </div>
+        <MaterialPanel rotationText={rotationText} className="hidden lg:block" />
       </motion.div>
 
       {/* Unten-Leiste: Scroll-Hinweis · Tagline · Rolle */}

@@ -37,18 +37,34 @@ const MUTED_ATTENUATION_DISTANCE = ATTENUATION_DISTANCE / MUTED_STRENGTH;
 
 /** Öffnungswinkel der Kamera in Grad. */
 const CAMERA_FOV = 35;
+/** Kantenlänge des gesamten Logos (zwei Quader plus Abstand). */
+const LOGO_EXTENT = 2 * BLOCK_SIZE + BLOCK_GAP;
+/** Canvas-Größe relativ zum Hero-Container (`-inset-1/4` in HeroVisual): Platz für Drehung und Drift. */
+const CANVAS_SCALE = 1.5;
 /**
- * Kameraabstand: Der Canvas ist 1,5× so groß wie der Hero-Container (Platz für Drehung und
- * Drift); bei diesem Abstand deckt sich das ungedrehte Logo ungefähr mit dem SVG (88/120).
+ * Anteil des Containers, den das ungedrehte Logo füllt. Das SVG füllt 88/120 ≈ 0,73; etwas mehr,
+ * weil die hellen Glaskanten optisch kleiner wirken als die vollen SVG-Flächen.
  */
-const CAMERA_DISTANCE = 7.1;
+const LOGO_FILL_OF_CONTAINER = 0.8;
+/** Kameraabstand, bei dem das Logo genau `LOGO_FILL_OF_CONTAINER` des Containers einnimmt. */
+const CAMERA_DISTANCE =
+  LOGO_EXTENT / (LOGO_FILL_OF_CONTAINER / CANVAS_SCALE) / (2 * Math.tan(((CAMERA_FOV / 2) * Math.PI) / 180));
 /** Sigma der PMREM-Unschärfe für die Raum-Umgebung (three.js-Beispielwert). */
 const ENVIRONMENT_BLUR_SIGMA = 0.04;
 
 /** Startdrehung um Y in Radiant – zeigt die Tiefe, ohne das Logo unkenntlich zu machen. */
 const INITIAL_TURN_Y_RAD = 0.24;
-/** Auto-Rotation um Y in Radiant pro Sekunde (eine Umdrehung in ~25 s). */
-const AUTO_ROTATION_SPEED = 0.25;
+/**
+ * Langsames Pendeln um Y statt Dauerdrehung: Eine volle Drehung zeigt die Rückseite, und die
+ * erscheint dem Betrachter spiegelverkehrt (Farben links/rechts vertauscht).
+ */
+const SWAY_AMPLITUDE_RAD = 0.35;
+/** Periodendauer des Pendelns in Sekunden. */
+const SWAY_PERIOD_S = 8;
+/** Wie schnell das Logo nach dem Loslassen zur Ruhelage zurückkehrt (pro Sekunde). */
+const RETURN_RATE_PER_S = 1.5;
+/** Obergrenze für das Frame-Delta in Sekunden, damit nach einer Pause nichts springt. */
+const MAX_FRAME_DELTA_S = 0.1;
 /** Drehung pro gezogenem Pixel in Radiant. */
 const DRAG_SENSITIVITY = 0.008;
 /** Obergrenze der Winkelgeschwindigkeit in Radiant pro Sekunde. */
@@ -138,15 +154,19 @@ function LogoBlocks({ isMotionEnabled, dragRef, onReadyRef, onRotationChangeRef 
   const sinceRotationReportRef = useRef<number>(ROTATION_REPORT_INTERVAL_S);
   // Hilfsobjekte wiederverwenden statt pro Frame neu anzulegen.
   const [turn] = useState<Quaternion>(() => new Quaternion());
+  const [target] = useState<Quaternion>(() => new Quaternion());
+  const [rest] = useState<Quaternion>(() => new Quaternion().setFromEuler(new Euler(0, INITIAL_TURN_Y_RAD, 0)));
+  const swayTimeRef = useRef<number>(0);
 
   useLayoutEffect(() => {
-    groupRef.current?.quaternion.setFromEuler(new Euler(0, INITIAL_TURN_Y_RAD, 0));
-  }, []);
+    groupRef.current?.quaternion.copy(rest);
+  }, [rest]);
 
-  useFrame((_state, delta) => {
+  useFrame((_state, frameDelta) => {
     const group = groupRef.current;
     if (group === null) return;
     const drag = dragRef.current;
+    const delta = Math.min(frameDelta, MAX_FRAME_DELTA_S);
 
     let angleX = drag.pendingX;
     let angleY = drag.pendingY;
@@ -159,7 +179,7 @@ function LogoBlocks({ isMotionEnabled, dragRef, onReadyRef, onRotationChangeRef 
     }
     if (!drag.isDragging && isMotionEnabled) {
       angleX += drag.velocityX * delta;
-      angleY += (drag.velocityY + AUTO_ROTATION_SPEED) * delta;
+      angleY += drag.velocityY * delta;
       const decay = Math.exp(-INERTIA_DECAY_PER_S * delta);
       drag.velocityX *= decay;
       drag.velocityY *= decay;
@@ -172,6 +192,14 @@ function LogoBlocks({ isMotionEnabled, dragRef, onReadyRef, onRotationChangeRef 
     // Drehung im Weltraum: horizontal ziehen dreht um Y, vertikal um X.
     group.quaternion.premultiply(turn.setFromAxisAngle(AXIS_Y, angleY));
     group.quaternion.premultiply(turn.setFromAxisAngle(AXIS_X, angleX));
+
+    // Ohne Ziehen zieht eine Feder zur pendelnden Ruhelage – die Vorderseite bleibt sichtbar.
+    if (!drag.isDragging && isMotionEnabled) {
+      swayTimeRef.current += delta;
+      const swayAngle = SWAY_AMPLITUDE_RAD * Math.sin((swayTimeRef.current * 2 * Math.PI) / SWAY_PERIOD_S);
+      target.copy(rest).premultiply(turn.setFromAxisAngle(AXIS_Y, swayAngle));
+      group.quaternion.slerp(target, 1 - Math.exp(-RETURN_RATE_PER_S * delta));
+    }
 
     // Beim Drehen driften die Quader auseinander und kehren in Ruhe zurück.
     const speed = Math.hypot(drag.velocityX, drag.velocityY);
@@ -292,6 +320,7 @@ export default function LogoScene({ isMotionEnabled, onReady, onRotationChange }
       onPointerMove={onPointerMove}
       onPointerUp={onPointerEnd}
       onPointerCancel={onPointerEnd}
+      onLostPointerCapture={onPointerEnd}
     >
       <Canvas
         dpr={[1, 2]}
