@@ -104,11 +104,14 @@
     "sending": "Wird gesendet…",
     "success": "Nachricht gesendet! Ich melde mich in Kürze.",
     "error": "Etwas ist schiefgelaufen. Bitte erneut versuchen oder direkt per E-Mail schreiben.",
+    "error_rate_limit": "Zu viele Anfragen in kurzer Zeit. Bitte versuchen Sie es in einigen Minuten erneut oder schreiben Sie direkt per E-Mail.",
+    "honeypot_label": "Dieses Feld bitte leer lassen",
     "privacy_text": "Mit dem Absenden stimmen Sie unserer",
     "privacy_link": "Datenschutzerklärung",
     "validation": {
       "name_required": "Bitte geben Sie Ihren Namen ein.",
       "email_required": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "phone_invalid": "Bitte geben Sie eine gültige Telefonnummer ein.",
       "message_required": "Bitte beschreiben Sie Ihr Projekt.",
       "message_min": "Die Nachricht muss mindestens 10 Zeichen lang sein."
     }

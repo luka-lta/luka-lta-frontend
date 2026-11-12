@@ -104,11 +104,14 @@
     "sending": "Sending…",
     "success": "Message sent! I'll be in touch soon.",
     "error": "Something went wrong. Please try again or email me directly.",
+    "error_rate_limit": "Too many requests in a short time. Please try again in a few minutes or email me directly.",
+    "honeypot_label": "Please leave this field empty",
     "privacy_text": "By submitting this form you agree to our",
     "privacy_link": "privacy policy",
     "validation": {
       "name_required": "Your name is required.",
       "email_required": "A valid email address is required.",
+      "phone_invalid": "Please enter a valid phone number.",
       "message_required": "Please describe your project.",
       "message_min": "Message must be at least 10 characters."
     }

@@ -15,9 +15,11 @@ bun run dev       # Vite-Dev-Server (Port 5173)
 bun run build     # tsc -b (Type-Check) + vite build → dist/
 bun run lint      # ESLint
 bun run preview   # Produktions-Build lokal servieren
+bun test          # Unit-Tests der Kontakt-Function (api/_contact/*.test.ts)
 ```
 
-Kein Test-Runner eingerichtet — Verifikation läuft über `bun run build` (Type-Check) + `bun run lint`
+Tests gibt es nur für die Kontakt-Function (`bun test`, eingebauter Runner, keine Dependency). Für
+alles andere läuft Verifikation über `bun run build` (Type-Check, inkl. `api/`) + `bun run lint`
 + Blick in den Browser. Nicht behaupten, etwas sei getestet.
 
 **Lockfile-Falle**: `bun.lock` und `package-lock.json` liegen beide im Repo. `bun` ist gesetzt;
@@ -33,6 +35,8 @@ Kein Test-Runner eingerichtet — Verifikation läuft über `bun run build` (Typ
   `response.status > 400`, ein echter 400 rutscht als Erfolg durch und scheitert erst am Zod-Parse.
 - `api/contact.ts` — Vercel Serverless Function (Node), **nicht** Teil des Vite-Builds. Versendet
   per nodemailer über SMTP. Läuft nicht im `vite dev`-Server, nur auf Vercel bzw. `vercel dev`.
+  Kernlogik und Spam-Schutz liegen in `api/_contact/` (Unterstrich = keine eigene Route; relative
+  Imports dort mit `.js`-Endung). Details: `docs/contact-form-spam-protection.md`.
 - `vercel.json` rewritet alles außer `/api/*` auf `/` (SPA-Fallback). Neue serverlose Route →
   Rewrite prüfen.
 - Analytics zweigleisig: Vercel Analytics/Speed Insights + `@trackspire/sdk` (Init in `src/App.tsx`),

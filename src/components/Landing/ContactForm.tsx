@@ -11,7 +11,19 @@ import { useTranslation } from "react-i18next"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { useContactForm } from "@/api/contact/useContactForm"
+import {
+    ContactFormError,
+    EMAIL_MAX_LENGTH,
+    HONEYPOT_FIELD,
+    isPhoneNumber,
+    MESSAGE_MAX_LENGTH,
+    MESSAGE_MIN_LENGTH,
+    NAME_MAX_LENGTH,
+    NAME_MIN_LENGTH,
+    PHONE_MAX_LENGTH,
+    prepareContactChallenge,
+    useContactForm,
+} from "@/api/contact/useContactForm"
 import { track } from "@/lib/analytics"
 
 const containerVariants: Variants = {
@@ -45,10 +57,13 @@ export default function ContactForm() {
     const mutation = useContactForm()
 
     const schema = z.object({
-        name: z.string().min(1, t('contact.validation.name_required')),
-        email: z.string().email(t('contact.validation.email_required')),
-        phone: z.string().optional(),
-        message: z.string().min(10, t('contact.validation.message_min')),
+        name: z.string().trim().min(NAME_MIN_LENGTH, t('contact.validation.name_required')),
+        email: z.string().trim().email(t('contact.validation.email_required')),
+        phone: z.string().trim()
+            .refine((value) => value === '' || isPhoneNumber(value), t('contact.validation.phone_invalid'))
+            .optional(),
+        message: z.string().trim().min(MESSAGE_MIN_LENGTH, t('contact.validation.message_min')),
+        [HONEYPOT_FIELD]: z.string().optional(),
     })
 
     type FormData = z.infer<typeof schema>
@@ -56,6 +71,10 @@ export default function ContactForm() {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
         resolver: zodResolver(schema),
     })
+
+    const errorMessage = mutation.error instanceof ContactFormError && mutation.error.code === 'rate_limited'
+        ? t('contact.error_rate_limit')
+        : t('contact.error')
 
     const onSubmit = (data: FormData) => {
         track('contact_form_submit')
@@ -97,6 +116,7 @@ export default function ContactForm() {
 
                     <motion.form
                         onSubmit={handleSubmit(onSubmit)}
+                        onFocusCapture={prepareContactChallenge}
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
@@ -149,15 +169,27 @@ export default function ContactForm() {
 
                         <motion.div variants={itemVariants} className="space-y-6">
                             {mutation.isSuccess && (
-                                <div className="rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-600 dark:text-green-400">
+                                <div role="status" className="rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-600 dark:text-green-400">
                                     {t('contact.success')}
                                 </div>
                             )}
                             {mutation.isError && (
-                                <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-                                    {t('contact.error')}
+                                <div role="alert" className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                                    {errorMessage}
                                 </div>
                             )}
+
+                            {/* Honeypot: für Menschen und Screenreader unsichtbar, nicht per Tab erreichbar */}
+                            <div className="sr-only" aria-hidden="true">
+                                <label htmlFor={HONEYPOT_FIELD}>{t('contact.honeypot_label')}</label>
+                                <input
+                                    id={HONEYPOT_FIELD}
+                                    type="text"
+                                    tabIndex={-1}
+                                    autoComplete="off"
+                                    {...register(HONEYPOT_FIELD)}
+                                />
+                            </div>
 
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
@@ -171,6 +203,7 @@ export default function ContactForm() {
                                         id="name"
                                         type="text"
                                         placeholder={t('contact.placeholder_name')}
+                                        maxLength={NAME_MAX_LENGTH}
                                         {...register('name')}
                                         className="rounded-xl border border-border/40 bg-background/40 text-sm text-foreground transition-all focus-visible:border-border/60 focus-visible:ring-2 focus-visible:ring-primary/30"
                                         aria-required="true"
@@ -196,6 +229,7 @@ export default function ContactForm() {
                                             id="email"
                                             type="email"
                                             placeholder={t('contact.placeholder_email')}
+                                            maxLength={EMAIL_MAX_LENGTH}
                                             {...register('email')}
                                             className="rounded-xl border border-border/40 bg-background/40 pl-10 text-sm text-foreground transition-all focus-visible:border-border/60 focus-visible:ring-2 focus-visible:ring-primary/30"
                                             autoComplete="email"
@@ -224,11 +258,15 @@ export default function ContactForm() {
                                         id="phone"
                                         type="tel"
                                         placeholder={t('contact.placeholder_phone')}
+                                        maxLength={PHONE_MAX_LENGTH}
                                         {...register('phone')}
                                         className="rounded-xl border border-border/40 bg-background/40 pl-10 text-sm text-foreground transition-all focus-visible:border-border/60 focus-visible:ring-2 focus-visible:ring-primary/30"
                                         autoComplete="tel"
                                     />
                                 </div>
+                                {errors.phone && (
+                                    <p className="text-xs text-destructive">{errors.phone.message}</p>
+                                )}
                             </div>
 
                             <div className="space-y-2">
@@ -246,6 +284,7 @@ export default function ContactForm() {
                                     <Textarea
                                         id="message"
                                         placeholder={t('contact.placeholder_message')}
+                                        maxLength={MESSAGE_MAX_LENGTH}
                                         {...register('message')}
                                         className="min-h-[140px] rounded-xl border border-border/40 bg-background/40 pl-10 text-sm text-foreground transition-all focus-visible:border-border/60 focus-visible:ring-2 focus-visible:ring-primary/30"
                                         aria-required="true"
