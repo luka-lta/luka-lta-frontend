@@ -15,3 +15,11 @@ export const LANDING_SECTIONS: ReadonlyArray<{ id: LandingSectionId; navKey: str
 export function getSectionNumber(id: LandingSectionId): number {
   return LANDING_SECTIONS.findIndex((section) => section.id === id);
 }
+
+/** Filtert die Sektions-IDs auf jene, die laut `isPresent` im DOM vorhanden sind (Reihenfolge bleibt erhalten). */
+export function filterPresentSections(
+  ids: ReadonlyArray<LandingSectionId>,
+  isPresent: (id: LandingSectionId) => boolean,
+): LandingSectionId[] {
+  return ids.filter(isPresent);
+}
