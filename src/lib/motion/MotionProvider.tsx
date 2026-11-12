@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { MotionConfig } from 'framer-motion';
+import { startSmoothScroll, stopSmoothScroll } from './smoothScroll';
 import { isMotionEnabled, loadPausedPreference, savePausedPreference } from './motionPreference';
 
 type MotionContextValue = {
@@ -44,6 +45,12 @@ export function MotionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.dataset.motion = enabled ? 'on' : 'off';
+  }, [enabled]);
+
+  useEffect(() => {
+    if (!enabled) return;
+    startSmoothScroll();
+    return stopSmoothScroll;
   }, [enabled]);
 
   const value = useMemo<MotionContextValue>(

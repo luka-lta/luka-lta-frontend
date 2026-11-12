@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import { Menu, X } from "lucide-react"
 import { LdsIcon } from "@/components/SiteLogo"
 import { useTranslation } from "react-i18next"
+import { scrollToSection as scrollToSectionSmooth } from "@/lib/motion/smoothScroll"
 
 function LanguageSwitcher() {
     const { i18n } = useTranslation()
@@ -57,11 +58,11 @@ export default function Header() {
     const scrollToSection = (id: string) => {
         setMobileOpen(false)
         if (location.pathname === '/') {
-            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+            scrollToSectionSmooth(id)
         } else {
             navigate('/')
             setTimeout(() => {
-                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+                scrollToSectionSmooth(id)
             }, 150)
         }
     }
@@ -141,6 +142,7 @@ export default function Header() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
+                        data-lenis-prevent
                         className="border-t border-border/40 bg-background/95 backdrop-blur-md md:hidden"
                     >
                         <div className="flex flex-col gap-1 px-6 py-4">
