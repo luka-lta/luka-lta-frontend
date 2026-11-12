@@ -15,7 +15,11 @@
     "role": "Freelance Web Developer for Businesses",
     "description": "I build modern, scalable web applications — from backend architecture to polished frontends. Let's bring your project to life.",
     "cta_contact": "Get in Touch",
-    "cta_projects": "View Projects"
+    "cta_projects": "View Projects",
+    "scroll_hint": "Scroll to explore"
+  },
+  "intro": {
+    "loading": "Loading"
   },
   "about": {
     "badge": "About",

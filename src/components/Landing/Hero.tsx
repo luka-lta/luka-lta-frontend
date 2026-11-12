@@ -1,170 +1,172 @@
-"use client"
-
-import { motion, useReducedMotion } from "framer-motion"
-import { ArrowRight, Github, Linkedin, Mail } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useTranslation } from "react-i18next"
+import type { CSSProperties } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowDown, ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/ui/button';
+import HeroVisual from '@/components/Landing/Hero/HeroVisual';
+import { useMotion } from '@/lib/motion/MotionProvider';
+import { cn } from '@/lib/utils';
 
 const socials = [
-    { icon: Github, href: "https://github.com/luka-lta", label: "GitHub", platform: "github" },
-    { icon: Linkedin, href: "https://www.linkedin.com/in/luka-liebenthal-aa047931b/", label: "LinkedIn", platform: "linkedin" },
-    { icon: Mail, href: "mailto:info@luka-lta.dev", label: "Email", platform: "email" },
-]
+  { icon: Github, href: 'https://github.com/luka-lta', label: 'GitHub', platform: 'github' },
+  {
+    icon: Linkedin,
+    href: 'https://www.linkedin.com/in/luka-liebenthal-aa047931b/',
+    label: 'LinkedIn',
+    platform: 'linkedin',
+  },
+  { icon: Mail, href: 'mailto:info@luka-lta.dev', label: 'Email', platform: 'email' },
+];
 
-const ease = [0.16, 1, 0.3, 1] as const
+const ease = [0.16, 1, 0.3, 1] as const;
+
+/** Vertikaler Versatz der Einblendung in Pixeln. */
+const FADE_OFFSET_PX = 24;
+/** Dauer der Einblendung in Sekunden. */
+const FADE_DURATION_S = 0.8;
+
+/** Feines Raster, das nur zur Mitte hin sichtbar ist. */
+const GRID_MASK = 'radial-gradient(ellipse 65% 60% at 50% 42%, black 0%, transparent 100%)';
+const gridStyle: CSSProperties = {
+  backgroundImage: [
+    'linear-gradient(to right, hsl(var(--border)) 1px, transparent 1px)',
+    'linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px)',
+  ].join(', '),
+  backgroundSize: '64px 64px',
+  maskImage: GRID_MASK,
+  WebkitMaskImage: GRID_MASK,
+};
 
 export default function Hero() {
-    const { t } = useTranslation()
-    const reduced = useReducedMotion()
+  const { t } = useTranslation();
+  const { isMotionEnabled } = useMotion();
 
-    const fadeUp = (delay: number) => ({
-        initial: { opacity: 0, y: reduced ? 0 : 28 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.8, delay, ease },
-    })
+  // Nur Bewegung, keine Opacity: Hero-Text ist ab dem ersten Paint sichtbar (LCP).
+  const fadeUp = (delay: number) => {
+    if (!isMotionEnabled) return {};
+    return {
+      initial: { y: FADE_OFFSET_PX },
+      animate: { y: 0 },
+      transition: { duration: FADE_DURATION_S, delay, ease },
+    };
+  };
 
-    return (
-        <section id="top" className="relative flex min-h-screen w-full flex-col justify-between overflow-hidden bg-background pb-10 pt-28 lg:pt-36">
+  return (
+    <section
+      id="top"
+      className="relative isolate flex min-h-[100svh] w-full flex-col overflow-hidden bg-background pt-24 md:pt-28"
+    >
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10" style={gridStyle} />
 
-            {/* Subtle top-right corner accent — single, intentional */}
-            <div className="pointer-events-none absolute right-0 top-0 h-px w-64 bg-gradient-to-l from-primary/40 to-transparent" />
-            <div className="pointer-events-none absolute right-0 top-0 h-64 w-px bg-gradient-to-b from-primary/40 to-transparent" />
+      {/* Bühne: riesiger Name als Hintergrund-Ebene, davor das Logo (ab md zentriert darüber) */}
+      <div className="relative flex flex-1 flex-col items-center justify-center px-4 md:px-0">
+        <h1
+          className="select-none text-center font-extrabold leading-[0.86] tracking-tighter
+            text-[clamp(2.5rem,14.5vw,4rem)] md:text-[clamp(4rem,16vw,14rem)]"
+        >
+          <span className="mx-auto block w-fit text-foreground">LUKA</span>{' '}
+          <span className="mx-auto block w-fit gradient-text">LIEBENTHAL</span>
+          <span className="sr-only"> – {t('hero.role')}</span>
+        </h1>
 
-            {/* Film grain */}
-            <div
-                className="pointer-events-none absolute inset-0 opacity-[0.032]"
-                style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")`,
-                    backgroundSize: "180px",
-                }}
+        <HeroVisual
+          className="mt-8 w-36 md:absolute md:left-1/2 md:top-1/2 md:mt-0 md:w-[clamp(11rem,20vw,19rem)]
+            md:-translate-x-1/2 md:-translate-y-1/2"
+        />
+      </div>
+
+      {/* Inhaltsblock unten links */}
+      <motion.div {...fadeUp(0.2)} className="relative z-10 mx-auto mt-12 w-full max-w-7xl px-6 lg:px-8">
+        <div className="max-w-md">
+          <p
+            className="inline-flex items-center gap-2.5 rounded-full border border-border/60 bg-card/80 px-4 py-1.5
+              text-xs font-medium text-muted-foreground backdrop-blur-sm"
+          >
+            <span
+              className={cn('h-1.5 w-1.5 rounded-full bg-teal', isMotionEnabled && 'animate-pulse')}
+              aria-hidden="true"
             />
+            {t('hero.available')}
+          </p>
 
-            {/* Main content */}
-            <div className="relative z-10 mx-auto w-full max-w-7xl px-6 lg:px-8">
+          <p className="mt-5 text-base leading-relaxed text-muted-foreground">{t('hero.description')}</p>
 
-                {/* Availability badge */}
-                <motion.div
-                    {...fadeUp(0)}
-                    className="mb-10 inline-flex items-center gap-2.5 rounded-full border border-border/60 bg-card/80 px-5 py-2 text-sm font-medium text-muted-foreground backdrop-blur-sm"
-                >
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[hsl(var(--teal))]" />
-                    {t('hero.available')}
-                </motion.div>
-
-                {/* Editorial name — left-aligned, huge */}
-                <div className="overflow-hidden">
-                    <motion.h1 className="select-none leading-[0.88] tracking-tighter">
-                        <motion.span
-                            initial={{ opacity: 0, y: reduced ? 0 : 70 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1, delay: 0.1, ease }}
-                            className="block text-[clamp(3.5rem,11.5vw,10.5rem)] font-black text-foreground"
-                        >
-                            LUKA
-                        </motion.span>
-                        <motion.span
-                            initial={{ opacity: 0, y: reduced ? 0 : 70 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1, delay: 0.22, ease }}
-                            className="block text-[clamp(3.5rem,11.5vw,10.5rem)] font-black gradient-text"
-                        >
-                            LIEBENTHAL
-                        </motion.span>
-                    </motion.h1>
-                </div>
-
-                {/* Animated amber divider */}
-                <motion.div
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: 1.1, delay: 0.48, ease }}
-                    style={{ transformOrigin: "left" }}
-                    className="my-8 h-px w-full bg-gradient-to-r from-primary via-primary/40 to-transparent lg:my-10"
-                />
-
-                {/* Role + CTAs row */}
-                <motion.div
-                    {...fadeUp(0.65)}
-                    className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between"
-                >
-                    <div className="max-w-md">
-                        <p className="font-mono text-xs font-medium uppercase tracking-[0.25em] text-primary">
-                            Full-Stack Developer · Dev Studio
-                        </p>
-                        <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-                            {t('hero.description')}
-                        </p>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-3">
-                        <Button asChild size="lg" className="gap-2 rounded-full px-7 font-semibold">
-                            <a
-                                href="#contact"
-                                data-trackspire-event="cta_click"
-                                data-trackspire-prop-type="contact"
-                                data-trackspire-prop-source="hero"
-                            >
-                                {t('hero.cta_contact')}
-                                <ArrowRight className="h-4 w-4" />
-                            </a>
-                        </Button>
-                        <Button
-                            asChild
-                            size="lg"
-                            variant="outline"
-                            className="rounded-full px-7 font-semibold border-border/60 hover:border-primary/50 hover:bg-primary/10 hover:text-primary"
-                        >
-                            <a
-                                href="#projects"
-                                data-trackspire-event="cta_click"
-                                data-trackspire-prop-type="projects"
-                                data-trackspire-prop-source="hero"
-                            >
-                                {t('hero.cta_projects')}
-                            </a>
-                        </Button>
-                    </div>
-                </motion.div>
-            </div>
-
-            {/* Bottom bar: socials + location + scroll */}
-            <motion.div
-                {...fadeUp(0.9)}
-                className="relative z-10 mx-auto mt-16 w-full max-w-7xl px-6 lg:px-8"
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Button asChild size="lg" className="gap-2 rounded-full px-7 font-semibold">
+              <a
+                href="#contact"
+                data-trackspire-event="cta_click"
+                data-trackspire-prop-type="contact"
+                data-trackspire-prop-source="hero"
+              >
+                {t('hero.cta_contact')}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-full border-border/60 px-7 font-semibold hover:border-primary/50 hover:bg-primary/10
+                hover:text-primary"
             >
-                <div className="flex items-center justify-between gap-4 border-t border-border/40 pt-6">
-                    {/* Left: location */}
-                    <p className="font-mono text-xs text-muted-foreground/50">
-                        Hameln , DE
-                    </p>
+              <a
+                href="#projects"
+                data-trackspire-event="cta_click"
+                data-trackspire-prop-type="projects"
+                data-trackspire-prop-source="hero"
+              >
+                {t('hero.cta_projects')}
+              </a>
+            </Button>
+          </div>
 
-                    {/* Center: tagline */}
-                    <p className="hidden text-sm font-medium italic text-muted-foreground md:block">
-                        "Your idea, shipped."
-                    </p>
+          <div className="mt-6 flex items-center gap-4">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Hameln, DE</p>
+            <span className="h-px w-6 bg-border" aria-hidden="true" />
+            <div className="flex gap-2">
+              {socials.map((social) => (
+                <motion.a
+                  key={social.href}
+                  href={social.href}
+                  aria-label={social.label}
+                  target={social.href.startsWith('http') ? '_blank' : undefined}
+                  rel="noopener noreferrer"
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-border/50
+                    text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                  data-trackspire-event="social_click"
+                  data-trackspire-prop-platform={social.platform}
+                  data-trackspire-prop-source="hero"
+                >
+                  <social.icon className="h-3.5 w-3.5" aria-hidden="true" />
+                </motion.a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
-                    {/* Right: socials */}
-                    <div className="flex gap-2">
-                        {socials.map((social) => (
-                            <motion.a
-                                key={social.href}
-                                href={social.href}
-                                aria-label={social.label}
-                                target={social.href.startsWith("http") ? "_blank" : undefined}
-                                rel="noopener noreferrer"
-                                whileHover={{ y: -2 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="flex h-9 w-9 items-center justify-center rounded-full border border-border/50 text-muted-foreground/60 transition-colors hover:border-primary/50 hover:text-primary"
-                                data-trackspire-event="social_click"
-                                data-trackspire-prop-platform={social.platform}
-                                data-trackspire-prop-source="hero"
-                            >
-                                <social.icon className="h-3.5 w-3.5" />
-                            </motion.a>
-                        ))}
-                    </div>
-                </div>
-            </motion.div>
-        </section>
-    )
+      {/* Unten-Leiste: Scroll-Hinweis · Tagline · Rolle */}
+      <motion.div {...fadeUp(0.35)} className="relative z-10 mx-auto mt-10 w-full max-w-7xl px-6 pb-6 lg:px-8">
+        <div
+          className="grid grid-cols-2 items-center gap-4 border-t border-border/40 pt-5 font-mono text-xs uppercase
+            tracking-[0.2em] text-muted-foreground md:grid-cols-3"
+        >
+          <a href="#about" className="inline-flex w-fit items-center gap-2 transition-colors hover:text-foreground">
+            {t('hero.scroll_hint')}
+            <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
+          <p className="hidden text-center font-sans text-sm normal-case italic tracking-normal md:block">
+            "Your idea, shipped."
+          </p>
+          {/* Rolle steht bereits (sr-only) in der h1 */}
+          <p className="text-right" aria-hidden="true">
+            {t('hero.role')}
+          </p>
+        </div>
+      </motion.div>
+    </section>
+  );
 }

@@ -15,7 +15,11 @@
     "role": "Freelance Webentwickler für Unternehmen",
     "description": "Ich entwickle moderne, skalierbare Webanwendungen – vom Backend bis zum polierten Frontend. Lassen Sie uns Ihr Projekt gemeinsam umsetzen.",
     "cta_contact": "Kontakt aufnehmen",
-    "cta_projects": "Projekte ansehen"
+    "cta_projects": "Projekte ansehen",
+    "scroll_hint": "Scrollen zum Entdecken"
+  },
+  "intro": {
+    "loading": "Wird geladen"
   },
   "about": {
     "badge": "Über mich",
