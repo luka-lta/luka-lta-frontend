@@ -100,9 +100,9 @@ export default function Hero() {
                         <Button asChild size="lg" className="gap-2 rounded-full px-7 font-semibold">
                             <a
                                 href="#contact"
-                                data-flowtix-event="cta_click"
-                                data-flowtix-prop-type="contact"
-                                data-flowtix-prop-source="hero"
+                                data-trackspire-event="cta_click"
+                                data-trackspire-prop-type="contact"
+                                data-trackspire-prop-source="hero"
                             >
                                 {t('hero.cta_contact')}
                                 <ArrowRight className="h-4 w-4" />
@@ -116,9 +116,9 @@ export default function Hero() {
                         >
                             <a
                                 href="#projects"
-                                data-flowtix-event="cta_click"
-                                data-flowtix-prop-type="projects"
-                                data-flowtix-prop-source="hero"
+                                data-trackspire-event="cta_click"
+                                data-trackspire-prop-type="projects"
+                                data-trackspire-prop-source="hero"
                             >
                                 {t('hero.cta_projects')}
                             </a>
@@ -155,9 +155,9 @@ export default function Hero() {
                                 whileHover={{ y: -2 }}
                                 whileTap={{ scale: 0.95 }}
                                 className="flex h-9 w-9 items-center justify-center rounded-full border border-border/50 text-muted-foreground/60 transition-colors hover:border-primary/50 hover:text-primary"
-                                data-flowtix-event="social_click"
-                                data-flowtix-prop-platform={social.platform}
-                                data-flowtix-prop-source="hero"
+                                data-trackspire-event="social_click"
+                                data-trackspire-prop-platform={social.platform}
+                                data-trackspire-prop-source="hero"
                             >
                                 <social.icon className="h-3.5 w-3.5" />
                             </motion.a>
