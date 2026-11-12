@@ -179,6 +179,10 @@
     "accept": "Accept",
     "decline": "Decline"
   },
+  "cursor": {
+    "open": "OPEN",
+    "drag": "DRAG"
+  },
   "motion": {
     "pause": "Pause motion",
     "resume": "Resume motion"

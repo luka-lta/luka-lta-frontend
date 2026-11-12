@@ -1,5 +1,6 @@
 import {MotionProvider} from "@/lib/motion/MotionProvider";
 import MotionToggle from "@/components/MotionToggle";
+import CustomCursor from "@/components/Cursor/CustomCursor";
 import {RouterProvider} from "react-router-dom";
 import {appRouter} from "@/AppRouter.tsx";
 import ErrorPage from "@/pages/ErrorPage.tsx";
@@ -33,6 +34,7 @@ function AppInner() {
                 <Suspense fallback={<ErrorPage/>}>
                     <FloatingScrollToTop/>
                     <MotionToggle/>
+                    <CustomCursor/>
                     <RouterProvider router={appRouter} fallbackElement={<ErrorPage/>}/>
                 </Suspense>
             </QueryClientProvider>
