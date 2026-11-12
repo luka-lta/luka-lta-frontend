@@ -39,7 +39,11 @@
   "projects": {
     "badge": "Projects",
     "headline": "Things I've built",
-    "view_details": "View project details"
+    "view_details": "View project details",
+    "prev": "Previous project",
+    "next": "Next project",
+    "carousel_label": "Selected projects",
+    "client": "Client"
   },
   "skills": {
     "badge": "Skills",
