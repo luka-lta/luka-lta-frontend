@@ -2,9 +2,8 @@
 
 import { useState, useEffect, Fragment } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { useTheme } from "@/assets/providers/ThemeProvider"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { MoonIcon, SunIcon, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { LdsIcon } from "@/components/SiteLogo"
 import { useTranslation } from "react-i18next"
 
@@ -43,7 +42,6 @@ export default function Header() {
     const [mounted, setMounted] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
-    const { theme, setTheme } = useTheme()
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
@@ -125,18 +123,6 @@ export default function Header() {
                 {/* Right */}
                 <div className="flex items-center gap-2">
                     {mounted && <LanguageSwitcher />}
-
-                    {mounted && (
-                        <button
-                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                            aria-label="Toggle theme"
-                            className="flex h-9 w-9 items-center justify-center rounded-full border border-border/60 bg-card/80 text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
-                        >
-                            {theme === "dark"
-                                ? <SunIcon className="h-4 w-4" />
-                                : <MoonIcon className="h-4 w-4" />}
-                        </button>
-                    )}
 
                     <button
                         onClick={() => setMobileOpen(!mobileOpen)}

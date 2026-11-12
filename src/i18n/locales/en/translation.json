@@ -176,5 +176,9 @@
     "learn_more": "Learn more",
     "accept": "Accept",
     "decline": "Decline"
+  },
+  "motion": {
+    "pause": "Pause motion",
+    "resume": "Resume motion"
   }
 }

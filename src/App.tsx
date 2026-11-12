@@ -1,4 +1,5 @@
-import {ThemeProvider} from "@/assets/providers/ThemeProvider.tsx";
+import {MotionProvider} from "@/lib/motion/MotionProvider";
+import MotionToggle from "@/components/MotionToggle";
 import {RouterProvider} from "react-router-dom";
 import {appRouter} from "@/AppRouter.tsx";
 import ErrorPage from "@/pages/ErrorPage.tsx";
@@ -27,14 +28,15 @@ trackspire.init({
 
 function AppInner() {
     return (
-        <ThemeProvider defaultTheme='dark' storageKey='ui-theme'>
+        <MotionProvider>
             <QueryClientProvider client={queryClient}>
                 <Suspense fallback={<ErrorPage/>}>
                     <FloatingScrollToTop/>
+                    <MotionToggle/>
                     <RouterProvider router={appRouter} fallbackElement={<ErrorPage/>}/>
                 </Suspense>
             </QueryClientProvider>
-        </ThemeProvider>
+        </MotionProvider>
     )
 }
 
