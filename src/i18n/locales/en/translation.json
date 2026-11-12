@@ -6,7 +6,9 @@
     "skills": "Skills",
     "contact": "Contact",
     "links": "Links",
-    "status": "Status"
+    "status": "Status",
+    "top": "Top",
+    "timeline": "Journey"
   },
   "hero": {
     "available": "Available for projects",
@@ -180,5 +182,34 @@
   "motion": {
     "pause": "Pause motion",
     "resume": "Resume motion"
+  },
+  "sections": {
+    "about": {
+      "label": "ABOUT",
+      "context": "HAMELN, DE"
+    },
+    "projects": {
+      "label": "WORK",
+      "context": "DRAG OR SCROLL ↔"
+    },
+    "skills": {
+      "label": "SKILLS",
+      "context": "STACK & TOOLS"
+    },
+    "services": {
+      "label": "SERVICES",
+      "context": "FOR YOUR BUSINESS"
+    },
+    "timeline": {
+      "label": "JOURNEY",
+      "context": "MY PATH"
+    },
+    "contact": {
+      "label": "CONTACT",
+      "context": "REPLY WITHIN 24 H"
+    }
+  },
+  "rail": {
+    "label": "Sections"
   }
 }

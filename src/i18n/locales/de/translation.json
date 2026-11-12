@@ -6,7 +6,9 @@
     "skills": "Skills",
     "contact": "Kontakt",
     "links": "Links",
-    "status": "Status"
+    "status": "Status",
+    "top": "Start",
+    "timeline": "Werdegang"
   },
   "hero": {
     "available": "Verfügbar für Projekte",
@@ -180,5 +182,34 @@
   "motion": {
     "pause": "Motion pausieren",
     "resume": "Motion fortsetzen"
+  },
+  "sections": {
+    "about": {
+      "label": "ÜBER MICH",
+      "context": "HAMELN, DE"
+    },
+    "projects": {
+      "label": "PROJEKTE",
+      "context": "ZIEHEN ODER SCROLLEN ↔"
+    },
+    "skills": {
+      "label": "SKILLS",
+      "context": "STACK & WERKZEUGE"
+    },
+    "services": {
+      "label": "LEISTUNGEN",
+      "context": "FÜR IHR UNTERNEHMEN"
+    },
+    "timeline": {
+      "label": "WERDEGANG",
+      "context": "MEIN WEG"
+    },
+    "contact": {
+      "label": "KONTAKT",
+      "context": "ANTWORT IN 24 H"
+    }
+  },
+  "rail": {
+    "label": "Abschnitte"
   }
 }

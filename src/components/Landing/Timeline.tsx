@@ -34,7 +34,7 @@ export default function Timeline() {
     ]
 
     return (
-        <section ref={ref} className="bg-card px-6 py-24 md:py-32">
+        <section id="timeline" ref={ref} className="bg-card px-6 py-24 md:py-32">
             <div className="mx-auto max-w-5xl">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

@@ -8,6 +8,7 @@ import Skills from "@/components/Landing/Skills.tsx";
 import Projects from "@/components/Landing/Projects.tsx";
 import Footer from "@/components/Landing/Footer.tsx";
 import Services from "@/components/Landing/Services.tsx";
+import SectionRail from "@/components/Landing/SectionRail/SectionRail";
 import SEO from "@/components/SEO.tsx";
 import { useTranslation } from "react-i18next";
 
@@ -22,6 +23,7 @@ export default function LandingPage() {
                 canonicalPath="/"
             />
             <Header/>
+            <SectionRail />
             <main>
                 <Hero/>
                 <About/>

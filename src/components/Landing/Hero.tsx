@@ -24,7 +24,7 @@ export default function Hero() {
     })
 
     return (
-        <section className="relative flex min-h-screen w-full flex-col justify-between overflow-hidden bg-background pb-10 pt-28 lg:pt-36">
+        <section id="top" className="relative flex min-h-screen w-full flex-col justify-between overflow-hidden bg-background pb-10 pt-28 lg:pt-36">
 
             {/* Subtle top-right corner accent — single, intentional */}
             <div className="pointer-events-none absolute right-0 top-0 h-px w-64 bg-gradient-to-l from-primary/40 to-transparent" />
