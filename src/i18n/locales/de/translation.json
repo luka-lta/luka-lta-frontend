@@ -34,7 +34,21 @@
     "body": "Ich bin ein Full-Stack-Entwickler mit Fokus auf Webanwendungen, Backend-Architekturen und Automatisierung. Mit Expertise in PHP, TypeScript, Docker, MySQL und Elasticsearch entwickle ich skalierbare, performante Lösungen für moderne Unternehmen.",
     "stat_experience": "Jahre Erfahrung",
     "stat_projects": "Projekte umgesetzt",
-    "stat_technologies": "Technologien"
+    "stat_technologies": "Technologien",
+    "highlights": {
+      "fullstack": {
+        "title": "Full-Stack",
+        "body": "Von Frontend bis Backend — React, TypeScript, PHP, Node.js, Datenbanken. Ohne Übergaben."
+      },
+      "fast": {
+        "title": "Schnell geliefert",
+        "body": "Von der Idee zum fertigen Produkt. Ich arbeite zügig, ohne bei der Qualität zu sparen."
+      },
+      "client": {
+        "title": "Kundennah",
+        "body": "Direkter Draht, kein Agentur-Overhead. Sie sprechen mit dem Entwickler Ihres Produkts."
+      }
+    }
   },
   "projects": {
     "badge": "Projekte",

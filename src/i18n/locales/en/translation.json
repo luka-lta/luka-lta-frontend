@@ -34,7 +34,21 @@
     "body": "I'm a full stack developer focused on web applications, backend architectures, and automation. With expertise in PHP, TypeScript, Docker, MySQL, and Elasticsearch, I design and develop scalable, high-performance solutions that power modern businesses.",
     "stat_experience": "Years of Experience",
     "stat_projects": "Projects Built",
-    "stat_technologies": "Technologies"
+    "stat_technologies": "Technologies",
+    "highlights": {
+      "fullstack": {
+        "title": "Full-Stack",
+        "body": "Frontend to backend — React, TypeScript, PHP, Node.js, databases. No handoffs needed."
+      },
+      "fast": {
+        "title": "Ships fast",
+        "body": "From idea to deployed product. I move quickly without cutting corners on quality."
+      },
+      "client": {
+        "title": "Client-first",
+        "body": "Direct communication, no agency overhead. You talk to the developer building your product."
+      }
+    }
   },
   "projects": {
     "badge": "Projects",
