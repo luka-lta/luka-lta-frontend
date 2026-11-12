@@ -8,7 +8,7 @@ let frameId: number | null = null;
 
 export function startSmoothScroll(): void {
   if (lenis !== null) return;
-  const instance = new Lenis();
+  const instance = new Lenis({ anchors: { offset: -HEADER_OFFSET_PX } });
   lenis = instance;
 
   const onFrame = (time: number) => {

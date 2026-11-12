@@ -80,3 +80,9 @@
 .section-badge {
   @apply inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground;
 }
+
+/* Anker-Ziele nicht unter dem fixen Header landen lassen (Fallback ohne Lenis).
+   Spiegelt HEADER_OFFSET_PX in src/lib/motion/smoothScroll.ts (80px). */
+section[id] {
+  scroll-margin-top: 80px;
+}
