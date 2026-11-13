@@ -15,9 +15,12 @@ bun run dev       # Vite-Dev-Server (Port 5173)
 bun run build     # tsc -b (Type-Check) + vite build → dist/
 bun run lint      # ESLint
 bun run preview   # Produktions-Build lokal servieren
+bun test          # Unit-Tests: Kontakt-Function (api/_contact/*.test.ts) + src/**/*.test.ts
 ```
 
-Kein Test-Runner eingerichtet — Verifikation läuft über `bun run build` (Type-Check) + `bun run lint`
+Tests gibt es für die Kontakt-Function und für Logik unter `src/**/*.test.ts` (`bun test`, eingebauter
+Runner, keine Dependency; `src/**/*.test.ts` ist per `tsconfig.app.json` vom `tsc -b` ausgenommen). Für
+alles andere läuft Verifikation über `bun run build` (Type-Check, inkl. `api/`) + `bun run lint`
 + Blick in den Browser. Nicht behaupten, etwas sei getestet.
 
 **Lockfile-Falle**: `bun.lock` und `package-lock.json` liegen beide im Repo. `bun` ist gesetzt;
@@ -33,11 +36,20 @@ Kein Test-Runner eingerichtet — Verifikation läuft über `bun run build` (Typ
   `response.status > 400`, ein echter 400 rutscht als Erfolg durch und scheitert erst am Zod-Parse.
 - `api/contact.ts` — Vercel Serverless Function (Node), **nicht** Teil des Vite-Builds. Versendet
   per nodemailer über SMTP. Läuft nicht im `vite dev`-Server, nur auf Vercel bzw. `vercel dev`.
+  Kernlogik und Spam-Schutz liegen in `api/_contact/` (Unterstrich = keine eigene Route; relative
+  Imports dort mit `.js`-Endung). Details: `docs/contact-form-spam-protection.md`.
 - `vercel.json` rewritet alles außer `/api/*` auf `/` (SPA-Fallback). Neue serverlose Route →
   Rewrite prüfen.
 - Analytics zweigleisig: Vercel Analytics/Speed Insights + `@trackspire/sdk` (Init in `src/App.tsx`),
   dazu Google-Tag über `vite-plugin-radar`, gated durch das Cookie-Consent in
   `src/components/blocks/cookie-consent`. Neues Tracking **immer** hinter Consent.
+- Motion ist zentral in `src/lib/motion/`: jede neue Animation über `useMotion()` / `isMotionEnabled`
+  (respektiert `prefers-reduced-motion`; bestehender Framer-Code wird schrittweise umgestellt).
+  Smooth Scroll läuft über Lenis; Sprünge zu Sektionen über `scrollToSection` / `useSectionNavigation`
+  oder normale Hash-Links (`#contact`) — bei laufendem Lenis fängt ein Click-Handler in `smoothScroll.ts`
+  sie ab (Modifier-Klicks bleiben nativ). Header-Versatz kommt **nur** aus CSS-`scroll-margin-top`
+  (`section[id]` in `src/index.css`); Lenis und `scrollIntoView` ziehen es selbst ab — kein JS-Offset.
+- Theme ist **nur dunkel** (kein Theme-Toggle). Helle Akzent-Sektionen über `.section-light`.
 
 ## Konventionen
 
@@ -46,7 +58,7 @@ Kein Test-Runner eingerichtet — Verifikation läuft über `bun run build` (Typ
 - Imports über `@/` (Alias auf `src/`), nicht relativ hochnavigieren.
 - 2 Spaces, Semikolons, Imports ohne Datei-Endung bei neuen Dateien.
 - Farben über CSS-Variablen in `src/index.css`, nicht in `tailwind.config.js` hart eintragen.
-  Dark/Light über `ThemeProvider` in `src/assets/providers/`, Tailwind-Strategie `class`.
+  Dunkel-only, siehe Architektur-Eigenheiten.
 
 ### SEO (manuell gepflegt — nichts generiert das)
 
@@ -69,6 +81,7 @@ Kein Test-Runner eingerichtet — Verifikation läuft über `bun run build` (Typ
 - Animationen `prefers-reduced-motion` respektieren.
 - Interaktive Elemente brauchen erreichbaren Fokus und Accessible Name; Radix-Primitives nutzen
   statt `div` mit `onClick`.
+- Der Header rendert den Skip-Link auf `#main`: jede Seite mit Header braucht `<main id="main" tabIndex={-1}>`.
 - Bilder in `public/static/` mit Dimensionen einbinden (kein Layout-Shift).
 
 ## Nicht tun

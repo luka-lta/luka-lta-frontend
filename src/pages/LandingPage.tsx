@@ -8,6 +8,7 @@ import Skills from "@/components/Landing/Skills.tsx";
 import Projects from "@/components/Landing/Projects.tsx";
 import Footer from "@/components/Landing/Footer.tsx";
 import Services from "@/components/Landing/Services.tsx";
+import SectionRail from "@/components/Landing/SectionRail/SectionRail";
 import SEO from "@/components/SEO.tsx";
 import { useTranslation } from "react-i18next";
 
@@ -22,7 +23,7 @@ export default function LandingPage() {
                 canonicalPath="/"
             />
             <Header/>
-            <main>
+            <main id="main" tabIndex={-1} className="focus:outline-none">
                 <Hero/>
                 <About/>
                 <Projects />
@@ -32,6 +33,8 @@ export default function LandingPage() {
                 <Marquee/>
                 <ContactForm/>
             </main>
+            {/* Nach <main> im DOM, damit die Rail-Links im Tab-Fluss nicht vor dem Hero liegen (Position ist fixed). */}
+            <SectionRail />
 
             <Footer/>
         </>

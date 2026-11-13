@@ -6,14 +6,32 @@
     "skills": "Skills",
     "contact": "Kontakt",
     "links": "Links",
-    "status": "Status"
+    "status": "Status",
+    "top": "Start",
+    "timeline": "Werdegang",
+    "menu": "Menü",
+    "menu_open": "Menü öffnen",
+    "menu_close": "Menü schließen",
+    "menu_label": "Hauptnavigation",
+    "language_label": "Sprache wechseln",
+    "skip_to_content": "Zum Inhalt springen"
   },
   "hero": {
     "available": "Verfügbar für Projekte",
     "role": "Freelance Webentwickler für Unternehmen",
     "description": "Ich entwickle moderne, skalierbare Webanwendungen – vom Backend bis zum polierten Frontend. Lassen Sie uns Ihr Projekt gemeinsam umsetzen.",
     "cta_contact": "Kontakt aufnehmen",
-    "cta_projects": "Projekte ansehen"
+    "cta_projects": "Projekte ansehen",
+    "scroll_hint": "Scrollen zum Entdecken",
+    "material": {
+      "title": "Logo Material",
+      "roughness": "roughness",
+      "ior": "ior",
+      "rotation": "Rotation"
+    }
+  },
+  "intro": {
+    "loading": "Wird geladen"
   },
   "about": {
     "badge": "Über mich",
@@ -22,12 +40,30 @@
     "body": "Ich bin ein Full-Stack-Entwickler mit Fokus auf Webanwendungen, Backend-Architekturen und Automatisierung. Mit Expertise in PHP, TypeScript, Docker, MySQL und Elasticsearch entwickle ich skalierbare, performante Lösungen für moderne Unternehmen.",
     "stat_experience": "Jahre Erfahrung",
     "stat_projects": "Projekte umgesetzt",
-    "stat_technologies": "Technologien"
+    "stat_technologies": "Technologien",
+    "highlights": {
+      "fullstack": {
+        "title": "Full-Stack",
+        "body": "Von Frontend bis Backend — React, TypeScript, PHP, Node.js, Datenbanken. Ohne Übergaben."
+      },
+      "fast": {
+        "title": "Schnell geliefert",
+        "body": "Von der Idee zum fertigen Produkt. Ich arbeite zügig, ohne bei der Qualität zu sparen."
+      },
+      "client": {
+        "title": "Kundennah",
+        "body": "Direkter Draht, kein Agentur-Overhead. Sie sprechen mit dem Entwickler Ihres Produkts."
+      }
+    }
   },
   "projects": {
     "badge": "Projekte",
     "headline": "Was ich gebaut habe",
-    "view_details": "Projektdetails ansehen"
+    "view_details": "Projektdetails ansehen",
+    "prev": "Vorheriges Projekt",
+    "next": "Nächstes Projekt",
+    "carousel_label": "Ausgewählte Projekte",
+    "client": "Client"
   },
   "skills": {
     "badge": "Skills",
@@ -37,7 +73,9 @@
     "database": "Datenbank",
     "devops": "DevOps",
     "design": "Design",
-    "methodology": "Methodik"
+    "methodology": "Methodik",
+    "primary": "Schwerpunkt",
+    "frontend_tagline": "Schnelle, barrierearme Weboberflächen mit modernen Werkzeugen."
   },
   "services": {
     "badge": "Leistungen",
@@ -104,16 +142,21 @@
     "sending": "Wird gesendet…",
     "success": "Nachricht gesendet! Ich melde mich in Kürze.",
     "error": "Etwas ist schiefgelaufen. Bitte erneut versuchen oder direkt per E-Mail schreiben.",
+    "error_rate_limit": "Zu viele Anfragen in kurzer Zeit. Bitte versuchen Sie es in einigen Minuten erneut oder schreiben Sie direkt per E-Mail.",
+    "honeypot_label": "Dieses Feld bitte leer lassen",
     "privacy_text": "Mit dem Absenden stimmen Sie unserer",
     "privacy_link": "Datenschutzerklärung",
     "validation": {
       "name_required": "Bitte geben Sie Ihren Namen ein.",
       "email_required": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "phone_invalid": "Bitte geben Sie eine gültige Telefonnummer ein.",
       "message_required": "Bitte beschreiben Sie Ihr Projekt.",
       "message_min": "Die Nachricht muss mindestens 10 Zeichen lang sein."
     }
   },
   "footer": {
+    "back_to_top": "Nach oben",
+    "nav_label": "Navigation",
     "tagline": "Luka Dev Studio — Freelance Webentwicklung für Startups und moderne Unternehmen.",
     "newsletter_label": "Auf dem Laufenden bleiben",
     "newsletter_placeholder": "E-Mail eingeben",
@@ -173,5 +216,43 @@
     "learn_more": "Mehr erfahren",
     "accept": "Akzeptieren",
     "decline": "Ablehnen"
+  },
+  "cursor": {
+    "open": "ÖFFNEN",
+    "drag": "ZIEHEN"
+  },
+  "motion": {
+    "pause": "Motion pausieren",
+    "resume": "Motion fortsetzen",
+    "reduced_by_system": "Bewegung reduziert (System)"
+  },
+  "sections": {
+    "about": {
+      "label": "ÜBER MICH",
+      "context": "HAMELN, DE"
+    },
+    "projects": {
+      "label": "PROJEKTE",
+      "context": "ZIEHEN ODER SCROLLEN ↔"
+    },
+    "skills": {
+      "label": "SKILLS",
+      "context": "STACK & WERKZEUGE"
+    },
+    "services": {
+      "label": "LEISTUNGEN",
+      "context": "FÜR IHR UNTERNEHMEN"
+    },
+    "timeline": {
+      "label": "WERDEGANG",
+      "context": "MEIN WEG"
+    },
+    "contact": {
+      "label": "KONTAKT",
+      "context": "ANTWORT IN 24 H"
+    }
+  },
+  "rail": {
+    "label": "Abschnitte"
   }
 }

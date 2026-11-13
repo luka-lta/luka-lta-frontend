@@ -1,4 +1,6 @@
-import {ThemeProvider} from "@/assets/providers/ThemeProvider.tsx";
+import {MotionProvider} from "@/lib/motion/MotionProvider";
+import MotionToggle from "@/components/MotionToggle";
+import CustomCursor from "@/components/Cursor/CustomCursor";
 import {RouterProvider} from "react-router-dom";
 import {appRouter} from "@/AppRouter.tsx";
 import ErrorPage from "@/pages/ErrorPage.tsx";
@@ -27,14 +29,17 @@ trackspire.init({
 
 function AppInner() {
     return (
-        <ThemeProvider defaultTheme='dark' storageKey='ui-theme'>
+        <MotionProvider>
             <QueryClientProvider client={queryClient}>
                 <Suspense fallback={<ErrorPage/>}>
-                    <FloatingScrollToTop/>
+                    <CustomCursor/>
                     <RouterProvider router={appRouter} fallbackElement={<ErrorPage/>}/>
+                    {/* Nach dem Router, damit der Skip-Link im Header das erste fokussierbare Element ist. */}
+                    <FloatingScrollToTop/>
+                    <MotionToggle/>
                 </Suspense>
             </QueryClientProvider>
-        </ThemeProvider>
+        </MotionProvider>
     )
 }
 

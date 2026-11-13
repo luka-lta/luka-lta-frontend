@@ -1,93 +1,64 @@
-"use client"
+import { ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/ui/button';
+import Reveal from '@/components/Landing/Section/Reveal';
+import SectionHeader from '@/components/Landing/Section/SectionHeader';
+import { track } from '@/lib/analytics';
 
-import { motion } from "framer-motion"
-import { Globe, Wrench, CheckCircle2, ArrowRight } from "lucide-react"
-import { useTranslation } from "react-i18next"
-import { Button } from "@/components/ui/button"
-import { track } from "@/lib/analytics"
-
-const serviceIcons = {
-    websites: Globe,
-    maintenance: Wrench,
-} as const
-
-type ServiceKey = keyof typeof serviceIcons
+const SERVICE_KEYS = ['websites', 'maintenance'] as const;
 
 export default function Services() {
-    const { t } = useTranslation()
+  const { t } = useTranslation();
 
-    const services: ServiceKey[] = ['websites', 'maintenance']
+  return (
+    <section id="services" className="bg-background py-24 md:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <SectionHeader
+          id="services"
+          title={<span className="block text-5xl font-black leading-[0.95] md:text-7xl">{t('services.headline')}</span>}
+        />
+        <p className="-mt-6 mb-16 max-w-md text-muted-foreground">{t('services.subheadline')}</p>
 
-    return (
-        <section id="services" className="bg-background py-24 md:py-32">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="mb-16 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
-                >
-                    <div>
-                        <p className="mb-5 font-mono text-xs text-muted-foreground/50">— 04</p>
-                        <h2 className="text-5xl font-black tracking-tight md:text-6xl">
-                            {t('services.headline')}
-                        </h2>
-                    </div>
-                    <p className="max-w-xs text-sm text-muted-foreground md:text-right">
-                        {t('services.subheadline')}
-                    </p>
-                </motion.div>
+        <ol className="border-b border-border">
+          {SERVICE_KEYS.map((key, index) => {
+            const bullets = t(`services.${key}.bullets`, { returnObjects: true }) as string[];
 
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    {services.map((key, index) => {
-                        const Icon = serviceIcons[key]
-                        const bullets = t(`services.${key}.bullets`, { returnObjects: true }) as string[]
+            return (
+              <Reveal
+                as="li"
+                key={key}
+                className="grid gap-8 border-t border-border py-10 md:grid-cols-[6rem_1fr_1fr] md:gap-12"
+              >
+                <span className="font-mono text-sm text-muted-foreground">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
 
-                        return (
-                            <motion.div
-                                key={key}
-                                initial={{ opacity: 0, y: 24 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: index * 0.15 }}
-                                whileHover={{ y: -4 }}
-                                className="group flex flex-col rounded-2xl border border-border/60 bg-card p-8 transition-colors hover:border-primary/50"
-                            >
-                                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-border/60 bg-background transition-colors group-hover:border-primary/40 group-hover:bg-primary/10">
-                                    <Icon className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-primary" />
-                                </div>
-
-                                <h3 className="mb-3 text-xl font-bold text-foreground">
-                                    {t(`services.${key}.title`)}
-                                </h3>
-                                <p className="mb-6 text-muted-foreground">
-                                    {t(`services.${key}.description`)}
-                                </p>
-
-                                <ul className="mb-8 flex-1 space-y-3">
-                                    {bullets.map((bullet) => (
-                                        <li key={bullet} className="flex items-start gap-3 text-sm text-muted-foreground">
-                                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                                            {bullet}
-                                        </li>
-                                    ))}
-                                </ul>
-
-                                <Button asChild className="mt-auto w-full gap-2 rounded-full">
-                                    <a
-                                        href="#contact"
-                                        onClick={() => track('service_cta_click', { service: key })}
-                                    >
-                                        {t('services.cta')}
-                                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                                    </a>
-                                </Button>
-                            </motion.div>
-                        )
-                    })}
+                <div>
+                  <h3 className="text-2xl font-bold text-foreground md:text-4xl">{t(`services.${key}.title`)}</h3>
+                  <p className="mt-4 text-muted-foreground">{t(`services.${key}.description`)}</p>
+                  <Button asChild className="group mt-8 gap-2 rounded-full">
+                    <a
+                      href="#contact"
+                      onClick={() => track('service_cta_click', { service: key })}
+                    >
+                      {t('services.cta')}
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </a>
+                  </Button>
                 </div>
-            </div>
-        </section>
-    )
+
+                <ul className="divide-y divide-border self-start border-y border-border">
+                  {bullets.map((bullet) => (
+                    <li key={bullet} className="py-3 text-sm text-muted-foreground">
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            );
+          })}
+        </ol>
+      </div>
+    </section>
+  );
 }

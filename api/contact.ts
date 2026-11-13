@@ -1,65 +1,85 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node'
-import nodemailer from 'nodemailer'
+import { createHmac } from 'node:crypto';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import nodemailer from 'nodemailer';
+import { buildContactMail } from './_contact/contactMail.js';
+import {
+  handleContactRequest,
+  RATE_LIMIT_MAX_REQUESTS,
+  RATE_LIMIT_WINDOW_MS,
+} from './_contact/handleContactRequest.js';
+import { RateLimiter } from './_contact/rateLimiter.js';
 
+const SMTP_HOST = 'smtp.hostinger.com';
+const SMTP_PORT = 587;
+const DEFAULT_RECIPIENT = 'luka@luka-lta.dev';
+
+// Lebt so lange wie die Function-Instanz (Fluid Compute verwendet Instanzen wieder).
+const rateLimiter = new RateLimiter(RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS);
+
+/**
+ * Signaturschlüssel für Zeit-Token und Rate-Limit-Keys. Ohne `CONTACT_FORM_SECRET`
+ * wird ein eigener Schlüssel aus `SMTP_PASS` abgeleitet, damit das Formular ohne
+ * zusätzliche Konfiguration weiterläuft.
+ */
+function getFormSecret(smtpPass: string): string {
+  const configured = process.env.CONTACT_FORM_SECRET;
+  if (configured) return configured;
+
+  return createHmac('sha256', smtpPass).update('contact-form-secret').digest('hex');
+}
+
+// Usage: curl https://luka-lta.dev/api/contact
+// Usage: curl https://luka-lta.dev/api/contact --header 'Origin: https://luka-lta.dev' --json \
+//   '{"name":"Erika Mustermann","email":"erika@example.com","message":"Hallo, ich habe ein Projekt.","token":"<token>"}'
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' })
-    }
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
 
-    const { name, email, phone, message } = req.body ?? {}
+  if (!smtpUser || !smtpPass) {
+    console.error('Missing SMTP env vars');
+    return res.status(500).json({ error: 'server_misconfigured' });
+  }
 
-    if (
-        typeof name !== 'string' || name.trim().length === 0 ||
-        typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
-        typeof message !== 'string' || message.trim().length < 10
-    ) {
-        return res.status(422).json({ error: 'Invalid input' })
-    }
+  const transporter = nodemailer.createTransport({
+    host: SMTP_HOST,
+    port: SMTP_PORT,
+    secure: false,
+    auth: { user: smtpUser, pass: smtpPass },
+  });
 
-    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-        console.error('Missing SMTP env vars')
-        return res.status(500).json({ error: 'Server misconfigured' })
-    }
+  let body: unknown;
+  try {
+    // Der Body-Getter von Vercel wirft bei ungültigem JSON.
+    body = req.body;
+  } catch {
+    console.warn('Contact request rejected', { reason: 'invalid_body' });
+    return res.status(400).json({ error: 'invalid_body' });
+  }
 
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.hostinger.com',
-        port: 587,
-        secure: false,
-        auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
+  try {
+    const result = await handleContactRequest(
+      { method: req.method ?? '', headers: req.headers, body },
+      {
+        secret: getFormSecret(smtpPass),
+        rateLimiter,
+        now: Date.now,
+        sendMail: async (submission) => {
+          await transporter.sendMail(
+            buildContactMail(submission, smtpUser, process.env.CONTACT_TO ?? DEFAULT_RECIPIENT),
+          );
         },
-    })
+      },
+    );
 
-    const safeName    = name.trim().replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    const safeMessage = message.trim().replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    const safePhone   = (phone ?? '–').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-
-    try {
-        await transporter.sendMail({
-            from: `"Luka Dev Studio" <${process.env.SMTP_USER}>`,
-            to: process.env.CONTACT_TO ?? 'luka@luka-lta.dev',
-            replyTo: `"${safeName}" <${email}>`,
-            subject: `Kontaktanfrage: ${safeName}`,
-            headers: {
-                'X-Mailer': 'Luka Dev Studio Mailer',
-                'X-Priority': '3',
-            },
-            html: `
-                <h2>Neue Anfrage über luka-lta.dev</h2>
-                <p><b>Name:</b> ${safeName}</p>
-                <p><b>E-Mail:</b> ${email}</p>
-                <p><b>Telefon:</b> ${safePhone}</p>
-                <hr>
-                <p><b>Nachricht:</b></p>
-                <p>${safeMessage}</p>
-            `,
-            text: `Name: ${safeName}\nE-Mail: ${email}\nTelefon: ${safePhone}\n\n${safeMessage}`,
-        })
-    } catch (err) {
-        console.error('SMTP error:', err)
-        return res.status(500).json({ error: 'Failed to send email' })
+    if (result.rejectionReason !== null) {
+      console.warn('Contact request rejected', { reason: result.rejectionReason });
     }
 
-    return res.status(200).json({ success: true })
+    for (const [name, value] of Object.entries(result.headers)) res.setHeader(name, value);
+
+    return res.status(result.status).json(result.body);
+  } catch (err) {
+    console.error('Contact request failed', { reason: err instanceof Error ? err.message : 'unknown' });
+    return res.status(500).json({ error: 'send_failed' });
+  }
 }

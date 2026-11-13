@@ -6,14 +6,32 @@
     "skills": "Skills",
     "contact": "Contact",
     "links": "Links",
-    "status": "Status"
+    "status": "Status",
+    "top": "Top",
+    "timeline": "Journey",
+    "menu": "Menu",
+    "menu_open": "Open menu",
+    "menu_close": "Close menu",
+    "menu_label": "Main navigation",
+    "language_label": "Switch language",
+    "skip_to_content": "Skip to content"
   },
   "hero": {
     "available": "Available for projects",
     "role": "Freelance Web Developer for Businesses",
     "description": "I build modern, scalable web applications — from backend architecture to polished frontends. Let's bring your project to life.",
     "cta_contact": "Get in Touch",
-    "cta_projects": "View Projects"
+    "cta_projects": "View Projects",
+    "scroll_hint": "Scroll to explore",
+    "material": {
+      "title": "Logo Material",
+      "roughness": "roughness",
+      "ior": "ior",
+      "rotation": "Rotation"
+    }
+  },
+  "intro": {
+    "loading": "Loading"
   },
   "about": {
     "badge": "About",
@@ -22,12 +40,30 @@
     "body": "I'm a full stack developer focused on web applications, backend architectures, and automation. With expertise in PHP, TypeScript, Docker, MySQL, and Elasticsearch, I design and develop scalable, high-performance solutions that power modern businesses.",
     "stat_experience": "Years of Experience",
     "stat_projects": "Projects Built",
-    "stat_technologies": "Technologies"
+    "stat_technologies": "Technologies",
+    "highlights": {
+      "fullstack": {
+        "title": "Full-Stack",
+        "body": "Frontend to backend — React, TypeScript, PHP, Node.js, databases. No handoffs needed."
+      },
+      "fast": {
+        "title": "Ships fast",
+        "body": "From idea to deployed product. I move quickly without cutting corners on quality."
+      },
+      "client": {
+        "title": "Client-first",
+        "body": "Direct communication, no agency overhead. You talk to the developer building your product."
+      }
+    }
   },
   "projects": {
     "badge": "Projects",
     "headline": "Things I've built",
-    "view_details": "View project details"
+    "view_details": "View project details",
+    "prev": "Previous project",
+    "next": "Next project",
+    "carousel_label": "Selected projects",
+    "client": "Client"
   },
   "skills": {
     "badge": "Skills",
@@ -37,7 +73,9 @@
     "database": "Database",
     "devops": "DevOps",
     "design": "Design",
-    "methodology": "Methodology"
+    "methodology": "Methodology",
+    "primary": "Primary focus",
+    "frontend_tagline": "Building fast, accessible web interfaces with modern tooling."
   },
   "services": {
     "badge": "Services",
@@ -104,16 +142,21 @@
     "sending": "Sending…",
     "success": "Message sent! I'll be in touch soon.",
     "error": "Something went wrong. Please try again or email me directly.",
+    "error_rate_limit": "Too many requests in a short time. Please try again in a few minutes or email me directly.",
+    "honeypot_label": "Please leave this field empty",
     "privacy_text": "By submitting this form you agree to our",
     "privacy_link": "privacy policy",
     "validation": {
       "name_required": "Your name is required.",
       "email_required": "A valid email address is required.",
+      "phone_invalid": "Please enter a valid phone number.",
       "message_required": "Please describe your project.",
       "message_min": "Message must be at least 10 characters."
     }
   },
   "footer": {
+    "back_to_top": "Back to top",
+    "nav_label": "Navigation",
     "tagline": "Luka Dev Studio — Freelance web development for startups and modern businesses.",
     "newsletter_label": "Stay updated",
     "newsletter_placeholder": "Enter your email",
@@ -173,5 +216,43 @@
     "learn_more": "Learn more",
     "accept": "Accept",
     "decline": "Decline"
+  },
+  "cursor": {
+    "open": "OPEN",
+    "drag": "DRAG"
+  },
+  "motion": {
+    "pause": "Pause motion",
+    "resume": "Resume motion",
+    "reduced_by_system": "Reduced motion (system)"
+  },
+  "sections": {
+    "about": {
+      "label": "ABOUT",
+      "context": "HAMELN, DE"
+    },
+    "projects": {
+      "label": "WORK",
+      "context": "DRAG OR SCROLL ↔"
+    },
+    "skills": {
+      "label": "SKILLS",
+      "context": "STACK & TOOLS"
+    },
+    "services": {
+      "label": "SERVICES",
+      "context": "FOR YOUR BUSINESS"
+    },
+    "timeline": {
+      "label": "JOURNEY",
+      "context": "MY PATH"
+    },
+    "contact": {
+      "label": "CONTACT",
+      "context": "REPLY WITHIN 24 H"
+    }
+  },
+  "rail": {
+    "label": "Sections"
   }
 }

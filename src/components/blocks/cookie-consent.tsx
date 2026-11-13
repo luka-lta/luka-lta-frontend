@@ -98,7 +98,7 @@ const CookieConsent = React.forwardRef<HTMLDivElement, CookieConsentProps>(
     if (variant === "default") {
       return (
         <div {...commonWrapperProps}>
-          <Card className="m-3 shadow-lg">
+          <Card className="m-3 border-border/60 bg-card/95 shadow-2xl backdrop-blur-md">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-lg">We use cookies</CardTitle>
               <Cookie className="h-5 w-5" />
@@ -138,7 +138,7 @@ const CookieConsent = React.forwardRef<HTMLDivElement, CookieConsentProps>(
     if (variant === "small") {
       return (
         <div {...commonWrapperProps}>
-          <Card className="m-3 shadow-lg">
+          <Card className="m-3 border-border/60 bg-card/95 shadow-2xl backdrop-blur-md">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 h-0 px-4">
               <CardTitle className="text-base">We use cookies</CardTitle>
               <Cookie className="h-4 w-4" />
@@ -173,7 +173,7 @@ const CookieConsent = React.forwardRef<HTMLDivElement, CookieConsentProps>(
     if (variant === "mini") {
       return (
         <div {...commonWrapperProps}>
-          <Card className="mx-3 p-0 py-3 shadow-lg">
+          <Card className="mx-3 border-border/60 bg-card/95 p-0 py-3 shadow-2xl backdrop-blur-md">
             <CardContent className="sm:flex grid gap-4 p-0 px-3.5">
               <CardDescription className="text-xs sm:text-sm flex-1">
                 {description}

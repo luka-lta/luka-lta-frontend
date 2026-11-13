@@ -36,11 +36,11 @@ function RedirectLink() {
     }, [timeLeft]);
 
     if (isLoading) {
-        return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+        return <div className="flex items-center justify-center min-h-screen text-muted-foreground">Loading...</div>;
     }
 
     if (isError) {
-        return <div className="flex items-center justify-center min-h-screen text-red-500">An error occurred</div>;
+        return <div className="flex items-center justify-center min-h-screen text-destructive">An error occurred</div>;
     }
 
     return (

@@ -4,6 +4,33 @@
 
 @layer base {
   :root {
+    /* Midnight #0D0D0F */
+    --background: 240 4% 5%;
+    --foreground: 0 0% 97%;
+    --card: 240 4% 8%;
+    --card-foreground: 0 0% 97%;
+    --popover: 240 4% 8%;
+    --popover-foreground: 0 0% 97%;
+    /* Electric Blue slightly lifted for dark contrast */
+    --primary: 228 100% 65%;
+    --primary-foreground: 240 4% 5%;
+    --secondary: 240 4% 13%;
+    --secondary-foreground: 0 0% 97%;
+    --muted: 240 4% 13%;
+    --muted-foreground: 240 8% 50%;
+    /* Cyber Teal */
+    --accent: 168 100% 42%;
+    --accent-foreground: 240 4% 5%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 240 4% 5%;
+    --border: 240 4% 15%;
+    --input: 240 4% 15%;
+    --ring: 228 100% 65%;
+    --teal: 168 100% 42%;
+    --radius: 0.75rem;
+  }
+
+  .section-light {
     /* Cloud #F4F4F6 */
     --background: 240 5% 96%;
     --foreground: 240 4% 5%;
@@ -27,34 +54,9 @@
     --border: 240 5% 86%;
     --input: 240 5% 86%;
     --ring: 228 100% 62%;
-    --radius: 0.75rem;
     --teal: 168 100% 42%;
-  }
-
-  .dark {
-    /* Midnight #0D0D0F */
-    --background: 240 4% 5%;
-    --foreground: 0 0% 97%;
-    --card: 240 4% 8%;
-    --card-foreground: 0 0% 97%;
-    --popover: 240 4% 8%;
-    --popover-foreground: 0 0% 97%;
-    /* Electric Blue slightly lifted for dark contrast */
-    --primary: 228 100% 65%;
-    --primary-foreground: 240 4% 5%;
-    --secondary: 240 4% 13%;
-    --secondary-foreground: 0 0% 97%;
-    --muted: 240 4% 13%;
-    --muted-foreground: 240 8% 50%;
-    /* Cyber Teal */
-    --accent: 168 100% 42%;
-    --accent-foreground: 240 4% 5%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 0 0% 97%;
-    --border: 240 4% 15%;
-    --input: 240 4% 15%;
-    --ring: 228 100% 65%;
-    --teal: 168 100% 42%;
+    color: hsl(var(--foreground));
+    background: hsl(var(--background));
   }
 }
 
@@ -77,4 +79,33 @@
 
 .section-badge {
   @apply inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground;
+}
+
+/* Anker-Ziele nicht unter dem fixen Header (h-20 = 80px) landen lassen. Einzige Quelle für den Versatz:
+   Lenis, scrollIntoView und native Hash-Sprünge ziehen scroll-margin-top selbst ab. */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+/* Marquee: zwei identische Hälften, Verschiebung um 50 % ergibt eine nahtlose Schleife. */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 40s linear infinite;
+}
+
+/* Offenes Mobile-Menü: schwebende Bedienelemente würden über dem Overlay liegen (Flag setzt der Header). */
+html[data-menu-open] .hide-when-menu-open {
+  display: none;
+}
+
+html[data-motion="off"] .marquee-track {
+  animation-play-state: paused;
 }

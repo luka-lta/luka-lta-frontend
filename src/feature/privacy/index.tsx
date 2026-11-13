@@ -11,11 +11,11 @@ function Privacy() {
         <div className="min-h-screen bg-background">
             <SEO title="Privacy Policy" canonicalPath="/privacy" />
             <Header/>
-            <div className="container mx-auto px-4 py-8">
+            <main id="main" tabIndex={-1} className="container mx-auto px-4 pb-8 pt-28 focus:outline-none">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Table of Contents */}
                     <div className="lg:col-span-1">
-                        <Card className="sticky top-8">
+                        <Card className="sticky top-24">
                             <CardHeader>
                                 <CardTitle className="text-lg">Contents</CardTitle>
                             </CardHeader>
@@ -354,7 +354,7 @@ function Privacy() {
                         </section>
                     </div>
                 </div>
-            </div>
+            </main>
             <Footer />
         </div>
     );
