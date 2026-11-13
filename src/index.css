@@ -101,6 +101,11 @@ section[id] {
   animation: marquee-scroll 40s linear infinite;
 }
 
+/* Offenes Mobile-Menü: schwebende Bedienelemente würden über dem Overlay liegen (Flag setzt der Header). */
+html[data-menu-open] .hide-when-menu-open {
+  display: none;
+}
+
 html[data-motion="off"] .marquee-track {
   animation-play-state: paused;
 }

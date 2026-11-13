@@ -223,7 +223,8 @@
   },
   "motion": {
     "pause": "Motion pausieren",
-    "resume": "Motion fortsetzen"
+    "resume": "Motion fortsetzen",
+    "reduced_by_system": "Bewegung reduziert (System)"
   },
   "sections": {
     "about": {

@@ -134,10 +134,13 @@ export default function Header() {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     pauseSmoothScroll();
+    // Blendet schwebende Bedienelemente (Motion-Toggle, Nach-oben-Button) per CSS aus.
+    document.documentElement.dataset.menuOpen = 'true';
     return () => {
       document.removeEventListener('keydown', onKeyDown);
       query.removeEventListener('change', onBreakpoint);
       document.body.style.overflow = previousOverflow;
+      delete document.documentElement.dataset.menuOpen;
       resumeSmoothScroll();
     };
   }, [isMobileOpen, closeMenu]);

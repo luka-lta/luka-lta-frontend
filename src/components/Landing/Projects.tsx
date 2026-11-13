@@ -15,6 +15,7 @@ import { track } from '@/lib/analytics';
 import SectionHeader from '@/components/Landing/Section/SectionHeader';
 import Reveal from '@/components/Landing/Section/Reveal';
 import { formatCounter } from '@/components/Landing/Section/sectionFormat';
+import { useMotion } from '@/lib/motion/MotionProvider';
 
 /** Maximale Anzahl Tech-Tags pro Karte */
 const MAX_TECH_TAGS = 3;
@@ -114,8 +115,12 @@ function ProjectCard({ project, index }: CardProps) {
 const CARD_ITEM_CLASS = 'basis-4/5 pl-4 lg:basis-3/5';
 
 function CardSkeleton() {
+  const { isMotionEnabled } = useMotion();
+
   return (
-    <div className="animate-pulse overflow-hidden rounded-2xl border border-border bg-card">
+    <div
+      className={`overflow-hidden rounded-2xl border border-border bg-card ${isMotionEnabled ? 'animate-pulse' : ''}`}
+    >
       <div className="aspect-[16/10] bg-secondary" />
       <div className="p-6">
         <div className="mb-4 h-4 w-16 rounded bg-secondary" />
@@ -133,6 +138,7 @@ function CardSkeleton() {
 function Projects() {
   const { t } = useTranslation();
   const { data: projects, isLoading, isError } = useProjects();
+  const { isMotionEnabled } = useMotion();
   const [api, setApi] = useState<CarouselApi>();
   const [selected, setSelected] = useState(0);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -234,7 +240,7 @@ function Projects() {
 
           <div className="mt-6 h-px w-full bg-border" aria-hidden="true">
             <div
-              className="h-full bg-primary transition-[width] duration-300"
+              className={`h-full bg-primary ${isMotionEnabled ? 'transition-[width] duration-300' : ''}`}
               style={{ width: `${((selected + 1) / total) * 100}%` }}
             />
           </div>

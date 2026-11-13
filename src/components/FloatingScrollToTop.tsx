@@ -24,7 +24,7 @@ export default function FloatingScrollToTop() {
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                     onClick={scrollToTop}
                     aria-label="Scroll to top"
-                    className="fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-border/60 bg-card text-muted-foreground shadow-lg transition-colors hover:border-primary/60 hover:bg-primary/10 hover:text-primary"
+                    className="hide-when-menu-open fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-border/60 bg-card text-muted-foreground shadow-lg transition-colors hover:border-primary/60 hover:bg-primary/10 hover:text-primary"
                 >
                     <ArrowUp className="h-4 w-4" />
                 </motion.button>

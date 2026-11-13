@@ -223,7 +223,8 @@
   },
   "motion": {
     "pause": "Pause motion",
-    "resume": "Resume motion"
+    "resume": "Resume motion",
+    "reduced_by_system": "Reduced motion (system)"
   },
   "sections": {
     "about": {

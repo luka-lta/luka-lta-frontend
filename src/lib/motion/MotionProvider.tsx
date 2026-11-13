@@ -5,6 +5,8 @@ import { isMotionEnabled, loadPausedPreference, savePausedPreference } from './m
 
 type MotionContextValue = {
   isMotionEnabled: boolean;
+  /** Systemeinstellung `prefers-reduced-motion`; dann ist der Nutzer-Toggle wirkungslos. */
+  prefersReducedMotion: boolean;
   isPausedByUser: boolean;
   setPausedByUser: (isPaused: boolean) => void;
 };
@@ -54,8 +56,8 @@ export function MotionProvider({ children }: { children: ReactNode }) {
   }, [enabled]);
 
   const value = useMemo<MotionContextValue>(
-    () => ({ isMotionEnabled: enabled, isPausedByUser, setPausedByUser }),
-    [enabled, isPausedByUser, setPausedByUser],
+    () => ({ isMotionEnabled: enabled, prefersReducedMotion, isPausedByUser, setPausedByUser }),
+    [enabled, prefersReducedMotion, isPausedByUser, setPausedByUser],
   );
 
   return (
