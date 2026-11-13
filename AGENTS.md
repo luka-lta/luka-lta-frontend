@@ -44,9 +44,10 @@ alles andere läuft Verifikation über `bun run build` (Type-Check, inkl. `api/`
   dazu Google-Tag über `vite-plugin-radar`, gated durch das Cookie-Consent in
   `src/components/blocks/cookie-consent`. Neues Tracking **immer** hinter Consent.
 - Motion ist zentral in `src/lib/motion/`: jede neue Animation über `useMotion()` / `isMotionEnabled`
-  (respektiert `prefers-reduced-motion`). Smooth Scroll läuft über Lenis; Sprünge zu Sektionen nur
-  über `scrollToSection` / `useSectionNavigation`. `HEADER_OFFSET_PX` spiegelt das CSS-`scroll-margin`
-  — beide Werte zusammen ändern.
+  (respektiert `prefers-reduced-motion`; bestehender Framer-Code wird schrittweise umgestellt).
+  Smooth Scroll läuft über Lenis; Sprünge zu Sektionen über `scrollToSection` / `useSectionNavigation`
+  oder normale Hash-Links (`#contact`) — Lenis übernimmt diese per `anchors`-Option mit Header-Offset.
+  `HEADER_OFFSET_PX` spiegelt das CSS-`scroll-margin` — beide Werte zusammen ändern.
 - Theme ist **nur dunkel** (kein Theme-Toggle). Helle Akzent-Sektionen über `.section-light`.
 
 ## Konventionen
