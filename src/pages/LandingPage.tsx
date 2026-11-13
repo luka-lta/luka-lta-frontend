@@ -23,8 +23,7 @@ export default function LandingPage() {
                 canonicalPath="/"
             />
             <Header/>
-            <SectionRail />
-            <main>
+            <main id="main" tabIndex={-1} className="focus:outline-none">
                 <Hero/>
                 <About/>
                 <Projects />
@@ -34,6 +33,8 @@ export default function LandingPage() {
                 <Marquee/>
                 <ContactForm/>
             </main>
+            {/* Nach <main> im DOM, damit die Rail-Links im Tab-Fluss nicht vor dem Hero liegen (Position ist fixed). */}
+            <SectionRail />
 
             <Footer/>
         </>

@@ -32,10 +32,11 @@ function AppInner() {
         <MotionProvider>
             <QueryClientProvider client={queryClient}>
                 <Suspense fallback={<ErrorPage/>}>
-                    <FloatingScrollToTop/>
-                    <MotionToggle/>
                     <CustomCursor/>
                     <RouterProvider router={appRouter} fallbackElement={<ErrorPage/>}/>
+                    {/* Nach dem Router, damit der Skip-Link im Header das erste fokussierbare Element ist. */}
+                    <FloatingScrollToTop/>
+                    <MotionToggle/>
                 </Suspense>
             </QueryClientProvider>
         </MotionProvider>

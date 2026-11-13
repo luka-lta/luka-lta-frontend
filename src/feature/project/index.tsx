@@ -10,6 +10,8 @@ import ScrollToTop from '@/components/scroll-to-top';
 import SEO from '@/components/SEO';
 import { useProject } from '@/api/projects/hooks/useProjects';
 import { useGithubStats } from '@/api/github/hooks/useGithubStats';
+import { useMotion } from '@/lib/motion/MotionProvider';
+import { cn } from '@/lib/utils';
 
 /** Intrinsische Maße der Screenshots (16:9); verhindert Layout-Shift beim Laden. */
 const SCREENSHOT_WIDTH_PX = 1600;
@@ -23,6 +25,7 @@ function Project() {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { isMotionEnabled } = useMotion();
 
   const { data: project, isLoading } = useProject(projectId);
 
@@ -37,9 +40,9 @@ function Project() {
     return (
       <>
         <Header />
-        <div className="flex min-h-[60vh] items-center justify-center bg-background">
-          <div className="h-8 w-8 animate-pulse rounded-full bg-secondary" />
-        </div>
+        <main id="main" tabIndex={-1} className="flex min-h-[60vh] items-center justify-center bg-background focus:outline-none">
+          <div className={cn('h-8 w-8 rounded-full bg-secondary', isMotionEnabled && 'animate-pulse')} />
+        </main>
         <Footer />
       </>
     );
@@ -50,12 +53,16 @@ function Project() {
       <>
         <SEO title={t('project_page.not_found')} canonicalPath={`/project/${projectId}`} />
         <Header />
-        <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 bg-background pt-20">
+        <main
+          id="main"
+          tabIndex={-1}
+          className="flex min-h-[60vh] flex-col items-center justify-center gap-4 bg-background pt-20 focus:outline-none"
+        >
           <p className="text-xl font-bold text-foreground">{t('project_page.not_found')}</p>
           <Button variant="outline" onClick={() => navigate('/')}>
             <ArrowLeft className="mr-2 h-4 w-4" /> {t('project_page.back')}
           </Button>
-        </div>
+        </main>
         <Footer />
       </>
     );
@@ -77,7 +84,7 @@ function Project() {
       <ScrollToTop />
       <Header />
 
-      <main className="min-h-screen bg-background">
+      <main id="main" tabIndex={-1} className="min-h-screen bg-background focus:outline-none">
         <div className="mx-auto max-w-6xl px-6 pb-20 pt-32 lg:px-8">
           <button
             type="button"
@@ -129,7 +136,9 @@ function Project() {
               {statsLoading ? (
                 Array(3)
                   .fill(null)
-                  .map((_, i) => <div key={i} className="h-9 w-24 animate-pulse rounded-full bg-card" />)
+                  .map((_, i) => (
+                    <div key={i} className={cn('h-9 w-24 rounded-full bg-card', isMotionEnabled && 'animate-pulse')} />
+                  ))
               ) : stats ? (
                 <>
                   <StatChip

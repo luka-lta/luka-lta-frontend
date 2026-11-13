@@ -13,7 +13,7 @@ function Impressum() {
         <div className="min-h-screen bg-background">
             <SEO title="Impressum" canonicalPath="/impressum" />
             <Header />
-            <div className="container mx-auto px-4 pb-8 pt-28">
+            <main id="main" tabIndex={-1} className="container mx-auto px-4 pb-8 pt-28 focus:outline-none">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Table of Contents */}
                     <div className="lg:col-span-1">
@@ -164,7 +164,7 @@ function Impressum() {
                         </section>
                     </div>
                 </div>
-            </div>
+            </main>
             <Footer />
         </div>
     );

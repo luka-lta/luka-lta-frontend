@@ -81,6 +81,7 @@ alles andere läuft Verifikation über `bun run build` (Type-Check, inkl. `api/`
 - Animationen `prefers-reduced-motion` respektieren.
 - Interaktive Elemente brauchen erreichbaren Fokus und Accessible Name; Radix-Primitives nutzen
   statt `div` mit `onClick`.
+- Der Header rendert den Skip-Link auf `#main`: jede Seite mit Header braucht `<main id="main" tabIndex={-1}>`.
 - Bilder in `public/static/` mit Dimensionen einbinden (kein Layout-Shift).
 
 ## Nicht tun

@@ -13,7 +13,8 @@
     "menu_open": "Menü öffnen",
     "menu_close": "Menü schließen",
     "menu_label": "Hauptnavigation",
-    "language_label": "Sprache wechseln"
+    "language_label": "Sprache wechseln",
+    "skip_to_content": "Zum Inhalt springen"
   },
   "hero": {
     "available": "Verfügbar für Projekte",

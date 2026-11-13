@@ -27,7 +27,7 @@ function Links() {
     return (
         <>
             <Header />
-            <main className="relative min-h-screen bg-background">
+            <main id="main" tabIndex={-1} className="relative min-h-screen bg-background focus:outline-none">
                 {/* Background */}
                 <div className="pointer-events-none fixed inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:80px_80px] opacity-20" />
                 <div className="pointer-events-none fixed left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/10 blur-[130px]" />

@@ -17,6 +17,8 @@ const SCROLLED_THRESHOLD_PX = 40;
 const DESKTOP_QUERY = '(min-width: 768px)';
 const STATUS_URL = 'https://status.luka-lta.dev';
 const MENU_ID = 'mobile-menu';
+/** Ziel des Skip-Links; jede Seite mit Header trägt `<main id="main" tabIndex={-1}>`. */
+const MAIN_CONTENT_ID = 'main';
 const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled])';
 const FOCUS_CLASS =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background';
@@ -246,6 +248,12 @@ export default function Header() {
 
   return (
     <>
+      <a
+        href={`#${MAIN_CONTENT_ID}`}
+        className={`sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-background focus:px-4 focus:py-2 focus:font-mono focus:text-xs focus:uppercase focus:tracking-widest focus:text-foreground ${FOCUS_CLASS}`}
+      >
+        {t('nav.skip_to_content')}
+      </a>
       <motion.header
         ref={headerRef}
         className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
