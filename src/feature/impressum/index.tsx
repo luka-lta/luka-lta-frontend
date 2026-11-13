@@ -13,11 +13,11 @@ function Impressum() {
         <div className="min-h-screen bg-background">
             <SEO title="Impressum" canonicalPath="/impressum" />
             <Header />
-            <div className="container mx-auto px-4 py-8">
+            <div className="container mx-auto px-4 pb-8 pt-28">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Table of Contents */}
                     <div className="lg:col-span-1">
-                        <Card className="sticky top-8">
+                        <Card className="sticky top-24">
                             <CardHeader>
                                 <CardTitle className="text-lg">{t('impressum.toc_title')}</CardTitle>
                             </CardHeader>

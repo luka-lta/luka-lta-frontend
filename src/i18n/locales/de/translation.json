@@ -8,7 +8,11 @@
     "links": "Links",
     "status": "Status",
     "top": "Start",
-    "timeline": "Werdegang"
+    "timeline": "Werdegang",
+    "menu_open": "Menü öffnen",
+    "menu_close": "Menü schließen",
+    "menu_label": "Hauptnavigation",
+    "language_label": "Sprache wechseln"
   },
   "hero": {
     "available": "Verfügbar für Projekte",

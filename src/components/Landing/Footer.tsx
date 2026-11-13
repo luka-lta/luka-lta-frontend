@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { LdsIcon } from "@/components/SiteLogo";
 import Reveal from "@/components/Landing/Section/Reveal";
 import { LANDING_SECTIONS } from "@/components/Landing/sections";
-import { scrollToSection, scrollToTop } from "@/lib/motion/smoothScroll";
+import { scrollToTop } from "@/lib/motion/smoothScroll";
+import { useSectionNavigation } from "@/lib/motion/useSectionNavigation";
 
 const socialLinks = [
   { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/luka-liebenthal-aa047931b/" },
@@ -23,20 +24,12 @@ export default function Footer() {
   const { t } = useTranslation();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const goToSection = useSectionNavigation();
 
   const footerLinks = [
     { name: t("footer.privacy"), url: "/privacy" },
     { name: t("footer.impressum"), url: "/impressum" },
   ];
-
-  // Auf Unterseiten gibt es die Sektionen nicht: zurück zur Startseite.
-  const goToSection = (id: string) => {
-    if (pathname !== "/") {
-      navigate("/");
-      return;
-    }
-    scrollToSection(id);
-  };
 
   const goToTop = () => {
     if (pathname !== "/") {
@@ -71,6 +64,7 @@ export default function Footer() {
             <div className="flex gap-2">
               <Input
                 type="email"
+                aria-label={t("footer.newsletter_label")}
                 placeholder={t("footer.newsletter_placeholder")}
                 className="h-10 rounded-none border-0 border-b border-border bg-transparent px-0 shadow-none placeholder:text-muted-foreground/60 focus-visible:border-primary focus-visible:ring-0 focus-visible:ring-offset-0"
               />
