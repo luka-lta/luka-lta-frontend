@@ -150,6 +150,8 @@ export default function ContactForm() {
                                     </Label>
                                     <Input
                                         id="name"
+                                        aria-invalid={errors.name ? true : undefined}
+                                        aria-describedby={errors.name ? 'name-error' : undefined}
                                         type="text"
                                         placeholder={t('contact.placeholder_name')}
                                         maxLength={NAME_MAX_LENGTH}
@@ -158,7 +160,7 @@ export default function ContactForm() {
                                         aria-required="true"
                                     />
                                     {errors.name && (
-                                        <p className="text-xs text-destructive">{errors.name.message}</p>
+                                        <p id="name-error" className="text-xs text-destructive">{errors.name.message}</p>
                                     )}
                                 </div>
 
@@ -168,6 +170,8 @@ export default function ContactForm() {
                                     </Label>
                                     <Input
                                         id="email"
+                                        aria-invalid={errors.email ? true : undefined}
+                                        aria-describedby={errors.email ? 'email-error' : undefined}
                                         type="email"
                                         placeholder={t('contact.placeholder_email')}
                                         maxLength={EMAIL_MAX_LENGTH}
@@ -177,7 +181,7 @@ export default function ContactForm() {
                                         aria-required="true"
                                     />
                                     {errors.email && (
-                                        <p className="text-xs text-destructive">{errors.email.message}</p>
+                                        <p id="email-error" className="text-xs text-destructive">{errors.email.message}</p>
                                     )}
                                 </div>
                             </div>
@@ -188,6 +192,8 @@ export default function ContactForm() {
                                 </Label>
                                 <Input
                                     id="phone"
+                                    aria-invalid={errors.phone ? true : undefined}
+                                    aria-describedby={errors.phone ? 'phone-error' : undefined}
                                     type="tel"
                                     placeholder={t('contact.placeholder_phone')}
                                     maxLength={PHONE_MAX_LENGTH}
@@ -196,7 +202,7 @@ export default function ContactForm() {
                                     autoComplete="tel"
                                 />
                                 {errors.phone && (
-                                    <p className="text-xs text-destructive">{errors.phone.message}</p>
+                                    <p id="phone-error" className="text-xs text-destructive">{errors.phone.message}</p>
                                 )}
                             </div>
 
@@ -206,6 +212,8 @@ export default function ContactForm() {
                                 </Label>
                                 <Textarea
                                     id="message"
+                                    aria-invalid={errors.message ? true : undefined}
+                                    aria-describedby={errors.message ? 'message-error' : undefined}
                                     placeholder={t('contact.placeholder_message')}
                                     maxLength={MESSAGE_MAX_LENGTH}
                                     {...register('message')}
@@ -213,7 +221,7 @@ export default function ContactForm() {
                                     aria-required="true"
                                 />
                                 {errors.message && (
-                                    <p className="text-xs text-destructive">{errors.message.message}</p>
+                                    <p id="message-error" className="text-xs text-destructive">{errors.message.message}</p>
                                 )}
                             </div>
 
