@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import Reveal from '@/components/Landing/Section/Reveal';
 import SectionHeader from '@/components/Landing/Section/SectionHeader';
+import { cn } from '@/lib/utils';
 
 const SKILL_CATEGORIES = [
   { titleKey: 'skills.frontend', skills: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'shadcn/ui'] },
@@ -25,10 +26,17 @@ export default function Skills() {
         <ul className="grid gap-x-12 md:grid-cols-2 lg:grid-cols-3">
           {SKILL_CATEGORIES.map((category, index) => (
             <Reveal as="li" key={category.titleKey} delay={(index % 3) * 0.08} className="border-t border-border py-8">
-              <h3 className="mb-5 font-mono text-xs uppercase tracking-widest text-teal">{t(category.titleKey)}</h3>
+              <div className="mb-5 flex items-center justify-between gap-4 font-mono text-xs uppercase tracking-widest">
+                <h3 className="text-teal">{t(category.titleKey)}</h3>
+                {index === 0 && <span className="text-muted-foreground">{t('skills.primary')}</span>}
+              </div>
+              {index === 0 && <p className="mb-5 text-sm text-muted-foreground">{t('skills.frontend_tagline')}</p>}
               <ul className="space-y-2">
-                {category.skills.map((skill) => (
-                  <li key={skill} className="text-lg text-foreground">
+                {category.skills.map((skill, skillIndex) => (
+                  <li
+                    key={skill}
+                    className={cn('text-lg', index === 0 && skillIndex === 0 ? 'text-teal' : 'text-foreground')}
+                  >
                     {skill}
                   </li>
                 ))}

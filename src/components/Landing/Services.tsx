@@ -1,24 +1,14 @@
-import type { MouseEvent } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import Reveal from '@/components/Landing/Section/Reveal';
 import SectionHeader from '@/components/Landing/Section/SectionHeader';
 import { track } from '@/lib/analytics';
-import { scrollToSection } from '@/lib/motion/smoothScroll';
 
 const SERVICE_KEYS = ['websites', 'maintenance'] as const;
 
-type ServiceKey = (typeof SERVICE_KEYS)[number];
-
 export default function Services() {
   const { t } = useTranslation();
-
-  const handleCtaClick = (event: MouseEvent<HTMLAnchorElement>, key: ServiceKey) => {
-    track('service_cta_click', { service: key });
-    event.preventDefault();
-    scrollToSection('contact');
-  };
 
   return (
     <section id="services" className="bg-background py-24 md:py-32">
@@ -49,8 +39,7 @@ export default function Services() {
                   <Button asChild className="group mt-8 gap-2 rounded-full">
                     <a
                       href="#contact"
-                      onClick={(event) => handleCtaClick(event, key)}
-                      className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      onClick={() => track('service_cta_click', { service: key })}
                     >
                       {t('services.cta')}
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

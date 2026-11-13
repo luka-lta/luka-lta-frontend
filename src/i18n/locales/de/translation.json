@@ -67,7 +67,9 @@
     "database": "Datenbank",
     "devops": "DevOps",
     "design": "Design",
-    "methodology": "Methodik"
+    "methodology": "Methodik",
+    "primary": "Schwerpunkt",
+    "frontend_tagline": "Schnelle, barrierearme Weboberflächen mit modernen Werkzeugen."
   },
   "services": {
     "badge": "Leistungen",

@@ -67,7 +67,9 @@
     "database": "Database",
     "devops": "DevOps",
     "design": "Design",
-    "methodology": "Methodology"
+    "methodology": "Methodology",
+    "primary": "Primary focus",
+    "frontend_tagline": "Building fast, accessible web interfaces with modern tooling."
   },
   "services": {
     "badge": "Services",
