@@ -15,10 +15,11 @@ bun run dev       # Vite-Dev-Server (Port 5173)
 bun run build     # tsc -b (Type-Check) + vite build → dist/
 bun run lint      # ESLint
 bun run preview   # Produktions-Build lokal servieren
-bun test          # Unit-Tests der Kontakt-Function (api/_contact/*.test.ts)
+bun test          # Unit-Tests: Kontakt-Function (api/_contact/*.test.ts) + src/**/*.test.ts
 ```
 
-Tests gibt es nur für die Kontakt-Function (`bun test`, eingebauter Runner, keine Dependency). Für
+Tests gibt es für die Kontakt-Function und für Logik unter `src/**/*.test.ts` (`bun test`, eingebauter
+Runner, keine Dependency; `src/**/*.test.ts` ist per `tsconfig.app.json` vom `tsc -b` ausgenommen). Für
 alles andere läuft Verifikation über `bun run build` (Type-Check, inkl. `api/`) + `bun run lint`
 + Blick in den Browser. Nicht behaupten, etwas sei getestet.
 
@@ -42,6 +43,11 @@ alles andere läuft Verifikation über `bun run build` (Type-Check, inkl. `api/`
 - Analytics zweigleisig: Vercel Analytics/Speed Insights + `@trackspire/sdk` (Init in `src/App.tsx`),
   dazu Google-Tag über `vite-plugin-radar`, gated durch das Cookie-Consent in
   `src/components/blocks/cookie-consent`. Neues Tracking **immer** hinter Consent.
+- Motion ist zentral in `src/lib/motion/`: jede neue Animation über `useMotion()` / `isMotionEnabled`
+  (respektiert `prefers-reduced-motion`). Smooth Scroll läuft über Lenis; Sprünge zu Sektionen nur
+  über `scrollToSection` / `useSectionNavigation`. `HEADER_OFFSET_PX` spiegelt das CSS-`scroll-margin`
+  — beide Werte zusammen ändern.
+- Theme ist **nur dunkel** (kein Theme-Toggle). Helle Akzent-Sektionen über `.section-light`.
 
 ## Konventionen
 
@@ -50,7 +56,7 @@ alles andere läuft Verifikation über `bun run build` (Type-Check, inkl. `api/`
 - Imports über `@/` (Alias auf `src/`), nicht relativ hochnavigieren.
 - 2 Spaces, Semikolons, Imports ohne Datei-Endung bei neuen Dateien.
 - Farben über CSS-Variablen in `src/index.css`, nicht in `tailwind.config.js` hart eintragen.
-  Dark/Light über `ThemeProvider` in `src/assets/providers/`, Tailwind-Strategie `class`.
+  Dunkel-only, siehe Architektur-Eigenheiten.
 
 ### SEO (manuell gepflegt — nichts generiert das)
 
