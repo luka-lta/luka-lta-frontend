@@ -1,6 +1,8 @@
+import { useSyncExternalStore } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { GLASS_IOR, GLASS_ROUGHNESS, MAX_IOR, MIN_IOR } from './sceneSupport';
+import type { RotationTextStore } from './rotationTextStore';
 
 /** Umrechnung eines Anteils (0…1) in Prozent für die Balkenbreite. */
 const PERCENT = 100;
@@ -30,14 +32,15 @@ function MaterialBar({ label, value, fill }: MaterialBarProps) {
 }
 
 type MaterialPanelProps = {
-  /** Rotationszeile im Panel-Format, z. B. `.00  .12  .00  1.0`. */
-  rotationText: string;
+  /** Liefert die Rotationszeile im Panel-Format, z. B. `.00  .12  .00  1.0`. */
+  rotationStore: RotationTextStore;
   className?: string;
 };
 
 /** Deko-Panel mit den Materialwerten des Glas-Logos. Rein dekorativ. */
-export default function MaterialPanel({ rotationText, className }: MaterialPanelProps) {
+export default function MaterialPanel({ rotationStore, className }: MaterialPanelProps) {
   const { t } = useTranslation();
+  const rotationText = useSyncExternalStore(rotationStore.subscribe, rotationStore.getText);
 
   return (
     <div

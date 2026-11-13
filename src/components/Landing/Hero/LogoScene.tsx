@@ -112,8 +112,16 @@ type DragState = {
 
 type LogoSceneProps = {
   isMotionEnabled: boolean;
+  /** Außerhalb des Viewports pausiert die Render-Schleife komplett. */
+  isOnScreen: boolean;
   onReady: () => void;
   onRotationChange?: (q: RotationQuaternion) => void;
+};
+
+/** Unsichtbar: gar nicht rendern; sonst dauerhaft nur mit Bewegung, ohne Bewegung nur bei Interaktion. */
+const getFrameloop = (isMotionEnabled: boolean, isOnScreen: boolean): 'always' | 'demand' | 'never' => {
+  if (!isOnScreen) return 'never';
+  return isMotionEnabled ? 'always' : 'demand';
 };
 
 const clampSpeed = (speed: number): number => Math.max(-MAX_ANGULAR_SPEED, Math.min(MAX_ANGULAR_SPEED, speed));
@@ -257,7 +265,7 @@ function LogoBlocks({ isMotionEnabled, dragRef, onReadyRef, onRotationChangeRef 
  * Das Logo als vier Glas-Quader. Default-Export für `React.lazy`; landet in einem eigenen Chunk.
  * Bei Kontextverlust wirft die Komponente, damit die Error-Boundary dauerhaft auf das SVG schaltet.
  */
-export default function LogoScene({ isMotionEnabled, onReady, onRotationChange }: LogoSceneProps) {
+export default function LogoScene({ isMotionEnabled, isOnScreen, onReady, onRotationChange }: LogoSceneProps) {
   const [isContextLost, setIsContextLost] = useState<boolean>(false);
   const dragRef = useRef<DragState>({
     isDragging: false,
@@ -326,7 +334,7 @@ export default function LogoScene({ isMotionEnabled, onReady, onRotationChange }
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
         camera={{ position: [0, 0, CAMERA_DISTANCE], fov: CAMERA_FOV }}
-        frameloop={isMotionEnabled ? 'always' : 'demand'}
+        frameloop={getFrameloop(isMotionEnabled, isOnScreen)}
         onCreated={onCreated}
       >
         <RoomLighting />

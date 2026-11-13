@@ -1,4 +1,15 @@
-import { Component, lazy, memo, Suspense, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import {
+  Component,
+  lazy,
+  memo,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMotion } from '@/lib/motion/MotionProvider';
 import { cn } from '@/lib/utils';
@@ -12,6 +23,7 @@ import {
   STATIC_ROTATION,
   type RotationQuaternion,
 } from './sceneSupport';
+import type { RotationTextStore } from './rotationTextStore';
 
 // Eigener Chunk; der Import startet erst, wenn die Komponente zum ersten Mal gerendert wird.
 const LogoScene = lazy(() => import('./LogoScene'));
@@ -67,8 +79,8 @@ class SceneErrorBoundary extends Component<SceneErrorBoundaryProps, { hasError: 
 
 type HeroVisualProps = {
   className?: string;
-  /** Rotationszeile für das Material-Panel; ohne 3D die festen Werte. */
-  onRotationTextChange?: (text: string) => void;
+  /** Nimmt die Rotationszeile für das Material-Panel auf; ohne 3D bleiben die festen Werte. */
+  rotationStore?: RotationTextStore;
 };
 
 /**
@@ -76,7 +88,7 @@ type HeroVisualProps = {
  * Darüber blendet die lazy geladene 3D-Szene, sobald sie bereit ist; bis dahin und auf
  * Mobilgeräten bleibt das SVG.
  */
-function HeroVisual({ className, onRotationTextChange }: HeroVisualProps) {
+function HeroVisual({ className, rotationStore }: HeroVisualProps) {
   const { t } = useTranslation();
   const { isMotionEnabled } = useMotion();
   // Einmal beim Mounten entscheiden; danach steuert nur noch der Ablauf.
@@ -85,6 +97,17 @@ function HeroVisual({ className, onRotationTextChange }: HeroVisualProps) {
   const [isIntroTimerDone, setIsIntroTimerDone] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [sceneStatus, setSceneStatus] = useState<SceneStatus>('pending');
+  const [isOnScreen, setIsOnScreen] = useState<boolean>(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Außerhalb des Viewports rendert die Szene nicht (frameloop 'never'): spart GPU und Akku.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container === null || typeof IntersectionObserver !== 'function') return;
+    const observer = new IntersectionObserver(([entry]) => setIsOnScreen(entry.isIntersecting));
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
 
   const finishIntro = useCallback(() => {
     setProgress(PROGRESS_MAX);
@@ -155,12 +178,15 @@ function HeroVisual({ className, onRotationTextChange }: HeroVisualProps) {
 
   const handleSceneError = useCallback(() => {
     setSceneStatus('failed');
-    onRotationTextChange?.(formatRotation(STATIC_ROTATION));
-  }, [onRotationTextChange]);
+    rotationStore?.setText(formatRotation(STATIC_ROTATION));
+  }, [rotationStore]);
 
+  // Der Store meldet nur geänderte Texte weiter; gleiche Werte lösen kein Rendering aus.
   const handleRotationChange = useCallback(
-    (rotation: RotationQuaternion) => onRotationTextChange?.(formatRotation(rotation)),
-    [onRotationTextChange],
+    (rotation: RotationQuaternion) => {
+      rotationStore?.setText(formatRotation(rotation));
+    },
+    [rotationStore],
   );
 
   // Element stabil halten, damit Panel-Updates die Szene nicht neu rendern.
@@ -170,13 +196,14 @@ function HeroVisual({ className, onRotationTextChange }: HeroVisualProps) {
         <Suspense fallback={null}>
           <LogoScene
             isMotionEnabled={isMotionEnabled}
+            isOnScreen={isOnScreen}
             onReady={handleSceneReady}
             onRotationChange={handleRotationChange}
           />
         </Suspense>
       </SceneErrorBoundary>
     ),
-    [isMotionEnabled, handleSceneError, handleSceneReady, handleRotationChange],
+    [isMotionEnabled, isOnScreen, handleSceneError, handleSceneReady, handleRotationChange],
   );
 
   const isSceneMounted = sceneStatus === 'loading' || sceneStatus === 'ready';
@@ -184,7 +211,7 @@ function HeroVisual({ className, onRotationTextChange }: HeroVisualProps) {
   const fadeClass = isMotionEnabled ? 'transition-opacity duration-500 ease-out' : '';
 
   return (
-    <div className={cn('relative aspect-square shrink-0', className)}>
+    <div ref={containerRef} className={cn('relative aspect-square shrink-0', className)}>
       <LogoMark
         variant="solid"
         className={cn(
@@ -231,5 +258,5 @@ function HeroVisual({ className, onRotationTextChange }: HeroVisualProps) {
   );
 }
 
-// Memo: Hero rendert bei jeder Rotationsmeldung des Panels neu, das Logo braucht das nicht.
+// Memo: Hero rendert z. B. beim Motion-Wechsel neu; das Logo nur, wenn sich seine Props ändern.
 export default memo(HeroVisual);

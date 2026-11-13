@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import HeroVisual from '@/components/Landing/Hero/HeroVisual';
 import MaterialPanel from '@/components/Landing/Hero/MaterialPanel';
 import { formatRotation, STATIC_ROTATION } from '@/components/Landing/Hero/sceneSupport';
+import { createRotationTextStore } from '@/components/Landing/Hero/rotationTextStore';
 import { useMotion } from '@/lib/motion/MotionProvider';
 import { cn } from '@/lib/utils';
 
@@ -42,7 +43,8 @@ const gridStyle: CSSProperties = {
 export default function Hero() {
   const { t } = useTranslation();
   const { isMotionEnabled } = useMotion();
-  const [rotationText, setRotationText] = useState<string>(() => formatRotation(STATIC_ROTATION));
+  // Store statt State: Rotationsmeldungen der Szene rendern nur das Panel neu, nicht den ganzen Hero.
+  const [rotationStore] = useState(() => createRotationTextStore(formatRotation(STATIC_ROTATION)));
 
   // Nur Bewegung, keine Opacity: Hero-Text ist ab dem ersten Paint sichtbar (LCP).
   const fadeUp = (delay: number) => {
@@ -73,7 +75,7 @@ export default function Hero() {
         </h1>
 
         <HeroVisual
-          onRotationTextChange={setRotationText}
+          rotationStore={rotationStore}
           className="mt-8 w-36 md:absolute md:left-1/2 md:top-1/2 md:mt-0 md:w-[clamp(11rem,20vw,19rem)]
             md:-translate-x-1/2 md:-translate-y-1/2"
         />
@@ -153,7 +155,7 @@ export default function Hero() {
             </div>
           </div>
         </div>
-        <MaterialPanel rotationText={rotationText} className="hidden lg:block" />
+        <MaterialPanel rotationStore={rotationStore} className="hidden lg:block" />
       </motion.div>
 
       {/* Unten-Leiste: Scroll-Hinweis · Tagline · Rolle */}
