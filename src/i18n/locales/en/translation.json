@@ -149,6 +149,8 @@
     }
   },
   "footer": {
+    "back_to_top": "Back to top",
+    "nav_label": "Navigation",
     "tagline": "Luka Dev Studio — Freelance web development for startups and modern businesses.",
     "newsletter_label": "Stay updated",
     "newsletter_placeholder": "Enter your email",
