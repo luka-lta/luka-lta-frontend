@@ -1,4 +1,5 @@
-import { Fragment, useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -7,11 +8,13 @@ import { LdsIcon } from '@/components/SiteLogo';
 import { LANDING_SECTIONS } from '@/components/Landing/sections';
 import { formatSectionIndex } from '@/components/Landing/Section/sectionFormat';
 import { useMotion } from '@/lib/motion/MotionProvider';
-import { startSmoothScroll, stopSmoothScroll } from '@/lib/motion/smoothScroll';
+import { pauseSmoothScroll, resumeSmoothScroll } from '@/lib/motion/smoothScroll';
 import { useSectionNavigation } from '@/lib/motion/useSectionNavigation';
 
 /** Scroll-Schwelle in Pixeln, ab der der Header einen Hintergrund bekommt. */
 const SCROLLED_THRESHOLD_PX = 40;
+/** Ab dieser Breite (Tailwind `md`) gibt es kein Mobile-Menü mehr. */
+const DESKTOP_QUERY = '(min-width: 768px)';
 const STATUS_URL = 'https://status.luka-lta.dev';
 const MENU_ID = 'mobile-menu';
 const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled])';
@@ -70,6 +73,7 @@ export default function Header() {
   const { isMotionEnabled } = useMotion();
   const goToSection = useSectionNavigation();
   const headerRef = useRef<HTMLElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const firstItemRef = useRef<HTMLButtonElement>(null);
   const wasOpenRef = useRef(false);
@@ -83,22 +87,58 @@ export default function Header() {
 
   const closeMenu = useCallback(() => setIsMobileOpen(false), []);
 
-  // Offenes Menü: Escape schließt, Scroll der Seite ist gesperrt (inkl. Lenis).
+  // Offenes Menü: Escape schließt, Tab bleibt in Header + Overlay, Seiten-Scroll ist gesperrt.
   useEffect(() => {
     if (!isMobileOpen) return;
-    const onKeyDown = (event: globalThis.KeyboardEvent) => {
-      if (event.key === 'Escape') closeMenu();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeMenu();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const roots = [headerRef.current, overlayRef.current].filter((root): root is HTMLElement => root !== null);
+      const items = roots
+        .flatMap((root) => Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)))
+        .filter((item) => item.getClientRects().length > 0);
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+      const isInside = roots.some((root) => active !== null && root.contains(active));
+      if (!isInside) {
+        event.preventDefault();
+        first.focus();
+        return;
+      }
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+        return;
+      }
+      if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener('keydown', onKeyDown);
+
+    // Über `md` ist das Menü nicht mehr sichtbar: schließen, damit Fokus und Scroll frei werden.
+    const query = window.matchMedia(DESKTOP_QUERY);
+    const onBreakpoint = (event: MediaQueryListEvent) => {
+      if (event.matches) closeMenu();
+    };
+    query.addEventListener('change', onBreakpoint);
+
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    if (isMotionEnabled) stopSmoothScroll();
+    pauseSmoothScroll();
     return () => {
       document.removeEventListener('keydown', onKeyDown);
+      query.removeEventListener('change', onBreakpoint);
       document.body.style.overflow = previousOverflow;
-      if (isMotionEnabled) startSmoothScroll();
+      resumeSmoothScroll();
     };
-  }, [isMobileOpen, isMotionEnabled, closeMenu]);
+  }, [isMobileOpen, closeMenu]);
 
   // Fokus: beim Öffnen auf den ersten Eintrag, nach dem Schließen zurück auf den Button.
   useEffect(() => {
@@ -109,24 +149,6 @@ export default function Header() {
     }
     wasOpenRef.current = isMobileOpen;
   }, [isMobileOpen]);
-
-  // Fokusfalle: Tab bleibt innerhalb des Headers (Button + Overlay), solange das Menü offen ist.
-  const trapFocus = (event: KeyboardEvent<HTMLElement>) => {
-    if (!isMobileOpen || event.key !== 'Tab') return;
-    const items = headerRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
-    if (!items || items.length === 0) return;
-    const first = items[0];
-    const last = items[items.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-      return;
-    }
-    if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  };
 
   const jumpTo = (id: string) => {
     closeMenu();
@@ -221,62 +243,69 @@ export default function Header() {
     : {};
 
   return (
-    <motion.header
-      ref={headerRef}
-      onKeyDown={trapFocus}
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        isScrolled || isMobileOpen ? 'bg-background/70 backdrop-blur-md' : 'bg-transparent'
-      }`}
-      initial={isMotionEnabled ? { y: -80, opacity: 0 } : false}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <nav
-        aria-label={t('nav.menu_label')}
-        className="relative z-10 mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-6 lg:px-8"
+    <>
+      <motion.header
+        ref={headerRef}
+        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+          isScrolled && !isMobileOpen ? 'bg-background/70 backdrop-blur-md' : 'bg-transparent'
+        }`}
+        initial={isMotionEnabled ? { y: -80, opacity: 0 } : false}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <Link to="/" onClick={closeMenu} className={`flex items-center gap-2 text-foreground ${FOCUS_CLASS}`}>
-          <LdsIcon className="h-6 w-6 rounded-md" />
-          <span className="text-sm font-bold tracking-tight">Luka Dev Studio</span>
-        </Link>
+        <nav
+          aria-label={t('nav.menu_label')}
+          className="relative z-10 mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-6 lg:px-8"
+        >
+          <Link to="/" onClick={closeMenu} className={`flex items-center gap-2 text-foreground ${FOCUS_CLASS}`}>
+            <LdsIcon className="h-6 w-6 rounded-md" />
+            <span className="text-sm font-bold tracking-tight">Luka Dev Studio</span>
+          </Link>
 
-        <div className="hidden items-center gap-1 md:flex">{desktopTargets.map(renderDesktopItem)}</div>
+          <div className="hidden items-center gap-1 md:flex">{desktopTargets.map(renderDesktopItem)}</div>
 
-        <div className="flex items-center gap-3">
-          <LanguageSwitcher />
-          <button
-            type="button"
-            onClick={() => jumpTo('contact')}
-            className={`hidden rounded-full border border-foreground/40 px-4 py-2 font-mono text-xs uppercase tracking-widest text-foreground transition-colors hover:bg-foreground hover:text-background md:inline-flex ${FOCUS_CLASS}`}
-          >
-            {t('nav.contact')} <span aria-hidden className="ms-1">↗</span>
-          </button>
-          <button
-            type="button"
-            ref={toggleRef}
-            onClick={() => setIsMobileOpen((open) => !open)}
-            aria-label={isMobileOpen ? t('nav.menu_close') : t('nav.menu_open')}
-            aria-expanded={isMobileOpen}
-            aria-controls={MENU_ID}
-            className={`flex h-9 w-9 items-center justify-center rounded-full border border-border/60 text-foreground transition-colors hover:border-primary/40 hover:text-primary md:hidden ${FOCUS_CLASS}`}
-          >
-            {isMobileOpen ? <X size={18} aria-hidden /> : <Menu size={18} aria-hidden />}
-          </button>
-        </div>
-      </nav>
-
-      <AnimatePresence>
-        {isMobileOpen && (
-          <motion.div
-            id={MENU_ID}
-            data-lenis-prevent
-            {...overlayMotion}
-            className="fixed inset-0 z-0 overflow-y-auto bg-background/95 pt-24 backdrop-blur-md md:hidden"
-          >
-            <ul className="flex flex-col gap-2 px-6 pb-12">{mobileTargets.map(renderMobileItem)}</ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+          <div className="flex items-center gap-3">
+            <LanguageSwitcher />
+            <button
+              type="button"
+              onClick={() => jumpTo('contact')}
+              className={`hidden rounded-full border border-foreground/40 px-4 py-2 font-mono text-xs uppercase tracking-widest text-foreground transition-colors hover:bg-foreground hover:text-background md:inline-flex ${FOCUS_CLASS}`}
+            >
+              {t('nav.contact')} <span aria-hidden className="ms-1">↗</span>
+            </button>
+            <button
+              type="button"
+              ref={toggleRef}
+              onClick={() => setIsMobileOpen((open) => !open)}
+              aria-label={isMobileOpen ? t('nav.menu_close') : t('nav.menu_open')}
+              aria-expanded={isMobileOpen}
+              aria-controls={MENU_ID}
+              className={`flex h-9 w-9 items-center justify-center rounded-full border border-border/60 text-foreground transition-colors hover:border-primary/40 hover:text-primary md:hidden ${FOCUS_CLASS}`}
+            >
+              {isMobileOpen ? <X size={18} aria-hidden /> : <Menu size={18} aria-hidden />}
+            </button>
+          </div>
+        </nav>
+      </motion.header>
+      {createPortal(
+        <AnimatePresence>
+          {isMobileOpen && (
+            <motion.div
+              id={MENU_ID}
+              ref={overlayRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label={t('nav.menu')}
+              data-lenis-prevent
+              {...overlayMotion}
+              className="fixed inset-0 z-40 overflow-y-auto bg-background/95 pt-24 md:hidden"
+            >
+              <ul className="flex flex-col gap-2 px-6 pb-12">{mobileTargets.map(renderMobileItem)}</ul>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
+    </>
   );
 }

@@ -44,3 +44,13 @@ export function scrollToTop(): void {
   }
   window.scrollTo({ top: 0, behavior: 'auto' });
 }
+
+/** Hält Lenis an (z. B. bei offenem Menü), ohne die Instanz zu zerstören; ohne Instanz wirkungslos. */
+export function pauseSmoothScroll(): void {
+  lenis?.stop();
+}
+
+/** Setzt ein mit `pauseSmoothScroll` angehaltenes Lenis fort; ohne Instanz wirkungslos. */
+export function resumeSmoothScroll(): void {
+  lenis?.start();
+}
