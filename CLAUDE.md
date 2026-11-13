@@ -46,8 +46,9 @@ alles andere läuft Verifikation über `bun run build` (Type-Check, inkl. `api/`
 - Motion ist zentral in `src/lib/motion/`: jede neue Animation über `useMotion()` / `isMotionEnabled`
   (respektiert `prefers-reduced-motion`; bestehender Framer-Code wird schrittweise umgestellt).
   Smooth Scroll läuft über Lenis; Sprünge zu Sektionen über `scrollToSection` / `useSectionNavigation`
-  oder normale Hash-Links (`#contact`) — Lenis übernimmt diese per `anchors`-Option mit Header-Offset.
-  `HEADER_OFFSET_PX` spiegelt das CSS-`scroll-margin` — beide Werte zusammen ändern.
+  oder normale Hash-Links (`#contact`) — bei laufendem Lenis fängt ein Click-Handler in `smoothScroll.ts`
+  sie ab (Modifier-Klicks bleiben nativ). Header-Versatz kommt **nur** aus CSS-`scroll-margin-top`
+  (`section[id]` in `src/index.css`); Lenis und `scrollIntoView` ziehen es selbst ab — kein JS-Offset.
 - Theme ist **nur dunkel** (kein Theme-Toggle). Helle Akzent-Sektionen über `.section-light`.
 
 ## Konventionen

@@ -152,6 +152,8 @@ export default function Header() {
 
   const jumpTo = (id: string) => {
     closeMenu();
+    // Lenis ignoriert `scrollTo`, solange es angehalten ist; das Menü-Effect-Cleanup käme zu spät.
+    resumeSmoothScroll();
     goToSection(id);
   };
 
